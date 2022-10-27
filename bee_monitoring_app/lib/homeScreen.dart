@@ -40,8 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
       List data = response['data'];
       print(data[0]);
       print(data[0]['id']);
-      var list = [Item(data[0]["id"].toString(), data[0]["timestamp"].toString())];
-      print(list);
+      List<Item> list = [];
+      for (var item in data) {
+        list.add(Item(item['id'].toString(), item['timestamp'].toString()));
+      }
+      
       setState(() {
         catalogdata = list;
       });
