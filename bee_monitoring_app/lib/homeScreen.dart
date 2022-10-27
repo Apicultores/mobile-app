@@ -1,10 +1,19 @@
 import 'package:bee_monitoring_app/new_page.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
+
+List<Item> homeModel = [
+  Item("Valor médio", "Temperatura"),
+  Item("Valor médio", "Som"),
+  Item("Valor médio", "umidade"),
+];
 
 List<Item> model = [
   Item("List 1", "Here is list 1 subtitle"),
@@ -15,12 +24,36 @@ List<Item> model = [
 
 class _HomeScreenState extends State<HomeScreen> {
   int _indiceAtual = 0;
+
   final List<Widget> _telas = [
     ListViewHome(model),
     ListViewHome(model),
     ListViewHome(model),
     ListViewHome(model)
   ];
+
+  late List<Item> catalogdata = [];
+  Future<String> loadData() async {
+    var path = await rootBundle.loadString("assets/mockData.json");
+    setState(() {
+      var response = json.decode(path);
+      List data = response['data'];
+      print(data[0]);
+      print(data[0]['id']);
+      var list = [Item(data[0]["id"].toString(), data[0]["timestamp"].toString())];
+      print(list);
+      setState(() {
+        catalogdata = list;
+      });
+    });
+    return "success";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _telas[_indiceAtual],
+      body: ListViewHome(catalogdata),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
         type: BottomNavigationBarType.fixed,
         onTap: onTabTapped,
-        // selectedFontSize: 20,
         selectedIconTheme: const IconThemeData(color: Colors.amberAccent, size: 30),
         selectedItemColor: Colors.amberAccent,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
