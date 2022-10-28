@@ -1,11 +1,18 @@
-enum Type { temperature, humidity, sound }
+enum Type {
+  temperature("Temperatura"),
+  humidity("Humidade"),
+  sound("Som");
+  
+  const Type(this.value);
+  final String value;
+}
 
 class Item {
   final String id;
-  final String temperatura;
-  final String umidade;
-  final String som;
+  final String temperature;
+  final String humidity;
+  final String sound;
   final String timestamp;
 
-  const Item(this.id, this.temperatura, this.umidade, this.som, this.timestamp);
+  const Item(this.id, this.temperature, this.humidity, this.sound, this.timestamp);
 }

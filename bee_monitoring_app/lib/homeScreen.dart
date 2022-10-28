@@ -14,8 +14,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  late List catalogdata = [];
-  List<Type> temperature = [Type.temperature, Type.temperature, Type.humidity, Type.sound];
+  late List<Item> catalogdata = [];
+  List<Type> temperature = [
+    Type.temperature,
+    Type.temperature,
+    Type.humidity,
+    Type.sound
+  ];
   Future<String> loadData() async {
     var path = await rootBundle.loadString("assets/mockData.json");
     setState(() {
@@ -23,13 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
       List data = response['data'];
       List<Item> list = [];
       for (var item in data) {
-        list.add(Item(item['id'].toString(), 
-                      item['temperatura'].toString(),
-                      item['umidade'].toString(),
-                      item['som'].toString(),
-                      item['timestamp'].toString()));
+        list.add(Item(
+            item['id'].toString(),
+            item['temperatura'].toString(),
+            item['umidade'].toString(),
+            item['som'].toString(),
+            item['timestamp'].toString()));
       }
-      
+
       setState(() {
         catalogdata = list;
       });
@@ -53,12 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _currentIndex == 0 ? Home() : ListViewHome(catalogdata, temperature[_currentIndex]),
+      body: _currentIndex == 0
+          ? Home(catalogdata)
+          : ListViewHome(catalogdata, temperature[_currentIndex]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         onTap: onTabTapped,
-        selectedIconTheme: const IconThemeData(color: Colors.amberAccent, size: 30),
+        selectedIconTheme:
+            const IconThemeData(color: Colors.amberAccent, size: 30),
         selectedItemColor: Colors.amberAccent,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: const [
