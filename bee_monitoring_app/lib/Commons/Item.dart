@@ -1,6 +1,6 @@
 enum Type {
   temperature("Temperatura"),
-  humidity("Humidade"),
+  humidity("umidade"),
   sound("Som");
   
   const Type(this.value);

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
 
 class Home extends StatelessWidget {
-  final List<Item> myParam;
-  Home(this.myParam);
+  final List<Item> data;
+  Home(this.data);
 
   List<Type> temperature = [Type.temperature, Type.humidity, Type.sound];
 
@@ -14,11 +14,11 @@ class Home extends StatelessWidget {
         itemCount: temperature.length,
         itemBuilder: (context, index) {
           return Card(
-              child: ListTile(title: Text(getParameter(temperature[index], myParam)), subtitle: Text(temperature[index].value)));
+              child: ListTile(title: Text(getAverage(temperature[index], data)), subtitle: Text(temperature[index].value)));
         });
   }
 
-  String getParameter(Type type, List<Item> myParam) {
+  String getAverage(Type type, List<Item> myParam) {
     var sum = 0;
     for (var i = 0; i < myParam.length; i++) {
       switch (type) {

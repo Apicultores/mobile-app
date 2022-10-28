@@ -15,12 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
   late List<Item> catalogdata = [];
-  List<Type> temperature = [
-    Type.temperature,
-    Type.temperature,
-    Type.humidity,
-    Type.sound
-  ];
+  
   Future<String> loadData() async {
     var path = await rootBundle.loadString("assets/mockData.json");
     setState(() {
@@ -61,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: _currentIndex == 0
           ? Home(catalogdata)
-          : ListViewHome(catalogdata, temperature[_currentIndex]),
+          : ListViewHome(catalogdata, Type.values[_currentIndex - 1]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
