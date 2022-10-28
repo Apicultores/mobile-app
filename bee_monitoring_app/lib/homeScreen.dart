@@ -1,8 +1,10 @@
-import 'package:bee_monitoring_app/new_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
+import 'package:bee_monitoring_app/Commons/Item.dart';
+import 'package:bee_monitoring_app/Scenes/Home.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _indiceAtual = 0;
+  int _currentIndex = 0;
 
   late List catalogdata = [];
   List<Type> temperature = [Type.temperature, Type.temperature, Type.humidity, Type.sound];
@@ -19,8 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       var response = json.decode(path);
       List data = response['data'];
-      print(data[0]);
-      print(data[0]['id']);
       List<Item> list = [];
       for (var item in data) {
         list.add(Item(item['id'].toString(), 
@@ -53,9 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _indiceAtual == 0 ? Home() : ListViewHome(catalogdata, temperature[_indiceAtual]),
+      body: _currentIndex == 0 ? Home() : ListViewHome(catalogdata, temperature[_currentIndex]),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _indiceAtual,
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         onTap: onTabTapped,
         selectedIconTheme: const IconThemeData(color: Colors.amberAccent, size: 30),
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onTabTapped(int index) {
     setState(() {
-      _indiceAtual = index;
+      _currentIndex = index;
     });
   }
 }

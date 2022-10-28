@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:bee_monitoring_app/Scenes/Home.dart';
+import 'package:bee_monitoring_app/Commons/Item.dart';
 
 class ListViewHome extends StatelessWidget {
   final List myParam;
@@ -28,34 +30,5 @@ class ListViewHome extends StatelessWidget {
       case Type.sound:
         return item.som;
     }
-  }
-}
-
-enum Type { temperature, humidity, sound }
-
-class Item {
-  final String id;
-  final String temperatura;
-  final String umidade;
-  final String som;
-  final String timestamp;
-
-  const Item(this.id, this.temperatura, this.umidade, this.som, this.timestamp);
-}
-
-class Home extends StatelessWidget {
-  // final List myParam;
-
-  // Home(this.myParam);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return Card(
-              child: ListTile(title: Text("teste"), subtitle: Text("home")));
-        });
   }
 }
