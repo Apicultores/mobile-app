@@ -9,30 +9,11 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-List<Item> homeModel = [
-  Item("Valor médio", "Temperatura"),
-  Item("Valor médio", "Som"),
-  Item("Valor médio", "umidade"),
-];
-
-List<Item> model = [
-  Item("List 1", "Here is list 1 subtitle"),
-  Item("List 2", "Here is list 2 subtitle"),
-  Item("List 3", "Here is list 3 subtitle"),
-  Item("List 3", "Here is list 3 subtitle"),
-];
-
 class _HomeScreenState extends State<HomeScreen> {
   int _indiceAtual = 0;
 
-  final List<Widget> _telas = [
-    ListViewHome(model),
-    ListViewHome(model),
-    ListViewHome(model),
-    ListViewHome(model)
-  ];
-
-  late List<Item> catalogdata = [];
+  late List catalogdata = [];
+  List<Type> temperature = [Type.temperature, Type.temperature, Type.humidity, Type.sound];
   Future<String> loadData() async {
     var path = await rootBundle.loadString("assets/mockData.json");
     setState(() {
@@ -42,7 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
       print(data[0]['id']);
       List<Item> list = [];
       for (var item in data) {
-        list.add(Item(item['id'].toString(), item['timestamp'].toString()));
+        list.add(Item(item['id'].toString(), 
+                      item['temperatura'].toString(),
+                      item['umidade'].toString(),
+                      item['som'].toString(),
+                      item['timestamp'].toString()));
       }
       
       setState(() {
@@ -68,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: ListViewHome(catalogdata),
+      body: _indiceAtual == 0 ? Home() : ListViewHome(catalogdata, temperature[_indiceAtual]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
         type: BottomNavigationBarType.fixed,
