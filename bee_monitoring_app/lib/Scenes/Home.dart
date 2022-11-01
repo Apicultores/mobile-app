@@ -5,29 +5,90 @@ class Home extends StatelessWidget {
   final List<Item> data;
   Home(this.data);
 
+  List<String> titles = ["Médias", "Máximas", "Mínimas"];
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: Type.values.length + 1,
+        itemCount: (Type.values.length + 1) * titles.length,
         itemBuilder: (context, index) {
-          return index == 0
-              ? 
-              Padding(
-  padding: EdgeInsets.only(left:15, bottom: 10, right: 20, top:20), //apply padding to some sides only
-  child:               Text(
-                  "Médias",
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold),
-                )
-)
-              : Card(
-                  child: ListTile(
-                      title: Text(getAverage(Type.values[index - 1], data)),
-                      subtitle: Text(Type.values[index - 1].value)));
+          return index % (Type.values.length + 1) == 0
+              ? createTitle(index)
+              : createCard(index);
         });
+  }
+
+  Padding createTitle(int index) {
+    return Padding(
+        padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
+        child: Text(
+          titles[(index / (Type.values.length + 1)).toInt()],
+          style: TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold),
+        ));
+  }
+
+  Card createCard(int index) {
+    if (index < (Type.values.length + 1)) {
+      return Card(
+          child: ListTile(title: Text(getAverage(Type.values[index - 1], data)), subtitle: Text(Type.values[index - 1].value)));
+    } if (index < (Type.values.length + 1)*2) {
+      return Card(
+          child: ListTile(title: Text(getMax(Type.values[index - 1 - 4], data)), subtitle: Text(Type.values[index - 1 - 4].value)));
+    } else {
+      return Card(
+          child: ListTile(title: Text(getMin(Type.values[index - 1 - 8], data)), subtitle: Text(Type.values[index - 1 - 8].value)));
+    }
+  }
+
+  String getMax(Type type, List<Item> dataArray) {
+    var sum = 0;
+    for (var i = 0; i < dataArray.length; i++) {
+      switch (type) {
+        case Type.temperature: 
+          if (sum < int.parse(dataArray[i].temperature)) {
+            sum = int.parse(dataArray[i].temperature);
+          }
+          break;
+        case Type.humidity:
+          if (sum < int.parse(dataArray[i].humidity)) {
+            sum = int.parse(dataArray[i].humidity);
+          }
+          break;
+        case Type.sound:
+          if (sum < int.parse(dataArray[i].sound)) {
+            sum = int.parse(dataArray[i].sound);
+          }
+          break;
+      }
+    }
+    return sum.toString();
+  }
+
+  String getMin(Type type, List<Item> dataArray) {
+    var sum = 1000;
+    for (var i = 0; i < dataArray.length; i++) {
+      switch (type) {
+        case Type.temperature: 
+          if (sum > int.parse(dataArray[i].temperature)) {
+            sum = int.parse(dataArray[i].temperature);
+          }
+          break;
+        case Type.humidity:
+          if (sum > int.parse(dataArray[i].humidity)) {
+            sum = int.parse(dataArray[i].humidity);
+          }
+          break;
+        case Type.sound:
+          if (sum > int.parse(dataArray[i].sound)) {
+            sum = int.parse(dataArray[i].sound);
+          }
+          break;
+      }
+    }
+    return sum.toString();
   }
 
   String getAverage(Type type, List<Item> dataArray) {
