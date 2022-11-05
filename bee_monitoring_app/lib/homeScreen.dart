@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  late List<Item> catalogdata = [];
+  List<Item> catalogdata = [];
 
   Future<String> loadData() async {
     var path = await rootBundle.loadString("assets/mockData.json");
@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
       setState(() {
+        print("catalogdata = list;!!!");
         catalogdata = list;
       });
     });
@@ -52,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
   StatelessWidget sceneHandler() {
     switch (_currentIndex) {
       case 0:
+      print("catalogdata.length!!!");
+        print(catalogdata.length);
         return Home(catalogdata);
       default:
         return ListViewHome(catalogdata, Type.values[_currentIndex - 1]);

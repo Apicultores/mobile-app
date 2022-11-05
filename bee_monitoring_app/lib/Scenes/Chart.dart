@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
+import 'package:bee_monitoring_app/Commons/Item.dart';
+import 'package:bee_monitoring_app/Scenes/Home.dart';
+import 'package:bee_monitoring_app/Scenes/Chart.dart';
+import 'package:intl/intl.dart';
 
 class Chart extends StatefulWidget {
   final List<Item> data;
@@ -21,37 +30,66 @@ class _ChartState extends State<Chart> {
 
   bool _soundIsVisible = false;
 
+    Future<String> loadData() async {
+    var path = await rootBundle.loadString("assets/mockData.json");
+    setState(() {
+      var response = json.decode(path);
+      List data = response['data'];
+      List<Item> list = [];
+      print(DateFormat("yyyy-MM-dd hh:mm:ss").parse(data[0]['timestamp']));
+      for (var item in data) {
+        list.add(Item(
+            item['id'].toString(),
+            item['temperatura_dentro'].toString(),
+            item['temperatura_fora'].toString(),
+            item['umidade_dentro'].toString(),
+            item['umidade_fora'].toString(),
+            item['som'].toString(),
+            DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
+      }
+
+      setState(() {
+        print("catalogdata = list;!!!");
+        dataState = list;
+        _chartData = handleData();
+      });
+    });
+    return "success";
+  }
+
   void initState() {
     super.initState();
-    dataState = widget.data;
-    _chartData = handleData();
+    // dataState = widget.data;
+    loadData();
   }
 
   List<SalesData> handleData() {
     final List<SalesData> chartData = [];
-    while (!dataState.isEmpty) {
-      DateTime currentDate = dataState.first.timestamp;
-      print("dataState.first.timestamp");
-      print(dataState.first.timestamp);
+    List<Item> dataStateTemp = dataState;
+
+    while (!dataStateTemp.isEmpty) {
+      DateTime currentDate = dataStateTemp.first.timestamp;
       List<Item> tempArray = [];
-      while (dataState.first.timestamp == currentDate) {
-        print(dataState.first.timestamp);
+      while (dataStateTemp.first.timestamp == currentDate) {
+        print(dataStateTemp.first.timestamp);
         print("-------");
-        tempArray.add(dataState.first);
-        dataState.removeAt(0);
-        if (dataState.isEmpty) {
+        tempArray.add(dataStateTemp.first);
+        dataStateTemp.removeAt(0);
+        if (dataStateTemp.isEmpty) {
           break;
         }
       }
 
-      chartData.add(SalesData(currentDate.day.toString(),
-          getAverage(Type.humidityInside, tempArray), 14, 14, 19, 2));
+      chartData.insert(
+          0,
+          SalesData(currentDate.day.toString(),
+              getAverage(Type.temperatureInside, tempArray), 
+              getAverage(Type.temperatureOutside, tempArray), 
+              getAverage(Type.humidityInside, tempArray),  
+              getAverage(Type.humidityOutside, tempArray),
+              getAverage(Type.sound, tempArray)));
     }
 
-    // chartData.add(SalesData('Seg', 3, 14, 14, 19, 2));
-    // chartData.add(SalesData('Ter', 3, 19, 14, 19, 2));
-    // chartData.add(SalesData('Qua', 3, 12, 14, 19, 2));
-    
     return chartData;
   }
 
@@ -85,31 +123,18 @@ class _ChartState extends State<Chart> {
     return (sum / dataArray.length);
   }
 
-  List<SalesData> getChartData() {
-    final List<SalesData> chartData = [
-      SalesData('Seg', 3, 14, 14, 19, 2),
-      SalesData('Ter', 3, 19, 14, 19, 2),
-      SalesData('Qua', 3, 12, 14, 19, 2),
-      SalesData('Qui', 3, 31, 14, 19, 2),
-      SalesData('Sex', 3, 11, 14, 19, 2),
-      SalesData('Sab', 3, 15, 14, 19, 2),
-      SalesData('Dom', 3, 90, 14, 19, 2),
-    ];
-    return chartData;
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 0),
-        itemCount: 4,
+        itemCount: _chartData.isEmpty ? 0 : 4,
         itemBuilder: (context, index) {
           return index == 0 ? createChart() : createCheckbox(index);
         });
   }
 
-  late List<SalesData> _chartData;
+  late List<SalesData> _chartData = [];
   Padding createCheckbox(int index) {
     switch (index) {
       case 1:
