@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:bee_monitoring_app/Commons/Item.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:bee_monitoring_app/Commons/Item.dart';
+import 'package:bee_monitoring_app/Commons/Type.dart';
+import 'package:bee_monitoring_app/Commons/ChartItem.dart';
 
 class Chart extends StatefulWidget {
   final List<Item> data;
@@ -58,8 +60,8 @@ class _ChartState extends State<Chart> {
     loadData();
   }
 
-  List<SalesData> handleData() {
-    final List<SalesData> chartData = [];
+  List<ChartItem> handleData() {
+    final List<ChartItem> chartData = [];
     List<Item> dataStateTemp = dataState;
 
     while (!dataStateTemp.isEmpty) {
@@ -77,7 +79,7 @@ class _ChartState extends State<Chart> {
 
       chartData.insert(
           0,
-          SalesData(
+          ChartItem(
               currentDate.day.toString(),
               getAverage(Type.temperatureInside, tempArray),
               getAverage(Type.temperatureOutside, tempArray),
@@ -130,7 +132,7 @@ class _ChartState extends State<Chart> {
         });
   }
 
-  late List<SalesData> _chartData = [];
+  late List<ChartItem> _chartData = [];
   Padding createCheckbox(int index) {
     switch (index) {
       case 1:
@@ -245,14 +247,14 @@ class _ChartState extends State<Chart> {
               overflowMode: LegendItemOverflowMode.wrap,
               isResponsive: true),
           tooltipBehavior: TooltipBehavior(enable: false),
-          series: <LineSeries<SalesData, String>>[
-            LineSeries<SalesData, String>(
+          series: <LineSeries<ChartItem, String>>[
+            LineSeries<ChartItem, String>(
               isVisible: _temperatureInsideIsVisible,
               enableTooltip: true,
               name: 'Temperatura interna',
               dataSource: _chartData,
-              xValueMapper: (SalesData sales, _) => sales.month,
-              yValueMapper: (SalesData sales, _) => sales.temperatureInside,
+              xValueMapper: (ChartItem sales, _) => sales.month,
+              yValueMapper: (ChartItem sales, _) => sales.temperatureInside,
               dataLabelSettings: DataLabelSettings(
                 isVisible: true,
                 color: Colors.blue,
@@ -263,8 +265,8 @@ class _ChartState extends State<Chart> {
               enableTooltip: true,
               name: 'Temperatura externa',
               dataSource: _chartData,
-              xValueMapper: (SalesData sales, _) => sales.month,
-              yValueMapper: (SalesData sales, _) => sales.temperatureOutside,
+              xValueMapper: (ChartItem sales, _) => sales.month,
+              yValueMapper: (ChartItem sales, _) => sales.temperatureOutside,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
                 color: Color.fromARGB(255, 126, 19, 19),
@@ -275,8 +277,8 @@ class _ChartState extends State<Chart> {
               enableTooltip: true,
               name: 'Humidade interna',
               dataSource: _chartData,
-              xValueMapper: (SalesData sales, _) => sales.month,
-              yValueMapper: (SalesData sales, _) => sales.humidityInside,
+              xValueMapper: (ChartItem sales, _) => sales.month,
+              yValueMapper: (ChartItem sales, _) => sales.humidityInside,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
                 color: Color.fromARGB(255, 89, 0, 83),
@@ -287,8 +289,8 @@ class _ChartState extends State<Chart> {
               enableTooltip: true,
               name: 'Humidade externa',
               dataSource: _chartData,
-              xValueMapper: (SalesData sales, _) => sales.month,
-              yValueMapper: (SalesData sales, _) => sales.humidityOutside,
+              xValueMapper: (ChartItem sales, _) => sales.month,
+              yValueMapper: (ChartItem sales, _) => sales.humidityOutside,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
                 color: Color.fromARGB(255, 255, 0, 238),
@@ -299,8 +301,8 @@ class _ChartState extends State<Chart> {
               enableTooltip: true,
               name: 'Som',
               dataSource: _chartData,
-              xValueMapper: (SalesData sales, _) => sales.month,
-              yValueMapper: (SalesData sales, _) => sales.sound,
+              xValueMapper: (ChartItem sales, _) => sales.month,
+              yValueMapper: (ChartItem sales, _) => sales.sound,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
                 color: Color.fromARGB(255, 0, 120, 150),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
+import 'package:bee_monitoring_app/Commons/Type.dart';
 import 'package:bee_monitoring_app/Scenes/Home.dart';
 import 'package:bee_monitoring_app/Scenes/Chart.dart';
 import 'package:intl/intl.dart';

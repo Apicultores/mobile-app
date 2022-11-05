@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
+import 'package:bee_monitoring_app/Commons/Type.dart';
 
 class Home extends StatelessWidget {
   final List<Item> data;
