@@ -35,40 +35,44 @@ class _ChartState extends State<Chart> {
     dataState = widget.data;
   }
 
-  
-  void onTabTapped(int index) {
-    setState(() {
-      // _currentIndex = index;
-    });
-  }
-
   List<SalesData> getChartData() {
     final List<SalesData> chartData = [
-      SalesData('Jan', 11, 14, 14),
-      SalesData('Feb', 14, 19, 14),
-      SalesData('Mar', 23, 12, 14),
-      SalesData('Apr', 12, 31, 14),
-      SalesData('May', 30, 11, 14),
-      SalesData('Jun', 25, 15, 14),
+      SalesData('Seg', 3, 14, 14, 19, 2),
+      SalesData('Ter', 3, 19, 14, 19, 2),
+      SalesData('Qua', 3, 12, 14, 19, 2),
+      SalesData('Qui', 3, 31, 14, 19, 2),
+      SalesData('Sex', 3, 11, 14, 19, 2),
+      SalesData('Sab', 3, 15, 14, 19, 2),
+      SalesData('Dom', 3, 15, 14, 19, 2),
     ];
     return chartData;
   }
-
-  List<String> titles = ["Médias", "Máximas", "Mínimas"];
+  
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) => Divider(height: 0),
         itemCount: 4,
         itemBuilder: (context, index) {
-          return index == 0 ? createChart() : createCheckbox();
+          return index == 0 ? createChart() : createCheckbox(index);
         });
   }
 
   late List<SalesData> _chartData;
-  Padding createCheckbox() {
+  Padding createCheckbox(int index) {
+    switch (index) {
+      case 1: 
+        return createTemperatureCheckbox();
+      case 2: 
+        return createHumidityCheckbox();
+      default:
+        return createSoundCheckbox();
+    }
+  }
+
+  Padding createTemperatureCheckbox() {
     return
-    Padding(
+        Padding(
         padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
         child:
         Row(
@@ -76,7 +80,7 @@ class _ChartState extends State<Chart> {
         Expanded(
             flex: 5,
             child: CheckboxListTile(
-              title: Text("title text"),
+              title: Text("Temperatura Interna"),
               value: _temperatureInsideIsVisible,
               onChanged: (newValue) {
                 setState(() {
@@ -89,10 +93,75 @@ class _ChartState extends State<Chart> {
         Expanded(
             flex: 5,
             child: CheckboxListTile(
-              title: Text("title text"),
-              value: true,
+              title: Text("Temperatura Externa"),
+              value: _temperatureOutsideIsVisible,
               onChanged: (newValue) {
-                print("oi");
+                setState(() {
+                  _temperatureOutsideIsVisible = newValue ?? false;
+                });
+              },
+              controlAffinity:
+                  ListTileControlAffinity.leading,
+            ))
+      ],
+    )
+    );
+  }
+
+  Padding createSoundCheckbox() {
+    return
+        Padding(
+        padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
+        child:
+        Row(
+      children: <Widget>[
+        Expanded(
+            flex: 5,
+            child: CheckboxListTile(
+              title: Text("Som"),
+              value: _soundIsVisible,
+              onChanged: (newValue) {
+                setState(() {
+                  _soundIsVisible = newValue ?? false;
+                });
+              },
+              controlAffinity:
+                  ListTileControlAffinity.leading,
+            ))
+      ],
+    )
+    );
+  }
+
+  Padding createHumidityCheckbox() {
+    return
+        Padding(
+        padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
+        child:
+        Row(
+      children: <Widget>[
+        Expanded(
+            flex: 5,
+            child: CheckboxListTile(
+              title: Text("Humidade Interna"),
+              value: _humidityInsideIsVisible,
+              onChanged: (newValue) {
+                setState(() {
+                  _humidityInsideIsVisible = newValue ?? !_humidityInsideIsVisible;
+                });
+              },
+              controlAffinity:
+                  ListTileControlAffinity.leading,
+            )),
+        Expanded(
+            flex: 5,
+            child: CheckboxListTile(
+              title: Text("Humidade Externa"),
+              value: _humidityOutsideIsVisible,
+              onChanged: (newValue) {
+                setState(() {
+                  _humidityOutsideIsVisible = newValue ?? false;
+                });
               },
               controlAffinity:
                   ListTileControlAffinity.leading,
@@ -112,35 +181,51 @@ class _ChartState extends State<Chart> {
         isVisible: true,
         position: LegendPosition.bottom,
       ),
-      tooltipBehavior: TooltipBehavior(enable: true),
+      tooltipBehavior: TooltipBehavior(enable: false),
       series: <LineSeries<SalesData, String>>[
         LineSeries<SalesData, String>(
           isVisible: _temperatureInsideIsVisible,
           enableTooltip: true,
-          name: 'sales',
+          name: 'Temperatura interna',
           dataSource: _chartData,
           xValueMapper: (SalesData sales, _) => sales.month,
-          yValueMapper: (SalesData sales, _) => sales.sales,
+          yValueMapper: (SalesData sales, _) => sales.temperatureInside,
           dataLabelSettings: DataLabelSettings(
             isVisible: true,
             color: Colors.blue,
           ),
         ),
         LineSeries(
-          name: 'purchase',
+          isVisible: _temperatureOutsideIsVisible,
+          enableTooltip: true,
+          name: 'Temperatura externa',
           dataSource: _chartData,
           xValueMapper: (SalesData sales, _) => sales.month,
-          yValueMapper: (SalesData sales, _) => sales.purchase,
+          yValueMapper: (SalesData sales, _) => sales.temperatureOutside,
           dataLabelSettings: const DataLabelSettings(
             isVisible: true,
             color: Color.fromARGB(255, 126, 19, 19),
           ),
         ),
         LineSeries(
-          name: 'teste',
+          isVisible: _humidityInsideIsVisible,
+          enableTooltip: true,
+          name: 'Humidade interna',
           dataSource: _chartData,
           xValueMapper: (SalesData sales, _) => sales.month,
-          yValueMapper: (SalesData sales, _) => sales.teste,
+          yValueMapper: (SalesData sales, _) => sales.humidityInside,
+          dataLabelSettings: const DataLabelSettings(
+            isVisible: true,
+            color: Color.fromARGB(255, 255, 0, 238),
+          ),
+        ),
+        LineSeries(
+          isVisible: _soundIsVisible,
+          enableTooltip: true,
+          name: 'Som',
+          dataSource: _chartData,
+          xValueMapper: (SalesData sales, _) => sales.month,
+          yValueMapper: (SalesData sales, _) => sales.sound,
           dataLabelSettings: const DataLabelSettings(
             isVisible: true,
             color: Color.fromARGB(255, 255, 0, 238),
