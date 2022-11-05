@@ -70,6 +70,7 @@ class _ChartState extends State<Chart> {
     }
   }
 
+
   Padding createTemperatureCheckbox() {
     return
         Padding(
@@ -84,7 +85,7 @@ class _ChartState extends State<Chart> {
               value: _temperatureInsideIsVisible,
               onChanged: (newValue) {
                 setState(() {
-                  _temperatureInsideIsVisible = newValue ?? false;
+                  _temperatureInsideIsVisible = newValue ?? true;
                 });
               },
               controlAffinity:
@@ -97,7 +98,7 @@ class _ChartState extends State<Chart> {
               value: _temperatureOutsideIsVisible,
               onChanged: (newValue) {
                 setState(() {
-                  _temperatureOutsideIsVisible = newValue ?? false;
+                  _temperatureOutsideIsVisible = newValue ?? true;
                 });
               },
               controlAffinity:
@@ -122,7 +123,7 @@ class _ChartState extends State<Chart> {
               value: _soundIsVisible,
               onChanged: (newValue) {
                 setState(() {
-                  _soundIsVisible = newValue ?? false;
+                  _soundIsVisible = newValue ?? true;
                 });
               },
               controlAffinity:
@@ -147,7 +148,7 @@ class _ChartState extends State<Chart> {
               value: _humidityInsideIsVisible,
               onChanged: (newValue) {
                 setState(() {
-                  _humidityInsideIsVisible = newValue ?? !_humidityInsideIsVisible;
+                  _humidityInsideIsVisible = newValue ?? true;
                 });
               },
               controlAffinity:
@@ -160,7 +161,7 @@ class _ChartState extends State<Chart> {
               value: _humidityOutsideIsVisible,
               onChanged: (newValue) {
                 setState(() {
-                  _humidityOutsideIsVisible = newValue ?? false;
+                  _humidityOutsideIsVisible = newValue ?? true;
                 });
               },
               controlAffinity:
@@ -174,8 +175,9 @@ class _ChartState extends State<Chart> {
   SfCartesianChart createChart() {
     _chartData = getChartData();
     return SfCartesianChart(
-      enableAxisAnimation: true,
+      enableAxisAnimation: false,
       primaryXAxis: CategoryAxis(),
+      primaryYAxis: NumericAxis(),
       title: ChartTitle(text: '11 jan - 18 jan'),
       legend: Legend(
         isVisible: true,
@@ -216,6 +218,18 @@ class _ChartState extends State<Chart> {
           yValueMapper: (SalesData sales, _) => sales.humidityInside,
           dataLabelSettings: const DataLabelSettings(
             isVisible: true,
+            color: Color.fromARGB(255, 89, 0, 83),
+          ),
+        ),
+        LineSeries(
+          isVisible: _humidityOutsideIsVisible,
+          enableTooltip: true,
+          name: 'Humidade externa',
+          dataSource: _chartData,
+          xValueMapper: (SalesData sales, _) => sales.month,
+          yValueMapper: (SalesData sales, _) => sales.humidityOutside,
+          dataLabelSettings: const DataLabelSettings(
+            isVisible: true,
             color: Color.fromARGB(255, 255, 0, 238),
           ),
         ),
@@ -228,7 +242,7 @@ class _ChartState extends State<Chart> {
           yValueMapper: (SalesData sales, _) => sales.sound,
           dataLabelSettings: const DataLabelSettings(
             isVisible: true,
-            color: Color.fromARGB(255, 255, 0, 238),
+            color: Color.fromARGB(255, 0, 120, 150),
           ),
         ),
       ],
