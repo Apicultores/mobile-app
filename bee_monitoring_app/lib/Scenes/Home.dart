@@ -23,16 +23,20 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
+        separatorBuilder: (BuildContext context, int index) => Divider(height: 0),
         itemCount: (Type.values.length + 1) * titles.length,
         itemBuilder: (context, index) {
-          return index < 1 ? createCheckbox() : createCell(index - 1);
+          return index < 3 ? createCheckbox() : createCell(index - 3);
         });
   }
 
   late List<SalesData> _chartData;
-  Row createCheckbox() {
-    return Row(
+  Padding createCheckbox() {
+    return
+    Padding(
+        padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
+        child:
+        Row(
       children: <Widget>[
         Expanded(
             flex: 5,
@@ -43,7 +47,7 @@ class Home extends StatelessWidget {
                 print("oi");
               },
               controlAffinity:
-                  ListTileControlAffinity.leading, //  <-- leading Checkbox
+                  ListTileControlAffinity.leading,
             )),
         Expanded(
             flex: 5,
@@ -54,28 +58,11 @@ class Home extends StatelessWidget {
                 print("oi");
               },
               controlAffinity:
-                  ListTileControlAffinity.leading, //  <-- leading Checkbox
+                  ListTileControlAffinity.leading,
             ))
       ],
+    )
     );
-
-    // CheckboxListTile(
-    //         title: Text("helo"),
-    //         controlAffinity: ListTileControlAffinity.leading,
-    //         value: true,
-    //         onChanged: null,
-
-    //       ),
-    //     ),
-
-//     CheckboxListTile(
-//   title: Text("title text"),
-//   value: true,
-//   onChanged: (newValue) {
-//       print("oi");
-//   },
-//   controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-// );
   }
 
   SfCartesianChart createChart() {
