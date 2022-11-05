@@ -81,10 +81,10 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: Colors.amberAccent,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ("início")),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ("Resumo")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.thermostat_auto), label: "Graficos"),
-          BottomNavigationBarItem(icon: Icon(Icons.cloud), label: ("Histórico"))
+              icon: Icon(Icons.info), label: "Graficos"),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: ("Histórico"))
         ],
       ),
     );

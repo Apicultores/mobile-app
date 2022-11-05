@@ -241,7 +241,7 @@ class _ChartState extends State<Chart> {
           enableAxisAnimation: false,
           primaryXAxis: CategoryAxis(),
           primaryYAxis: NumericAxis(),
-          title: ChartTitle(text: '11 jan - 18 jan'),
+          title: ChartTitle(text: 'Ultimas medições'),
           legend: Legend(
               isVisible: true,
               position: LegendPosition.bottom,

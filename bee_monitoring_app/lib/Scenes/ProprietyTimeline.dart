@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Scenes/Home.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
+import 'package:intl/intl.dart';
 
 class ListViewHome extends StatelessWidget {
   final List data;
   final Type type;
 
   ListViewHome(this.data, this.type);
+  DateFormat dateFormat = DateFormat("HH:mm:ss - dd/MM/yyyy");
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class ListViewHome extends StatelessWidget {
           return Card(
               child: ListTile(
                   title: Text(getParameter(type, data[index])),
-                  subtitle: Text(data[index].timestamp)));
+                  subtitle: Text(dateFormat.format(data[index].timestamp))));
         });
   }
 
