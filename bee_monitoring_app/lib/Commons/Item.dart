@@ -5,8 +5,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 enum Type {
   temperatureInside("Temperatura Interna"),
   temperatureOutside("Temperatura Externa"),
-  humidityInside("umidade Interna"),
-  humidityOutside("umidade Externa"),
+  humidityInside("Umidade Interna"),
+  humidityOutside("Umidade Externa"),
   sound("Som");
   
   const Type(this.value);

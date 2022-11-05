@@ -50,12 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
     loadData();
   }
 
-  StatelessWidget sceneHandler() {
+  StatefulWidget sceneHandler() {
     switch (_currentIndex) {
-      case 0:
-      print("catalogdata.length!!!");
-        print(catalogdata.length);
-        return Home(catalogdata);
+      case 1:
+        return Chart(catalogdata);
       default:
         return ListViewHome(catalogdata, Type.values[_currentIndex - 1]);
     }
@@ -71,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _currentIndex == 1 ? Chart(catalogdata) : sceneHandler(),
+      body: _currentIndex == 0 ? Home(catalogdata) : sceneHandler(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
