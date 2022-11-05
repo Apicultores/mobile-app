@@ -7,18 +7,6 @@ class Home extends StatelessWidget {
   final List<Item> data;
   Home(this.data);
 
-  List<SalesData> getChartData() {
-    final List<SalesData> chartData = [
-      SalesData('Jan', 11, 14, 14),
-      SalesData('Feb', 14, 19, 14),
-      SalesData('Mar', 23, 12, 14),
-      SalesData('Apr', 12, 31, 14),
-      SalesData('May', 30, 11, 14),
-      SalesData('Jun', 25, 15, 14),
-    ];
-    return chartData;
-  }
-
   List<String> titles = ["Médias", "Máximas", "Mínimas"];
   @override
   Widget build(BuildContext context) {
@@ -26,90 +14,8 @@ class Home extends StatelessWidget {
         separatorBuilder: (BuildContext context, int index) => Divider(height: 0),
         itemCount: (Type.values.length + 1) * titles.length,
         itemBuilder: (context, index) {
-          return index < 3 ? createCheckbox() : createCell(index - 3);
+          return createCell(index);
         });
-  }
-
-  late List<SalesData> _chartData;
-  Padding createCheckbox() {
-    return
-    Padding(
-        padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
-        child:
-        Row(
-      children: <Widget>[
-        Expanded(
-            flex: 5,
-            child: CheckboxListTile(
-              title: Text("title text"),
-              value: true,
-              onChanged: (newValue) {
-                print("oi");
-              },
-              controlAffinity:
-                  ListTileControlAffinity.leading,
-            )),
-        Expanded(
-            flex: 5,
-            child: CheckboxListTile(
-              title: Text("title text"),
-              value: true,
-              onChanged: (newValue) {
-                print("oi");
-              },
-              controlAffinity:
-                  ListTileControlAffinity.leading,
-            ))
-      ],
-    )
-    );
-  }
-
-  SfCartesianChart createChart() {
-    _chartData = getChartData();
-    return SfCartesianChart(
-      enableAxisAnimation: true,
-      primaryXAxis: CategoryAxis(),
-      title: ChartTitle(text: '11 jan - 18 jan'),
-      legend: Legend(
-        isVisible: true,
-        position: LegendPosition.bottom,
-      ),
-      tooltipBehavior: TooltipBehavior(enable: true),
-      series: <LineSeries<SalesData, String>>[
-        LineSeries<SalesData, String>(
-          enableTooltip: true,
-          name: 'sales',
-          dataSource: _chartData,
-          xValueMapper: (SalesData sales, _) => sales.month,
-          yValueMapper: (SalesData sales, _) => sales.sales,
-          dataLabelSettings: const DataLabelSettings(
-            isVisible: true,
-            color: Colors.blue,
-          ),
-        ),
-        LineSeries(
-          name: 'purchase',
-          dataSource: _chartData,
-          xValueMapper: (SalesData sales, _) => sales.month,
-          yValueMapper: (SalesData sales, _) => sales.purchase,
-          dataLabelSettings: const DataLabelSettings(
-            isVisible: true,
-            color: Color.fromARGB(255, 126, 19, 19),
-          ),
-        ),
-        LineSeries(
-          name: 'teste',
-          dataSource: _chartData,
-          xValueMapper: (SalesData sales, _) => sales.month,
-          yValueMapper: (SalesData sales, _) => sales.teste,
-          dataLabelSettings: const DataLabelSettings(
-            isVisible: true,
-            color: Color.fromARGB(255, 255, 0, 238),
-          ),
-        ),
-      ],
-    );
   }
 
   Padding createCell(int index) {

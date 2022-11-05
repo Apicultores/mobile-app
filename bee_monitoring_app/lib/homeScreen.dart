@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
 import 'package:bee_monitoring_app/Scenes/Home.dart';
+import 'package:bee_monitoring_app/Scenes/Chart.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -44,6 +45,15 @@ class _HomeScreenState extends State<HomeScreen> {
     loadData();
   }
 
+  StatelessWidget sceneHandler() {
+    switch (_currentIndex) {
+      case 0:
+        return Home(catalogdata);
+      default:
+        return ListViewHome(catalogdata, Type.values[_currentIndex - 1]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,9 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _currentIndex == 0
-          ? Home(catalogdata)
-          : ListViewHome(catalogdata, Type.values[_currentIndex - 1]),
+      body: _currentIndex == 1 ? Chart(catalogdata) : sceneHandler(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -68,9 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ("início")),
           BottomNavigationBarItem(
-              icon: Icon(Icons.thermostat_auto), label: "Temperatura"),
-          BottomNavigationBarItem(icon: Icon(Icons.cloud), label: ("Úmidade")),
-          BottomNavigationBarItem(icon: Icon(Icons.radio), label: ("Som")),
+              icon: Icon(Icons.thermostat_auto), label: "Graficos"),
+          BottomNavigationBarItem(icon: Icon(Icons.cloud), label: ("Histórico"))
         ],
       ),
     );
