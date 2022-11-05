@@ -43,7 +43,7 @@ class _ChartState extends State<Chart> {
       SalesData('Qui', 3, 31, 14, 19, 2),
       SalesData('Sex', 3, 11, 14, 19, 2),
       SalesData('Sab', 3, 15, 14, 19, 2),
-      SalesData('Dom', 3, 15, 14, 19, 2),
+      SalesData('Dom', 3, 90, 14, 19, 2),
     ];
     return chartData;
   }
@@ -172,9 +172,12 @@ class _ChartState extends State<Chart> {
     );
   }
 
-  SfCartesianChart createChart() {
+  Container createChart() {
     _chartData = getChartData();
-    return SfCartesianChart(
+    return 
+    Container(
+      height: 400,
+      child:   SfCartesianChart(
       enableAxisAnimation: false,
       primaryXAxis: CategoryAxis(),
       primaryYAxis: NumericAxis(),
@@ -182,6 +185,9 @@ class _ChartState extends State<Chart> {
       legend: Legend(
         isVisible: true,
         position: LegendPosition.bottom,
+        width: '80%',
+        overflowMode: LegendItemOverflowMode.wrap,
+        isResponsive: true
       ),
       tooltipBehavior: TooltipBehavior(enable: false),
       series: <LineSeries<SalesData, String>>[
@@ -246,6 +252,83 @@ class _ChartState extends State<Chart> {
           ),
         ),
       ],
+    )
     );
+    // SfCartesianChart(
+    //   enableAxisAnimation: false,
+    //   primaryXAxis: CategoryAxis(),
+    //   primaryYAxis: NumericAxis(),
+    //   title: ChartTitle(text: '11 jan - 18 jan'),
+    //   legend: Legend(
+    //     isVisible: true,
+    //     position: LegendPosition.bottom,
+    //     width: '80%',
+    //     overflowMode: LegendItemOverflowMode.wrap,
+    //     isResponsive: true
+    //   ),
+    //   tooltipBehavior: TooltipBehavior(enable: false),
+    //   series: <LineSeries<SalesData, String>>[
+    //     LineSeries<SalesData, String>(
+    //       isVisible: _temperatureInsideIsVisible,
+    //       enableTooltip: true,
+    //       name: 'Temperatura interna',
+    //       dataSource: _chartData,
+    //       xValueMapper: (SalesData sales, _) => sales.month,
+    //       yValueMapper: (SalesData sales, _) => sales.temperatureInside,
+    //       dataLabelSettings: DataLabelSettings(
+    //         isVisible: true,
+    //         color: Colors.blue,
+    //       ),
+    //     ),
+    //     LineSeries(
+    //       isVisible: _temperatureOutsideIsVisible,
+    //       enableTooltip: true,
+    //       name: 'Temperatura externa',
+    //       dataSource: _chartData,
+    //       xValueMapper: (SalesData sales, _) => sales.month,
+    //       yValueMapper: (SalesData sales, _) => sales.temperatureOutside,
+    //       dataLabelSettings: const DataLabelSettings(
+    //         isVisible: true,
+    //         color: Color.fromARGB(255, 126, 19, 19),
+    //       ),
+    //     ),
+    //     LineSeries(
+    //       isVisible: _humidityInsideIsVisible,
+    //       enableTooltip: true,
+    //       name: 'Humidade interna',
+    //       dataSource: _chartData,
+    //       xValueMapper: (SalesData sales, _) => sales.month,
+    //       yValueMapper: (SalesData sales, _) => sales.humidityInside,
+    //       dataLabelSettings: const DataLabelSettings(
+    //         isVisible: true,
+    //         color: Color.fromARGB(255, 89, 0, 83),
+    //       ),
+    //     ),
+    //     LineSeries(
+    //       isVisible: _humidityOutsideIsVisible,
+    //       enableTooltip: true,
+    //       name: 'Humidade externa',
+    //       dataSource: _chartData,
+    //       xValueMapper: (SalesData sales, _) => sales.month,
+    //       yValueMapper: (SalesData sales, _) => sales.humidityOutside,
+    //       dataLabelSettings: const DataLabelSettings(
+    //         isVisible: true,
+    //         color: Color.fromARGB(255, 255, 0, 238),
+    //       ),
+    //     ),
+    //     LineSeries(
+    //       isVisible: _soundIsVisible,
+    //       enableTooltip: true,
+    //       name: 'Som',
+    //       dataSource: _chartData,
+    //       xValueMapper: (SalesData sales, _) => sales.month,
+    //       yValueMapper: (SalesData sales, _) => sales.sound,
+    //       dataLabelSettings: const DataLabelSettings(
+    //         isVisible: true,
+    //         color: Color.fromARGB(255, 0, 120, 150),
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 }
