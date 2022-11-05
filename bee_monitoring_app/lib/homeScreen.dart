@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         return Chart(catalogdata);
       default:
-        return ListViewHome(catalogdata, Type.values[_currentIndex - 1]);
+        return ListViewHome(catalogdata, Type.temperatureInside);
     }
   }
 

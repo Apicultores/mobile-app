@@ -82,11 +82,15 @@ class _ListViewHomeState extends State<ListViewHome> {
   String getParameter(Type type, Item item) {
     switch (type) {
       case Type.temperatureInside:
-        return item.temperatureInside;
+        String temperatureInside = item.temperatureInside;
+        String temperatureOutside = item.temperatureOutside;
+        return "Interna $temperatureInside \n\nExterna $temperatureOutside\n";
       case Type.temperatureOutside:
         return item.temperatureOutside;
       case Type.humidityInside:
-        return item.humidityInside;
+        String humidityInside = item.humidityInside;
+        String humidityOutside = item.humidityOutside;
+        return "Interna $humidityInside \n\nExterna $humidityOutside\n";
       case Type.humidityOutside:
         return item.humidityOutside;
       case Type.sound:
