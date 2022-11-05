@@ -3,12 +3,7 @@ import 'package:bee_monitoring_app/Commons/Item.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
-import 'package:bee_monitoring_app/Commons/Item.dart';
-import 'package:bee_monitoring_app/Scenes/Home.dart';
-import 'package:bee_monitoring_app/Scenes/Chart.dart';
 import 'package:intl/intl.dart';
 
 class Chart extends StatefulWidget {
@@ -30,7 +25,7 @@ class _ChartState extends State<Chart> {
 
   bool _soundIsVisible = false;
 
-    Future<String> loadData() async {
+  Future<String> loadData() async {
     var path = await rootBundle.loadString("assets/mockData.json");
     setState(() {
       var response = json.decode(path);
@@ -82,10 +77,11 @@ class _ChartState extends State<Chart> {
 
       chartData.insert(
           0,
-          SalesData(currentDate.day.toString(),
-              getAverage(Type.temperatureInside, tempArray), 
-              getAverage(Type.temperatureOutside, tempArray), 
-              getAverage(Type.humidityInside, tempArray),  
+          SalesData(
+              currentDate.day.toString(),
+              getAverage(Type.temperatureInside, tempArray),
+              getAverage(Type.temperatureOutside, tempArray),
+              getAverage(Type.humidityInside, tempArray),
               getAverage(Type.humidityOutside, tempArray),
               getAverage(Type.sound, tempArray)));
     }
@@ -124,7 +120,7 @@ class _ChartState extends State<Chart> {
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 0),

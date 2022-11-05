@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
@@ -80,9 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ("Resumo")),
+          BottomNavigationBarItem(icon: Icon(Icons.info), label: "Graficos"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.info), label: "Graficos"),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: ("Histórico"))
+              icon: Icon(Icons.history), label: ("Histórico"))
         ],
       ),
     );
