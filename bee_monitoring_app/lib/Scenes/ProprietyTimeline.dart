@@ -23,10 +23,14 @@ class ListViewHome extends StatelessWidget {
 
   String getParameter(Type type, Item item) {
     switch (type) {
-      case Type.temperature:
-        return item.temperature;
-      case Type.humidity:
-        return item.humidity;
+      case Type.temperatureInside:
+        return item.temperatureInside;
+      case Type.temperatureOutside:
+        return item.temperatureOutside;
+      case Type.humidityInside:
+        return item.humidityInside;
+      case Type.humidityOutside:
+        return item.humidityOutside;
       case Type.sound:
         return item.sound;
     }

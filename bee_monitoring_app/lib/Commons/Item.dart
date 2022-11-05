@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 enum Type {
-  temperature("Temperatura"),
-  humidity("umidade"),
+  temperatureInside("Temperatura Interna"),
+  temperatureOutside("Temperatura Externa"),
+  humidityInside("umidade Interna"),
+  humidityOutside("umidade Externa"),
   sound("Som");
   
   const Type(this.value);
@@ -13,12 +15,14 @@ enum Type {
 
 class Item {
   final String id;
-  final String temperature;
-  final String humidity;
+  final String temperatureInside;
+  final String temperatureOutside;
+  final String humidityInside;
+  final String humidityOutside;
   final String sound;
-  final String timestamp;
+  final DateTime timestamp;
 
-  const Item(this.id, this.temperature, this.humidity, this.sound, this.timestamp);
+  const Item(this.id, this.temperatureInside, this.temperatureOutside, this.humidityInside, this.humidityOutside, this.sound, this.timestamp);
 }
 
 class SalesData {

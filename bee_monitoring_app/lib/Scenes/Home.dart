@@ -11,7 +11,8 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => Divider(height: 0),
+        separatorBuilder: (BuildContext context, int index) =>
+            Divider(height: 10),
         itemCount: (Type.values.length + 1) * titles.length,
         itemBuilder: (context, index) {
           return createCell(index);
@@ -50,15 +51,15 @@ class Home extends StatelessWidget {
           padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
           child: Card(
               child: ListTile(
-                  title: Text(getMax(Type.values[index - 1 - 4], data)),
-                  subtitle: Text(Type.values[index - 1 - 4].value))));
+                  title: Text(getMax(Type.values[index - 7], data)),
+                  subtitle: Text(Type.values[index - 7].value))));
     } else {
       return Padding(
           padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
           child: Card(
               child: ListTile(
-                  title: Text(getMin(Type.values[index - 1 - 8], data)),
-                  subtitle: Text(Type.values[index - 1 - 8].value))));
+                  title: Text(getMin(Type.values[index - 13], data)),
+                  subtitle: Text(Type.values[index - 13].value))));
     }
   }
 
@@ -66,16 +67,29 @@ class Home extends StatelessWidget {
     var sum = 0;
     for (var i = 0; i < dataArray.length; i++) {
       switch (type) {
-        case Type.temperature:
-          if (sum < int.parse(dataArray[i].temperature)) {
-            sum = int.parse(dataArray[i].temperature);
+        case Type.temperatureInside:
+          if (sum < int.parse(dataArray[i].temperatureInside)) {
+            sum = int.parse(dataArray[i].temperatureInside);
           }
           break;
-        case Type.humidity:
-          if (sum < int.parse(dataArray[i].humidity)) {
-            sum = int.parse(dataArray[i].humidity);
+        case Type.temperatureOutside:
+          if (sum < int.parse(dataArray[i].temperatureOutside)) {
+            sum = int.parse(dataArray[i].temperatureOutside);
           }
           break;
+
+        case Type.humidityInside:
+          if (sum < int.parse(dataArray[i].humidityInside)) {
+            sum = int.parse(dataArray[i].humidityInside);
+          }
+          break;
+
+        case Type.humidityOutside:
+          if (sum < int.parse(dataArray[i].humidityOutside)) {
+            sum = int.parse(dataArray[i].humidityOutside);
+          }
+          break;
+
         case Type.sound:
           if (sum < int.parse(dataArray[i].sound)) {
             sum = int.parse(dataArray[i].sound);
@@ -90,16 +104,30 @@ class Home extends StatelessWidget {
     var sum = 1000;
     for (var i = 0; i < dataArray.length; i++) {
       switch (type) {
-        case Type.temperature:
-          if (sum > int.parse(dataArray[i].temperature)) {
-            sum = int.parse(dataArray[i].temperature);
+        case Type.temperatureInside:
+          if (sum > int.parse(dataArray[i].temperatureInside)) {
+            sum = int.parse(dataArray[i].temperatureInside);
           }
           break;
-        case Type.humidity:
-          if (sum > int.parse(dataArray[i].humidity)) {
-            sum = int.parse(dataArray[i].humidity);
+
+        case Type.temperatureOutside:
+          if (sum > int.parse(dataArray[i].temperatureOutside)) {
+            sum = int.parse(dataArray[i].temperatureOutside);
           }
           break;
+
+        case Type.humidityInside:
+          if (sum > int.parse(dataArray[i].humidityInside)) {
+            sum = int.parse(dataArray[i].humidityInside);
+          }
+          break;
+
+        case Type.humidityOutside:
+          if (sum > int.parse(dataArray[i].humidityOutside)) {
+            sum = int.parse(dataArray[i].humidityOutside);
+          }
+          break;
+
         case Type.sound:
           if (sum > int.parse(dataArray[i].sound)) {
             sum = int.parse(dataArray[i].sound);
@@ -114,12 +142,22 @@ class Home extends StatelessWidget {
     var sum = 0;
     for (var i = 0; i < dataArray.length; i++) {
       switch (type) {
-        case Type.temperature:
-          sum += int.parse(dataArray[i].temperature);
+        case Type.temperatureInside:
+          sum += int.parse(dataArray[i].temperatureInside);
           break;
-        case Type.humidity:
-          sum += int.parse(dataArray[i].humidity);
+
+        case Type.temperatureOutside:
+          sum += int.parse(dataArray[i].temperatureOutside);
           break;
+
+        case Type.humidityInside:
+          sum += int.parse(dataArray[i].humidityInside);
+          break;
+
+        case Type.humidityOutside:
+          sum += int.parse(dataArray[i].humidityOutside);
+          break;
+
         case Type.sound:
           sum += int.parse(dataArray[i].sound);
           break;

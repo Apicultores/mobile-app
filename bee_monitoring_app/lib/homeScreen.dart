@@ -6,6 +6,7 @@ import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
 import 'package:bee_monitoring_app/Scenes/Home.dart';
 import 'package:bee_monitoring_app/Scenes/Chart.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -23,13 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
       var response = json.decode(path);
       List data = response['data'];
       List<Item> list = [];
+      print(DateFormat("yyyy-MM-dd hh:mm:ss").parse(data[0]['timestamp']));
       for (var item in data) {
         list.add(Item(
             item['id'].toString(),
-            item['temperatura'].toString(),
-            item['umidade'].toString(),
+            item['temperatura_dentro'].toString(),
+            item['temperatura_fora'].toString(),
+            item['umidade_dentro'].toString(),
+            item['umidade_fora'].toString(),
             item['som'].toString(),
-            item['timestamp'].toString()));
+            DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
       }
 
       setState(() {
