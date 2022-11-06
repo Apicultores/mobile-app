@@ -40,7 +40,6 @@ class ChartWidget extends StatelessWidget {
           enableAxisAnimation: false,
           primaryXAxis: CategoryAxis(),
           primaryYAxis: NumericAxis(),
-          title: ChartTitle(text: 'Ultimas medições'),
           legend: Legend(
               isVisible: true,
               position: LegendPosition.bottom,

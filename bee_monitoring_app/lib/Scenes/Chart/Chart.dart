@@ -35,17 +35,9 @@ class _ChartState extends State<Chart> {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 0),
-        itemCount: _chartData.isEmpty ? 0 : 4,
+        itemCount: _chartData.isEmpty ? 0 : 5,
         itemBuilder: (context, index) {
-          return index == 0
-              ? ChartWidget(
-                  temperatureInsideIsVisible: _temperatureInsideIsVisible,
-                  chartData: _chartData,
-                  temperatureOutsideIsVisible: _temperatureOutsideIsVisible,
-                  humidityInsideIsVisible: _humidityInsideIsVisible,
-                  humidityOutsideIsVisible: _humidityOutsideIsVisible,
-                  soundIsVisible: _soundIsVisible)
-              : createCheckbox(index);
+          return createWidget(index);
         });
   }
 
@@ -56,18 +48,66 @@ class _ChartState extends State<Chart> {
 
   // MARK: - Checkbox
   late List<ChartItem> _chartData = [];
-  Padding createCheckbox(int index) {
+  Widget createWidget(int index) {
     switch (index) {
+      case 0:
+        return createHeader();
+
       case 1:
-        return createTemperatureCheckbox();
+        return ChartWidget(
+            temperatureInsideIsVisible: _temperatureInsideIsVisible,
+            chartData: _chartData,
+            temperatureOutsideIsVisible: _temperatureOutsideIsVisible,
+            humidityInsideIsVisible: _humidityInsideIsVisible,
+            humidityOutsideIsVisible: _humidityOutsideIsVisible,
+            soundIsVisible: _soundIsVisible);
       case 2:
+        return createTemperatureCheckbox();
+      case 3:
         return createHumidityCheckbox();
       default:
         return createSoundCheckbox();
     }
   }
 
-  Padding createTemperatureCheckbox() {
+  Widget createHeader() {
+    return Padding(
+        padding: EdgeInsets.only(left: 15, bottom: 5, right: 20, top: 20),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 3,
+              child: ElevatedButton(
+                child: Text('< Anterior'),
+                onPressed: () {
+                  print('Hello');
+                },
+              ),
+            ),
+            Padding(
+                padding:
+                    EdgeInsets.only(left: 15, bottom: 20, right: 20, top: 20),
+                child: Text(
+                  "Medições",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
+                )),
+            Expanded(
+              flex: 3,
+              child: ElevatedButton(
+                child: Text('Próximo >'),
+                onPressed: () {
+                  print('Hello');
+                },
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget createTemperatureCheckbox() {
     return Padding(
         padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
         child: Row(
