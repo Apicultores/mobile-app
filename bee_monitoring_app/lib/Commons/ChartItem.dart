@@ -13,7 +13,4 @@ class ChartItem {
       this.humidityInside, this.humidityOutside, this.sound);
 }
 
-  enum UpdateMode {
-    back;
-    next;
-  }
+enum UpdateMode { back, next }

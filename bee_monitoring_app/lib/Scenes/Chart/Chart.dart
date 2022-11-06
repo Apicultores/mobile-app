@@ -109,14 +109,7 @@ class _ChartState extends State<Chart> {
   }
 
   void updateData(UpdateMode mode) {
-    // setState(() {
-    //   if (mode == UpdateMode.back) {
-    //     _presentedData = service.getPreviousData(_allData, _presentedData);
-    //   } else {
-    //     _presentedData = service.getNextData(_allData, _presentedData);
-    //   }
-    //   _chartData = service.getChartData(_presentedData);
-    // });
+    // TODO: Implementar
   }
 
   // MARK: - Checkbox

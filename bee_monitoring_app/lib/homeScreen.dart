@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  List<Item> catalogdata = [];
+  List<Item> _data = [];
 
   // MARK: - Life Cycle
   @override
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _currentIndex == 0 ? Home(catalogdata) : sceneHandler(),
+      body: _currentIndex == 0 ? Home(_data) : sceneHandler(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -62,9 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
   StatefulWidget sceneHandler() {
     switch (_currentIndex) {
       case 1:
-        return Chart(catalogdata);
+        return Chart(_data);
       default:
-        return TimeLine(catalogdata, Type.temperatureInside);
+        return TimeLine(_data, Type.temperatureInside);
     }
   }
 
@@ -88,8 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     setState(() {
-      catalogdata = list;
+      _data = list;
     });
+
     return "success";
   }
 }
