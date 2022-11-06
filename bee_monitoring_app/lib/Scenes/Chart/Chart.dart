@@ -173,7 +173,6 @@ class _ChartState extends State<Chart> {
       }
 
       setState(() {
-        print("catalogdata = list;!!!");
         dataState = list;
         _chartData = handleData();
       });

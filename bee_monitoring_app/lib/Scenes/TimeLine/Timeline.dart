@@ -59,8 +59,7 @@ class _TimeLineState extends State<TimeLine> {
                     },
                   ),
                 )
-              : 
-              timelineViewModel.buildCard(_type, _data[index]);
+              : timelineViewModel.buildCard(_type, _data[index]);
         });
   }
 }

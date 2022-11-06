@@ -17,7 +17,13 @@ class ChartWidget extends StatelessWidget {
     required bool humidityInsideIsVisible,
     required bool humidityOutsideIsVisible,
     required bool soundIsVisible,
-  }) : _temperatureInsideIsVisible = temperatureInsideIsVisible, _chartData = chartData, _temperatureOutsideIsVisible = temperatureOutsideIsVisible, _humidityInsideIsVisible = humidityInsideIsVisible, _humidityOutsideIsVisible = humidityOutsideIsVisible, _soundIsVisible = soundIsVisible, super(key: key);
+  })  : _temperatureInsideIsVisible = temperatureInsideIsVisible,
+        _chartData = chartData,
+        _temperatureOutsideIsVisible = temperatureOutsideIsVisible,
+        _humidityInsideIsVisible = humidityInsideIsVisible,
+        _humidityOutsideIsVisible = humidityOutsideIsVisible,
+        _soundIsVisible = soundIsVisible,
+        super(key: key);
 
   final bool _temperatureInsideIsVisible;
   final List<ChartItem> _chartData;

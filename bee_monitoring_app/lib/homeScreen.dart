@@ -15,48 +15,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-
   List<Item> catalogdata = [];
 
-  Future<String> loadData() async {
-    var path = await rootBundle.loadString("assets/mockData.json");
-    setState(() {
-      var response = json.decode(path);
-      List data = response['data'];
-      List<Item> list = [];
-      
-      for (var item in data) {
-        list.add(Item(
-            item['id'].toString(),
-            item['temperatura_dentro'].toString(),
-            item['temperatura_fora'].toString(),
-            item['umidade_dentro'].toString(),
-            item['umidade_fora'].toString(),
-            item['som'].toString(),
-            DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
-      }
-
-      setState(() {
-        print("catalogdata = list;!!!");
-        catalogdata = list;
-      });
-    });
-    return "success";
-  }
-
+  // MARK: - Life Cycle
   @override
   void initState() {
     super.initState();
     loadData();
-  }
-
-  StatefulWidget sceneHandler() {
-    switch (_currentIndex) {
-      case 1:
-        return Chart(catalogdata);
-      default:
-        return TimeLine(catalogdata, Type.temperatureInside);
-    }
   }
 
   @override
@@ -92,5 +57,39 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  StatefulWidget sceneHandler() {
+    switch (_currentIndex) {
+      case 1:
+        return Chart(catalogdata);
+      default:
+        return TimeLine(catalogdata, Type.temperatureInside);
+    }
+  }
+
+  // MARK: - Load Data
+  Future<String> loadData() async {
+    var path = await rootBundle.loadString("assets/mockData.json");
+
+    var response = json.decode(path);
+    List data = response['data'];
+    List<Item> list = [];
+
+    for (var item in data) {
+      list.add(Item(
+          item['id'].toString(),
+          item['temperatura_dentro'].toString(),
+          item['temperatura_fora'].toString(),
+          item['umidade_dentro'].toString(),
+          item['umidade_fora'].toString(),
+          item['som'].toString(),
+          DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
+    }
+
+    setState(() {
+      catalogdata = list;
+    });
+    return "success";
   }
 }
