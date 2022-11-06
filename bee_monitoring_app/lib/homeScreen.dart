@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:bee_monitoring_app/Scenes/ProprietyTimeline.dart';
+import 'package:bee_monitoring_app/Scenes/TimeLine/Timeline.dart';
 import 'package:bee_monitoring_app/Commons/Item.dart';
 import 'package:bee_monitoring_app/Commons/Type.dart';
-import 'package:bee_monitoring_app/Scenes/Home.dart';
-import 'package:bee_monitoring_app/Scenes/Chart.dart';
+import 'package:bee_monitoring_app/Scenes/Home/Home.dart';
+import 'package:bee_monitoring_app/Scenes/Chart/Chart.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       var response = json.decode(path);
       List data = response['data'];
       List<Item> list = [];
-      print(DateFormat("yyyy-MM-dd hh:mm:ss").parse(data[0]['timestamp']));
+      
       for (var item in data) {
         list.add(Item(
             item['id'].toString(),
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 1:
         return Chart(catalogdata);
       default:
-        return ListViewHome(catalogdata, Type.temperatureInside);
+        return TimeLine(catalogdata, Type.temperatureInside);
     }
   }
 

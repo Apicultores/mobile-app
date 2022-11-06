@@ -33,7 +33,6 @@ class _ChartState extends State<Chart> {
       var response = json.decode(path);
       List data = response['data'];
       List<Item> list = [];
-      print(DateFormat("yyyy-MM-dd hh:mm:ss").parse(data[0]['timestamp']));
       for (var item in data) {
         list.add(Item(
             item['id'].toString(),
@@ -56,7 +55,6 @@ class _ChartState extends State<Chart> {
 
   void initState() {
     super.initState();
-    // dataState = widget.data;
     loadData();
   }
 
@@ -68,8 +66,6 @@ class _ChartState extends State<Chart> {
       DateTime currentDate = dataStateTemp.first.timestamp;
       List<Item> tempArray = [];
       while (dataStateTemp.first.timestamp == currentDate) {
-        print(dataStateTemp.first.timestamp);
-        print("-------");
         tempArray.add(dataStateTemp.first);
         dataStateTemp.removeAt(0);
         if (dataStateTemp.isEmpty) {
@@ -116,8 +112,7 @@ class _ChartState extends State<Chart> {
           break;
       }
     }
-    print("---------");
-    print((sum / dataArray.length).toString());
+
     return (sum / dataArray.length);
   }
 
@@ -128,7 +123,7 @@ class _ChartState extends State<Chart> {
             Divider(height: 0),
         itemCount: _chartData.isEmpty ? 0 : 4,
         itemBuilder: (context, index) {
-          return index == 0 ? createChart() : createCheckbox(index);
+          return index == 0 ? ChartWidget(temperatureInsideIsVisible: _temperatureInsideIsVisible, chartData: _chartData, temperatureOutsideIsVisible: _temperatureOutsideIsVisible, humidityInsideIsVisible: _humidityInsideIsVisible, humidityOutsideIsVisible: _humidityOutsideIsVisible, soundIsVisible: _soundIsVisible) : createCheckbox(index);
         });
   }
 
@@ -230,9 +225,28 @@ class _ChartState extends State<Chart> {
           ],
         ));
   }
+}
 
-  Container createChart() {
-    //getChartData();
+class ChartWidget extends StatelessWidget {
+  const ChartWidget({
+    Key? key,
+    required bool temperatureInsideIsVisible,
+    required List<ChartItem> chartData,
+    required bool temperatureOutsideIsVisible,
+    required bool humidityInsideIsVisible,
+    required bool humidityOutsideIsVisible,
+    required bool soundIsVisible,
+  }) : _temperatureInsideIsVisible = temperatureInsideIsVisible, _chartData = chartData, _temperatureOutsideIsVisible = temperatureOutsideIsVisible, _humidityInsideIsVisible = humidityInsideIsVisible, _humidityOutsideIsVisible = humidityOutsideIsVisible, _soundIsVisible = soundIsVisible, super(key: key);
+
+  final bool _temperatureInsideIsVisible;
+  final List<ChartItem> _chartData;
+  final bool _temperatureOutsideIsVisible;
+  final bool _humidityInsideIsVisible;
+  final bool _humidityOutsideIsVisible;
+  final bool _soundIsVisible;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
         height: 400,
         child: SfCartesianChart(
