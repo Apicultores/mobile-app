@@ -19,7 +19,10 @@ class Chart extends StatefulWidget {
 }
 
 class _ChartState extends State<Chart> {
-  List<Item> dataState = [];
+  List<Item> _allData = [];
+  List<Item> _presentedData = [];
+  late List<ChartItem> _chartData = [];
+
   Service service = Service();
   bool _temperatureInsideIsVisible = false;
   bool _temperatureOutsideIsVisible = false;
@@ -46,8 +49,6 @@ class _ChartState extends State<Chart> {
     loadData();
   }
 
-  // MARK: - Checkbox
-  late List<ChartItem> _chartData = [];
   Widget createWidget(int index) {
     switch (index) {
       case 0:
@@ -80,7 +81,7 @@ class _ChartState extends State<Chart> {
               child: ElevatedButton(
                 child: Text('< Anterior'),
                 onPressed: () {
-                  print('Hello');
+                  updateData(UpdateMode.back);
                 },
               ),
             ),
@@ -99,7 +100,7 @@ class _ChartState extends State<Chart> {
               child: ElevatedButton(
                 child: Text('Próximo >'),
                 onPressed: () {
-                  print('Hello');
+                  updateData(UpdateMode.next);
                 },
               ),
             )
@@ -107,6 +108,18 @@ class _ChartState extends State<Chart> {
         ));
   }
 
+  void updateData(UpdateMode mode) {
+    // setState(() {
+    //   if (mode == UpdateMode.back) {
+    //     _presentedData = service.getPreviousData(_allData, _presentedData);
+    //   } else {
+    //     _presentedData = service.getNextData(_allData, _presentedData);
+    //   }
+    //   _chartData = service.getChartData(_presentedData);
+    // });
+  }
+
+  // MARK: - Checkbox
   Widget createTemperatureCheckbox() {
     return Padding(
         padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
@@ -213,7 +226,7 @@ class _ChartState extends State<Chart> {
       }
 
       setState(() {
-        dataState = list;
+        _allData = list;
         _chartData = handleData();
       });
     });
@@ -222,7 +235,7 @@ class _ChartState extends State<Chart> {
 
   List<ChartItem> handleData() {
     final List<ChartItem> chartData = [];
-    List<Item> dataStateTemp = dataState;
+    List<Item> dataStateTemp = _allData;
 
     while (!dataStateTemp.isEmpty) {
       DateTime currentDate = dataStateTemp.first.timestamp;
