@@ -25,7 +25,7 @@ class HomeViewModel {
           padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
           child: Card(
               child: ListTile(
-                  title: Text(service.getAverage(Type.values[index - 1], data)),
+                  title: Text(service.getAverage(Type.values[index - 1], data).toStringAsFixed(2)),
                   subtitle: Text(Type.values[index - 1].value))));
     }
     if (index < (Type.values.length + 1) * 2) {

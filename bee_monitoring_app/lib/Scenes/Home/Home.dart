@@ -11,6 +11,7 @@ class Home extends StatelessWidget {
   Service service = Service();
   HomeViewModel homeViewModel = HomeViewModel();
   
+  // MARK: - Life Cycle
   @override
   Widget build(BuildContext context) {
     return ListView.separated(

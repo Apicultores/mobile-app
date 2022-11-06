@@ -18,6 +18,7 @@ class _TimeLineState extends State<TimeLine> {
   TimelineViewModel timelineViewModel = TimelineViewModel();
   int _groupValue = 0;
 
+  // MARK: - Life Cycle
   void initState() {
     super.initState();
     _data = widget.data;

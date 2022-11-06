@@ -77,7 +77,7 @@ class Service {
     return sum.toString();
   }
 
-  String getAverage(Type type, List<Item> dataArray) {
+  double getAverage(Type type, List<Item> dataArray) {
     var sum = 0;
     for (var i = 0; i < dataArray.length; i++) {
       switch (type) {
@@ -102,6 +102,6 @@ class Service {
           break;
       }
     }
-    return (sum / dataArray.length).toStringAsFixed(2);
+    return (sum / dataArray.length);
   }
 }
