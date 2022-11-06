@@ -72,7 +72,7 @@ class _ChartState extends State<Chart> {
 
   Widget createHeader() {
     return Padding(
-        padding: EdgeInsets.only(left: 15, bottom: 5, right: 20, top: 20),
+        padding: EdgeInsets.only(left: 20, bottom: 5, right: 20, top: 25),
         child: Row(
           children: <Widget>[
             Expanded(

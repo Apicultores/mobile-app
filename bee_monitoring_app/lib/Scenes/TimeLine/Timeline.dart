@@ -34,7 +34,7 @@ class _TimeLineState extends State<TimeLine> {
           return index == 0
               ? Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 25),
                   child: CupertinoSlidingSegmentedControl<int>(
                     backgroundColor: Color.fromARGB(255, 231, 231, 231),
                     thumbColor: Color.fromARGB(255, 255, 245, 186),
