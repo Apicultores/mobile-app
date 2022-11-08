@@ -31,21 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text(
           "Apicultores",
           style: TextStyle(
-              color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
+              color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
       body: _currentIndex == 0 ? Home(_data) : sceneHandler(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.amberAccent,
         onTap: onTabTapped,
-        selectedIconTheme:
-            const IconThemeData(color: Colors.amberAccent, size: 30),
-        selectedItemColor: Colors.amberAccent,
+        selectedIconTheme: const IconThemeData(color: Colors.black, size: 30),
+        selectedItemColor: Colors.black,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ("Resumo")),
-          BottomNavigationBarItem(icon: Icon(Icons.info), label: "Graficos"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.auto_graph), label: "Gráficos"),
           BottomNavigationBarItem(
               icon: Icon(Icons.history), label: ("Histórico"))
         ],
