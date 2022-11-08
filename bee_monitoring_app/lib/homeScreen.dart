@@ -9,6 +9,8 @@ import 'package:bee_monitoring_app/Scenes/Chart/Chart.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
