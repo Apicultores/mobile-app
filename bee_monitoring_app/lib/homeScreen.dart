@@ -35,7 +35,24 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _currentIndex == 0 ? Home(_data) : sceneHandler(),
+      body: Stack(
+        ///  Added Stack Widget
+        children: [
+          Offstage(
+            /// Wrap Tab with OffStage
+            offstage: _currentIndex != 0,
+            child: Home(_data),
+          ),
+          Offstage(
+            offstage: _currentIndex != 1,
+            child: Chart(_data),
+          ),
+          Offstage(
+            offstage: _currentIndex != 2,
+            child: TimeLine(_data, Type.temperatureInside),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
