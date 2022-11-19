@@ -110,7 +110,6 @@ class _ChartState extends State<Chart> {
   }
 
   void updateData(UpdateMode mode) {
-    // TODO: Implementar
     if (mode == UpdateMode.next) {
       index += 1;
     } else {
@@ -118,8 +117,6 @@ class _ChartState extends State<Chart> {
     } 
     if (index > 0) {
       index = 0;
-    } else if (index < -3) {
-      index = -3;
     }
     int startRange = _chartData.length + ((index - 1) * 4);
     if (startRange < 0) {
@@ -129,18 +126,9 @@ class _ChartState extends State<Chart> {
       }
     }
     int endRange = startRange + 4;
-    print("-------------------------");
-    print(index);
-    print(_chartData.length);
-    print("startRange -----------");
-    print(startRange);
-    print("endRange   -----------");
-    print(endRange);
-    print("-------------------------");
     setState(() {
       _presentedData = _chartData.getRange(startRange, endRange).toList();
     });
-    print(_presentedData);
   }
 
   // MARK: - Checkbox
@@ -232,7 +220,7 @@ class _ChartState extends State<Chart> {
   }
 
   // MARK: - Load Data
-  Future<String> loadData() async {
+  Future loadData() async {
     var path = await rootBundle.loadString("assets/mockData.json");
     setState(() {
       var response = json.decode(path);
@@ -252,10 +240,9 @@ class _ChartState extends State<Chart> {
       setState(() {
         _allData = list;
         _chartData = handleData();
-        _presentedData = _chartData.getRange(_chartData.length - 4, _chartData.length).toList();//[_chartData[0], _chartData[1], _chartData[2], _chartData[3], _chartData[4]];
+        _presentedData = _chartData.getRange(_chartData.length - 4, _chartData.length).toList();
       });
     });
-    return "success";
   }
 
   List<ChartItem> handleData() {
@@ -276,7 +263,7 @@ class _ChartState extends State<Chart> {
       chartData.insert(
           0,
           ChartItem(
-              currentDate.day.toString(),
+              convertDateToString(currentDate),
               service.getAverage(Type.temperatureInside, tempArray),
               service.getAverage(Type.temperatureOutside, tempArray),
               service.getAverage(Type.humidityInside, tempArray),
@@ -285,5 +272,20 @@ class _ChartState extends State<Chart> {
     }
 
     return chartData;
+  }
+
+  String convertDateToString(DateTime date) {
+    String day = date.day.toString();
+    if (day.length == 1) {
+      day = "0$day";
+    } 
+    String month = date.month.toString();
+    if (month.length == 1) {
+      month = ("0$month");
+    }
+    String year = date.year.toString();
+    String cropedYear = year.substring(year.length - 2, year.length);
+    String dateToPresent = "$day/$month/$cropedYear";
+    return dateToPresent;
   }
 }
