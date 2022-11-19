@@ -20,7 +20,8 @@ class Chart extends StatefulWidget {
 
 class _ChartState extends State<Chart> {
   List<Item> _allData = [];
-  List<Item> _presentedData = [];
+  late int index = 0;
+  late List<ChartItem> _presentedData = [];
   late List<ChartItem> _chartData = [];
 
   Service service = Service();
@@ -57,7 +58,7 @@ class _ChartState extends State<Chart> {
       case 1:
         return ChartWidget(
             temperatureInsideIsVisible: _temperatureInsideIsVisible,
-            chartData: _chartData,
+            chartData: _presentedData,
             temperatureOutsideIsVisible: _temperatureOutsideIsVisible,
             humidityInsideIsVisible: _humidityInsideIsVisible,
             humidityOutsideIsVisible: _humidityOutsideIsVisible,
@@ -110,6 +111,36 @@ class _ChartState extends State<Chart> {
 
   void updateData(UpdateMode mode) {
     // TODO: Implementar
+    if (mode == UpdateMode.next) {
+      index += 1;
+    } else {
+      index -= 1;
+    } 
+    if (index > 0) {
+      index = 0;
+    } else if (index < -3) {
+      index = -3;
+    }
+    int startRange = _chartData.length + ((index - 1) * 4);
+    if (startRange < 0) {
+      startRange = 0;
+      if (_chartData.length + ((index) * 4) <= 0){
+        index += 1;
+      }
+    }
+    int endRange = startRange + 4;
+    print("-------------------------");
+    print(index);
+    print(_chartData.length);
+    print("startRange -----------");
+    print(startRange);
+    print("endRange   -----------");
+    print(endRange);
+    print("-------------------------");
+    setState(() {
+      _presentedData = _chartData.getRange(startRange, endRange).toList();
+    });
+    print(_presentedData);
   }
 
   // MARK: - Checkbox
@@ -221,6 +252,7 @@ class _ChartState extends State<Chart> {
       setState(() {
         _allData = list;
         _chartData = handleData();
+        _presentedData = _chartData.getRange(_chartData.length - 4, _chartData.length).toList();//[_chartData[0], _chartData[1], _chartData[2], _chartData[3], _chartData[4]];
       });
     });
     return "success";
