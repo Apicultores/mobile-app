@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bee_monitoring_app/Commons/Item.dart';
-import 'package:bee_monitoring_app/Commons/Type.dart';
+import 'package:bee_monitoring_app/Commons/Models/Item.dart';
+import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 
 class HomeViewModel {

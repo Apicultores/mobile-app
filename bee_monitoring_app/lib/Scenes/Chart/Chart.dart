@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:bee_monitoring_app/Commons/Item.dart';
-import 'package:bee_monitoring_app/Commons/Type.dart';
-import 'package:bee_monitoring_app/Commons/ChartItem.dart';
+import 'package:bee_monitoring_app/Commons/Models/Item.dart';
+import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
+import 'package:bee_monitoring_app/Commons/Enums/UpdateMode.dart';
+import 'package:bee_monitoring_app/Commons/Models/ChartItem.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartWidget.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 
