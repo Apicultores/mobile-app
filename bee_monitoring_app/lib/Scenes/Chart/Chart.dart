@@ -115,14 +115,14 @@ class _ChartState extends State<Chart> {
       index += 1;
     } else {
       index -= 1;
-    } 
+    }
     if (index > 0) {
       index = 0;
     }
     int startRange = _chartData.length + ((index - 1) * 4);
     if (startRange < 0) {
       startRange = 0;
-      if (_chartData.length + ((index) * 4) <= 0){
+      if (_chartData.length + ((index) * 4) <= 0) {
         index += 1;
       }
     }
@@ -222,26 +222,14 @@ class _ChartState extends State<Chart> {
 
   // MARK: - Load Data
   Future loadData() async {
-    var path = await rootBundle.loadString("assets/mockData.json");
-    setState(() {
-      var response = json.decode(path);
-      List data = response['data'];
-      List<Item> list = [];
-      for (var item in data) {
-        list.add(Item(
-            item['id'].toString(),
-            item['temperatura_dentro'].toString(),
-            item['temperatura_fora'].toString(),
-            item['umidade_dentro'].toString(),
-            item['umidade_fora'].toString(),
-            item['som'].toString(),
-            DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
-      }
-
+    Service service = Service();
+    service.loadData().then((value) {
       setState(() {
-        _allData = list;
+        _allData = value;
         _chartData = handleData();
-        _presentedData = _chartData.getRange(_chartData.length - 4, _chartData.length).toList();
+        _presentedData = _chartData
+            .getRange(_chartData.length - 4, _chartData.length)
+            .toList();
       });
     });
   }
@@ -276,17 +264,14 @@ class _ChartState extends State<Chart> {
   }
 
   String convertDateToString(DateTime date) {
-    String day = date.day.toString();
-    if (day.length == 1) {
-      day = "0$day";
-    } 
-    String month = date.month.toString();
-    if (month.length == 1) {
-      month = ("0$month");
-    }
+    String day = date.day < 10
+        ? "0${date.day.toString()}"
+        : date.day.toString();
+    String month = date.month < 10
+        ? "0${date.month.toString()}"
+        : date.month.toString();
     String year = date.year.toString();
     String cropedYear = year.substring(year.length - 2, year.length);
-    String dateToPresent = "$day/$month/$cropedYear";
-    return dateToPresent;
+    return "$day/$month/$cropedYear";
   }
 }

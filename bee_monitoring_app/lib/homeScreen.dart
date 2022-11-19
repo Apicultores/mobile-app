@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:bee_monitoring_app/Scenes/TimeLine/Timeline.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
+import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Scenes/Home/Home.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/Chart.dart';
 import 'package:intl/intl.dart';
@@ -69,28 +70,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // MARK: - Load Data
-  Future<String> loadData() async {
-    var path = await rootBundle.loadString("assets/mockData.json");
-
-    var response = json.decode(path);
-    List data = response['data'];
-    List<Item> list = [];
-
-    for (var item in data) {
-      list.add(Item(
-          item['id'].toString(),
-          item['temperatura_dentro'].toString(),
-          item['temperatura_fora'].toString(),
-          item['umidade_dentro'].toString(),
-          item['umidade_fora'].toString(),
-          item['som'].toString(),
-          DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
-    }
-
-    setState(() {
-      _data = list;
+  Future loadData() async {
+    Service service = Service();
+    service.loadData().then((value) {
+      setState(() {
+        _data = value;
+      });
     });
-
-    return "success";
   }
 }
