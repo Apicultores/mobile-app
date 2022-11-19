@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:bee_monitoring_app/Commons/Item.dart';
-import 'package:bee_monitoring_app/Commons/Type.dart';
-import 'package:bee_monitoring_app/Commons/ChartItem.dart';
+import 'package:bee_monitoring_app/Commons/Models/Item.dart';
+import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
+import 'package:bee_monitoring_app/Commons/Enums/UpdateMode.dart';
+import 'package:bee_monitoring_app/Commons/Models/ChartItem.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartWidget.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 
@@ -20,7 +21,8 @@ class Chart extends StatefulWidget {
 
 class _ChartState extends State<Chart> {
   List<Item> _allData = [];
-  List<Item> _presentedData = [];
+  late int index = 0;
+  late List<ChartItem> _presentedData = [];
   late List<ChartItem> _chartData = [];
 
   Service service = Service();
@@ -57,7 +59,7 @@ class _ChartState extends State<Chart> {
       case 1:
         return ChartWidget(
             temperatureInsideIsVisible: _temperatureInsideIsVisible,
-            chartData: _chartData,
+            chartData: _presentedData,
             temperatureOutsideIsVisible: _temperatureOutsideIsVisible,
             humidityInsideIsVisible: _humidityInsideIsVisible,
             humidityOutsideIsVisible: _humidityOutsideIsVisible,
@@ -109,7 +111,25 @@ class _ChartState extends State<Chart> {
   }
 
   void updateData(UpdateMode mode) {
-    // TODO: Implementar
+    if (mode == UpdateMode.next) {
+      index += 1;
+    } else {
+      index -= 1;
+    }
+    if (index > 0) {
+      index = 0;
+    }
+    int startRange = _chartData.length + ((index - 1) * 4);
+    if (startRange < 0) {
+      startRange = 0;
+      if (_chartData.length + ((index) * 4) <= 0) {
+        index += 1;
+      }
+    }
+    int endRange = startRange + 4;
+    setState(() {
+      _presentedData = _chartData.getRange(startRange, endRange).toList();
+    });
   }
 
   // MARK: - Checkbox
@@ -201,29 +221,17 @@ class _ChartState extends State<Chart> {
   }
 
   // MARK: - Load Data
-  Future<String> loadData() async {
-    var path = await rootBundle.loadString("assets/mockData.json");
-    setState(() {
-      var response = json.decode(path);
-      List data = response['data'];
-      List<Item> list = [];
-      for (var item in data) {
-        list.add(Item(
-            item['id'].toString(),
-            item['temperatura_dentro'].toString(),
-            item['temperatura_fora'].toString(),
-            item['umidade_dentro'].toString(),
-            item['umidade_fora'].toString(),
-            item['som'].toString(),
-            DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
-      }
-
+  Future loadData() async {
+    Service service = Service();
+    service.loadData().then((value) {
       setState(() {
-        _allData = list;
+        _allData = value;
         _chartData = handleData();
+        _presentedData = _chartData
+            .getRange(_chartData.length - 4, _chartData.length)
+            .toList();
       });
     });
-    return "success";
   }
 
   List<ChartItem> handleData() {
@@ -244,7 +252,7 @@ class _ChartState extends State<Chart> {
       chartData.insert(
           0,
           ChartItem(
-              currentDate.day.toString(),
+              convertDateToString(currentDate),
               service.getAverage(Type.temperatureInside, tempArray),
               service.getAverage(Type.temperatureOutside, tempArray),
               service.getAverage(Type.humidityInside, tempArray),
@@ -253,5 +261,17 @@ class _ChartState extends State<Chart> {
     }
 
     return chartData;
+  }
+
+  String convertDateToString(DateTime date) {
+    String day = date.day < 10
+        ? "0${date.day.toString()}"
+        : date.day.toString();
+    String month = date.month < 10
+        ? "0${date.month.toString()}"
+        : date.month.toString();
+    String year = date.year.toString();
+    String cropedYear = year.substring(year.length - 2, year.length);
+    return "$day/$month/$cropedYear";
   }
 }

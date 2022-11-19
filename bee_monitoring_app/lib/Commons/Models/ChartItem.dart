@@ -12,5 +12,3 @@ class ChartItem {
   ChartItem(this.month, this.temperatureInside, this.temperatureOutside,
       this.humidityInside, this.humidityOutside, this.sound);
 }
-
-enum UpdateMode { back, next }

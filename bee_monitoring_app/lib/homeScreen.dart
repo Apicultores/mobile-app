@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:bee_monitoring_app/Scenes/TimeLine/Timeline.dart';
-import 'package:bee_monitoring_app/Commons/Item.dart';
-import 'package:bee_monitoring_app/Commons/Type.dart';
+import 'package:bee_monitoring_app/Commons/Models/Item.dart';
+import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
+import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Scenes/Home/Home.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/Chart.dart';
 import 'package:intl/intl.dart';
@@ -34,7 +35,24 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
       ),
-      body: _currentIndex == 0 ? Home(_data) : sceneHandler(),
+      body: Stack(
+        ///  Added Stack Widget
+        children: [
+          Offstage(
+            /// Wrap Tab with OffStage
+            offstage: _currentIndex != 0,
+            child: Home(_data),
+          ),
+          Offstage(
+            offstage: _currentIndex != 1,
+            child: Chart(_data),
+          ),
+          Offstage(
+            offstage: _currentIndex != 2,
+            child: TimeLine(_data, Type.temperatureInside),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -69,28 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // MARK: - Load Data
-  Future<String> loadData() async {
-    var path = await rootBundle.loadString("assets/mockData.json");
-
-    var response = json.decode(path);
-    List data = response['data'];
-    List<Item> list = [];
-
-    for (var item in data) {
-      list.add(Item(
-          item['id'].toString(),
-          item['temperatura_dentro'].toString(),
-          item['temperatura_fora'].toString(),
-          item['umidade_dentro'].toString(),
-          item['umidade_fora'].toString(),
-          item['som'].toString(),
-          DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
-    }
-
-    setState(() {
-      _data = list;
+  Future loadData() async {
+    Service service = Service();
+    service.loadData().then((value) {
+      setState(() {
+        _data = value;
+      });
     });
-
-    return "success";
   }
 }

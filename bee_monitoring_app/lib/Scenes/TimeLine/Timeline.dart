@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:bee_monitoring_app/Commons/Type.dart';
+import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Scenes/TimeLine/TimelineViewModel.dart';
 
 class TimeLine extends StatefulWidget {
