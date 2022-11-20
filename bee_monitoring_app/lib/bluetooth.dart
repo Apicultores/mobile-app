@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:bee_monitoring_app/Commons/BluetoothModal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 class Bluetooth extends StatefulWidget {
   const Bluetooth({super.key});
@@ -8,8 +12,52 @@ class Bluetooth extends StatefulWidget {
 }
 
 class _BluetoothState extends State<Bluetooth> {
-  void _conectBluetooth() async {
-    return;
+  final List<BluetoothDevice> _devicesList = [];
+
+  void _addDeviceTolist(BluetoothDevice device) {
+    if (!_devicesList.contains(device)) {
+      setState(() {
+        _devicesList.add(device);
+      });
+    }
+  }
+
+  Future _conectBluetooth() async {
+    FlutterBlue flutterBlue = FlutterBlue.instance;
+
+    flutterBlue.stopScan();
+
+    flutterBlue.connectedDevices.asStream().listen((devices) {
+      for (var device in devices) {
+        _addDeviceTolist(device);
+      }
+    });
+    await flutterBlue.startScan(timeout: const Duration(seconds: 4));
+    flutterBlue.scanResults.listen(
+      (scanResults) {
+        for (var result in scanResults) {
+          _addDeviceTolist(result.device);
+        }
+      },
+      onDone: () => flutterBlue.stopScan(),
+    );
+  }
+
+  void _handleModal() async {
+    showDialog(
+      context: context,
+      builder: (_) => const DecisionModal(
+        devicesList: [],
+      ),
+    );
+    await _conectBluetooth();
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (_) => DecisionModal(
+        devicesList: _devicesList,
+      ),
+    );
   }
 
   @override
@@ -27,7 +75,7 @@ class _BluetoothState extends State<Bluetooth> {
                 padding: const EdgeInsets.all(24),
               ),
               onPressed: () async {
-                _conectBluetooth();
+                _handleModal();
               },
               child: const Icon(
                 Icons.bluetooth_searching_rounded,
