@@ -1,1 +1,0 @@
-enum UpdateMode { back, next }

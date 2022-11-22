@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
-import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Scenes/Home/HomeViewModel.dart';
+import 'package:bee_monitoring_app/Commons/Service.dart';
 
 class Home extends StatelessWidget {
   final List<Item> data;
   Home(this.data);
 
-  Service service = Service();
   HomeViewModel homeViewModel = HomeViewModel();
 
   // MARK: - Life Cycle
@@ -16,16 +15,14 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
-            Divider(height: 10),
-        itemCount: (Type.values.length + 1) * HomeViewModel().titles.length,
+            Divider(height: 0),
+        itemCount: HomeViewModel().titles.length * 4,
         itemBuilder: (context, index) {
           return createCell(index);
         });
   }
 
   Padding createCell(int index) {
-    return index % (Type.values.length + 1) == 0
-        ? HomeViewModel().createTitle(index)
-        : HomeViewModel().createCard(index, data);
+    return HomeViewModel().createAverageCard(index, data);
   }
 }

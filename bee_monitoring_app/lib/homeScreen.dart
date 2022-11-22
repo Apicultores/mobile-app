@@ -36,10 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Stack(
-        ///  Added Stack Widget
         children: [
           Offstage(
-            /// Wrap Tab with OffStage
             offstage: _currentIndex != 0,
             child: Home(_data),
           ),
@@ -75,15 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _currentIndex = index;
     });
-  }
-
-  StatefulWidget sceneHandler() {
-    switch (_currentIndex) {
-      case 1:
-        return Chart(_data);
-      default:
-        return TimeLine(_data, Type.temperatureInside);
-    }
   }
 
   // MARK: - Load Data

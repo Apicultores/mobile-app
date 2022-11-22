@@ -83,7 +83,7 @@ class _ChartState extends State<Chart> {
               child: ElevatedButton(
                 child: Text('< Anterior'),
                 onPressed: () {
-                  updateData(UpdateMode.back);
+                  updateData(UpdateChartMode.back);
                 },
               ),
             ),
@@ -102,7 +102,7 @@ class _ChartState extends State<Chart> {
               child: ElevatedButton(
                 child: Text('Próximo >'),
                 onPressed: () {
-                  updateData(UpdateMode.next);
+                  updateData(UpdateChartMode.next);
                 },
               ),
             )
@@ -110,8 +110,8 @@ class _ChartState extends State<Chart> {
         ));
   }
 
-  void updateData(UpdateMode mode) {
-    if (mode == UpdateMode.next) {
+  void updateData(UpdateChartMode mode) {
+    if (mode == UpdateChartMode.next) {
       index += 1;
     } else {
       index -= 1;

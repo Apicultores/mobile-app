@@ -1,0 +1,1 @@
+enum UpdateChartMode { back, next }
