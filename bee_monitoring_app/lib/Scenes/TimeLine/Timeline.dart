@@ -2,32 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Scenes/TimeLine/TimelineViewModel.dart';
+import 'package:bee_monitoring_app/Commons/Models/Item.dart';
+import 'package:bee_monitoring_app/Commons/Service.dart';
 
 class TimeLine extends StatefulWidget {
-  final List data;
-  final Type type;
-  TimeLine(this.data, this.type);
+  final List<Item> data;
+  TimeLine(this.data);
 
   @override
   _TimeLineState createState() => _TimeLineState();
 }
 
 class _TimeLineState extends State<TimeLine> {
-  List _data = [];
+  List<Item> _data = [];
   Type _type = Type.temperatureInside;
   TimelineViewModel timelineViewModel = TimelineViewModel();
   int _groupValue = 0;
-
+  Service service = Service();
   // MARK: - Life Cycle
   void initState() {
     super.initState();
-    _data = widget.data;
-    _type = widget.type;
+    loadData();
+    print("_data.length ${_data.length}");
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    return 
+    ListView.separated(
         separatorBuilder: (BuildContext context, int index) => const Divider(),
         itemCount: _data.length,
         itemBuilder: (context, index) {
@@ -61,5 +63,14 @@ class _TimeLineState extends State<TimeLine> {
                 )
               : timelineViewModel.buildCard(_type, _data[index]);
         });
+  }
+  
+  // MARK: - Load Data
+  Future loadData() async {
+    service.loadData().then((value) {
+      setState(() {
+        _data = value;
+      });
+    });
   }
 }

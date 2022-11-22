@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Offstage(
             offstage: _currentIndex != 2,
-            child: TimeLine(_data, Type.temperatureInside),
+            child: TimeLine(_data),
           ),
         ],
       ),

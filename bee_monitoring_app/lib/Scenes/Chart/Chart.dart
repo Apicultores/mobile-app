@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
-import 'package:bee_monitoring_app/Commons/Enums/UpdateMode.dart';
+import 'package:bee_monitoring_app/Commons/Enums/UpdateChartMode.dart';
 import 'package:bee_monitoring_app/Commons/Models/ChartItem.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartWidget.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
@@ -222,7 +222,6 @@ class _ChartState extends State<Chart> {
 
   // MARK: - Load Data
   Future loadData() async {
-    Service service = Service();
     service.loadData().then((value) {
       setState(() {
         _allData = value;
