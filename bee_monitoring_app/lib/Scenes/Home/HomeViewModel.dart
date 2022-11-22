@@ -35,6 +35,52 @@ class HomeViewModel {
         ));
   }
 
+  Padding createAverageCard(int index, List<Item> data) {
+    switch (cellList[index]) {
+      case HomeCardType.averageTemperature:
+        return HomeViewModel().createCard("Temperatura",
+            service.getAverage(Type.temperatureInside, data).toStringAsFixed(2) + " °C",
+            subtitleTail: service
+                .getAverage(Type.temperatureOutside, data)
+                .toStringAsFixed(2) + " °C");
+      case HomeCardType.averageHumidity:
+        return HomeViewModel().createCard("Umidade",
+            service.getAverage(Type.humidityInside, data).toStringAsFixed(2) + " g/m³",
+            subtitleTail: service
+                .getAverage(Type.humidityOutside, data)
+                .toStringAsFixed(2) + " g/m³");
+      case HomeCardType.averageSound:
+        String value = service.getAverage(Type.sound, data).toStringAsFixed(2);
+        return HomeViewModel().createCard("Som","$value dB");
+      case HomeCardType.maxTemperature:
+        return HomeViewModel().createCard("Temperatura",
+            service.getMax(Type.temperatureInside, data) + " °C",
+            subtitleTail: service.getMax(Type.temperatureOutside, data) + " °C");
+      case HomeCardType.maxHumidity:
+        return HomeViewModel().createCard("Umidade",
+            service.getMax(Type.humidityInside, data) + " g/m³",
+            subtitleTail: service.getMax(Type.humidityOutside, data) + " g/m³");
+      case HomeCardType.maxSound:
+        String value = service.getMax(Type.sound, data);
+        return HomeViewModel()
+            .createCard("Som", "$value dB");
+      case HomeCardType.minTemperature:
+        return HomeViewModel().createCard("Temperatura",
+            service.getMin(Type.temperatureInside, data) + " °C",
+            subtitleTail: service.getMin(Type.temperatureOutside, data) + " °C");
+      case HomeCardType.minHumidity:
+        return HomeViewModel().createCard("Umidade",
+            service.getMin(Type.humidityInside, data) + " g/m³",
+            subtitleTail: service.getMin(Type.humidityOutside, data) + " g/m³");
+      case HomeCardType.minSound:
+        String value = service.getMin(Type.sound, data);
+        return HomeViewModel()
+            .createCard("Som", "$value dB");
+      default:
+        return HomeViewModel().createTitle(index);
+    }
+  }
+
   Padding createCard(String title, String subtitle,
       {String subtitleTail = ""}) {
     return Padding(
@@ -56,7 +102,7 @@ class HomeViewModel {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+                          padding: const EdgeInsets.only(bottom: 10.0, top: 8.0),
                           child: Text(
                             title,
                             style: TextStyle(
@@ -70,7 +116,7 @@ class HomeViewModel {
                           child: Text(
                             'Interna:  $subtitle',
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 16.0,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
@@ -82,7 +128,7 @@ class HomeViewModel {
                             child: Text(
                               'Externa:  $subtitleTail',
                               style: TextStyle(
-                                fontSize: 14.0,
+                                fontSize: 16.0,
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
@@ -96,49 +142,5 @@ class HomeViewModel {
             )),
       ),
     );
-  }
-
-  Padding createAverageCard(int index, List<Item> data) {
-    switch (cellList[index]) {
-      case HomeCardType.averageTemperature:
-        return HomeViewModel().createCard(Type.temperatureInside.value,
-            service.getAverage(Type.temperatureInside, data).toStringAsFixed(2),
-            subtitleTail: service
-                .getAverage(Type.temperatureOutside, data)
-                .toStringAsFixed(2));
-      case HomeCardType.averageHumidity:
-        return HomeViewModel().createCard(Type.humidityInside.value,
-            service.getAverage(Type.humidityInside, data).toStringAsFixed(2),
-            subtitleTail: service
-                .getAverage(Type.humidityOutside, data)
-                .toStringAsFixed(2));
-      case HomeCardType.averageSound:
-        return HomeViewModel().createCard(Type.sound.value,
-            service.getAverage(Type.sound, data).toStringAsFixed(2));
-      case HomeCardType.maxTemperature:
-        return HomeViewModel().createCard(Type.temperatureInside.value,
-            service.getMax(Type.temperatureInside, data),
-            subtitleTail: service.getMax(Type.temperatureOutside, data));
-      case HomeCardType.maxHumidity:
-        return HomeViewModel().createCard(Type.humidityInside.value,
-            service.getMax(Type.humidityInside, data),
-            subtitleTail: service.getMax(Type.humidityOutside, data));
-      case HomeCardType.maxSound:
-        return HomeViewModel()
-            .createCard(Type.sound.value, service.getMax(Type.sound, data));
-      case HomeCardType.minTemperature:
-        return HomeViewModel().createCard(Type.temperatureInside.value,
-            service.getMin(Type.temperatureInside, data),
-            subtitleTail: service.getMin(Type.temperatureOutside, data));
-      case HomeCardType.minHumidity:
-        return HomeViewModel().createCard(Type.humidityInside.value,
-            service.getMin(Type.humidityInside, data),
-            subtitleTail: service.getMin(Type.humidityOutside, data));
-      case HomeCardType.minSound:
-        return HomeViewModel()
-            .createCard(Type.sound.value, service.getMin(Type.sound, data));
-      default:
-        return HomeViewModel().createTitle(index);
-    }
   }
 }
