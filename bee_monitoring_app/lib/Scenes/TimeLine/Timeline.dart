@@ -19,11 +19,11 @@ class _TimeLineState extends State<TimeLine> {
   TimelineViewModel timelineViewModel = TimelineViewModel();
   int _groupValue = 0;
   Service service = Service();
+  
   // MARK: - Life Cycle
   void initState() {
     super.initState();
     loadData();
-    print("_data.length ${_data.length}");
   }
 
   @override
@@ -64,7 +64,7 @@ class _TimeLineState extends State<TimeLine> {
               : timelineViewModel.buildCard(_type, _data[index]);
         });
   }
-  
+
   // MARK: - Load Data
   Future loadData() async {
     service.loadData().then((value) {
