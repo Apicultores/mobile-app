@@ -1,4 +1,5 @@
 enum HomeCardType {
+  header,
   title,
   averageTemperature,
   averageHumidity,

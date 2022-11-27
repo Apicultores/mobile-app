@@ -31,16 +31,14 @@ class TimelineViewModel {
         String temperatureInside = item.temperatureInside;
         String temperatureOutside = item.temperatureOutside;
         return "Interna $temperatureInside  °C\n\nExterna $temperatureOutside °C\n";
-      case Type.temperatureOutside:
-        return item.temperatureOutside;
       case Type.humidityInside:
         String humidityInside = item.humidityInside;
         String humidityOutside = item.humidityOutside;
         return "Interna $humidityInside  g/m³\n\nExterna $humidityOutside g/m³\n";
-      case Type.humidityOutside:
-        return item.humidityOutside;
       case Type.sound:
         return "${item.sound} dB";
+      default:
+        return "";
     }
   }
 }

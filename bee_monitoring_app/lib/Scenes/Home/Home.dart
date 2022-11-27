@@ -16,7 +16,7 @@ class Home extends StatelessWidget {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 0),
-        itemCount: HomeViewModel().titles.length * 4,
+        itemCount: HomeViewModel().cellList.length,
         itemBuilder: (context, index) {
           return createCell(index);
         });
