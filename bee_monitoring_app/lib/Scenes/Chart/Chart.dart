@@ -171,7 +171,7 @@ class _ChartState extends State<Chart> {
                       },
                     ),
                     SizedBox(height: 30),
-                    Text("Data:"),
+                    Text("Data para consulta:"),
                     Visibility(
                         visible: _graphModeText == graphModes.first,
                         child: DropdownButton(
@@ -180,7 +180,7 @@ class _ChartState extends State<Chart> {
                           items: graphDates.map((String items) {
                             return DropdownMenuItem(
                               value: items,
-                              child: Text(items),
+                              child: Text(items)
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -194,12 +194,13 @@ class _ChartState extends State<Chart> {
                     Visibility(
                         visible: _graphModeText != graphModes.first,
                         child: DropdownButton(
+                          isExpanded: true,
                           value: graphIndividualDatesText,
                           icon: const Icon(Icons.keyboard_arrow_down),
                           items: graphIndividualDates.map((String items) {
                             return DropdownMenuItem(
                               value: items,
-                              child: Text(items),
+                              child: Text(items.replaceAll("\n", " - "))
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -226,8 +227,6 @@ class _ChartState extends State<Chart> {
                       graphMode = _graphModeText == graphModes.first
                           ? GraphMode.averageData
                           : GraphMode.individualData;
-
-                      // updateData(UpdateChartMode.newMode);
                       if (_graphModeText == graphModes.first) {
                         changePagination(graphDatesText);
                       } else {
@@ -338,15 +337,13 @@ class _ChartState extends State<Chart> {
   }
 
   void updateData(UpdateChartMode mode) {
-    if (mode != UpdateChartMode.newMode) {
-      if (mode == UpdateChartMode.next) {
-        index += 1;
-      } else {
-        index -= 1;
-      }
-      if (index > 0) {
-        index = 0;
-      }
+    if (mode == UpdateChartMode.next) {
+      index += 1;
+    } else {
+      index -= 1;
+    }
+    if (index > 0) {
+      index = 0;
     }
     if (graphMode == GraphMode.averageData) {
       int startRange = _averageChartData.length + ((index - 1) * 6);
