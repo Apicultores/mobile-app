@@ -135,7 +135,7 @@ class _ChartState extends State<Chart> {
   var graphAverageDates = [
     'Carregando...',
   ];
-  
+
   String? graphIndividualDatesText;
   var graphIndividualDates = [
     'Carregando...',
@@ -191,7 +191,7 @@ class _ChartState extends State<Chart> {
                             });
                           },
                         )),
-                        Visibility(
+                    Visibility(
                         visible: _graphModeText != graphModes.first,
                         child: DropdownButton(
                           value: graphIndividualDatesText,
@@ -226,8 +226,13 @@ class _ChartState extends State<Chart> {
                       graphMode = _graphModeText == graphModes.first
                           ? GraphMode.averageData
                           : GraphMode.individualData;
-                      updateData(UpdateChartMode.newMode);
-                      changePagination(graphDatesText);
+
+                      // updateData(UpdateChartMode.newMode);
+                      if (_graphModeText == graphModes.first) {
+                        changePagination(graphDatesText);
+                      } else {
+                        changePagination(graphIndividualDatesText);
+                      }
                     });
                     Navigator.of(context).pop();
                   },
@@ -475,11 +480,11 @@ class _ChartState extends State<Chart> {
             .toList();
         graphDates = _averageChartData.map((e) => e.month).toSet().toList();
         graphDatesText = graphDates.last;
-        
-        graphIndividualDates = _individualChartData.map((e) => e.month).toSet().toList();
+
+        graphIndividualDates =
+            _individualChartData.map((e) => e.month).toSet().toList();
         graphIndividualDatesText = graphIndividualDates.last;
         // graphIndividualDatesText
-
       });
     });
   }
