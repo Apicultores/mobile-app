@@ -4,9 +4,9 @@ import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Scenes/Home/HomeViewModel.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 
-class Home extends StatelessWidget {
+class HomeViewController extends StatelessWidget {
   final List<Item> data;
-  Home(this.data);
+  HomeViewController(this.data);
 
   HomeViewModel homeViewModel = HomeViewModel();
 

@@ -5,15 +5,15 @@ import 'package:bee_monitoring_app/Scenes/TimeLine/TimelineViewModel.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 
-class TimeLine extends StatefulWidget {
+class TimeLineViewController extends StatefulWidget {
   final List<Item> data;
-  TimeLine(this.data);
+  TimeLineViewController(this.data);
 
   @override
-  _TimeLineState createState() => _TimeLineState();
+  _TimeLineViewControllerState createState() => _TimeLineViewControllerState();
 }
 
-class _TimeLineState extends State<TimeLine> {
+class _TimeLineViewControllerState extends State<TimeLineViewController> {
   List<Item> _data = [];
   Type _type = Type.temperatureInside;
   TimelineViewModel timelineViewModel = TimelineViewModel();

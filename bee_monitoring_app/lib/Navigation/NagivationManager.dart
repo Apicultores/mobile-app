@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:bee_monitoring_app/Scenes/TimeLine/Timeline.dart';
+import 'package:bee_monitoring_app/Scenes/TimeLine/TimeLineViewController.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
-import 'package:bee_monitoring_app/Scenes/Home/Home.dart';
-import 'package:bee_monitoring_app/Scenes/Chart/Chart.dart';
+import 'package:bee_monitoring_app/Scenes/Home/HomeViewController.dart';
+import 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 import 'package:intl/intl.dart';
 
-class HomeScreen extends StatefulWidget {
+class NagivationManager extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _NagivationManagerState createState() => _NagivationManagerState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _NagivationManagerState extends State<NagivationManager> {
   int _currentIndex = 0;
   List<Item> _data = [];
 
@@ -39,15 +39,15 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Offstage(
             offstage: _currentIndex != 0,
-            child: Home(_data),
+            child: HomeViewController(_data),
           ),
           Offstage(
             offstage: _currentIndex != 1,
-            child: Chart(_data),
+            child: ChartViewController(_data),
           ),
           Offstage(
             offstage: _currentIndex != 2,
-            child: TimeLine(_data),
+            child: TimeLineViewController(_data),
           ),
         ],
       ),
