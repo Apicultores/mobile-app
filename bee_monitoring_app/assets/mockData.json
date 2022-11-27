@@ -114,33 +114,6 @@
             "temperatura_fora": 10,
             "umidade_dentro": 20,
             "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-17 13:10:00"
-        },
-        {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-17 13:05:00"
-        },
-        {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-17 13:00:00"
-        },
-        {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
             "som": 7,
             "timestamp": "2022-04-16 12:27:00"
         },
