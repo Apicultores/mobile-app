@@ -22,7 +22,7 @@ class HomeViewController extends StatelessWidget {
         });
   }
 
-  Padding createCell(int index) {
-    return HomeViewModel().createAverageCard(index, data);
+  Widget createCell(int index) {
+    return HomeViewModel().createWidget(index, data);
   }
 }
