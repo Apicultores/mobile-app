@@ -57,16 +57,6 @@ class TimelineViewModel {
                     fontSize: 18.0,
                     fontWeight: FontWeight.normal),
               )),
-          Expanded(child: Container()),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(primary: Colors.white),
-            child: Icon(
-              Icons.more_vert_sharp,
-              size: 24.0,
-            ),
-          ),
-          SizedBox(width: 10),
         ],
       )),
     );
