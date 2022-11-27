@@ -24,7 +24,8 @@ class _ChartState extends State<Chart> {
   List<Item> _allData = [];
   late int index = 0;
   late List<ChartItem> _presentedData = [];
-  late List<ChartItem> _chartData = [];
+  late List<ChartItem> _averageChartData = [];
+  late List<ChartItem> _individualChartData = [];
 
   Service service = Service();
   bool _temperatureInsideIsVisible = false;
@@ -50,7 +51,7 @@ class _ChartState extends State<Chart> {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 0),
-        itemCount: _chartData.isEmpty ? 0 : cellList.length,
+        itemCount: _averageChartData.isEmpty ? 0 : cellList.length,
         itemBuilder: (context, index) {
           return createWidget(index);
         });
@@ -103,78 +104,7 @@ class _ChartState extends State<Chart> {
           Expanded(child: Container()),
           ElevatedButton(
             onPressed: () {
-              // showDialog(
-              //   context: context,
-              //   builder: (BuildContext context) => _buildPopupDialog(context),
-              // );
-              showDialog(
-                context: context,
-                builder: (context) {
-                  String contentText = "Content of Dialog";
-                  return StatefulBuilder(
-                    builder: (context, setState) {
-                      // return _buildPopupDialog(context);
-                      return AlertDialog(
-                        title: Text("Opções"),
-                        content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text("Modo de apresentação:"),
-          DropdownButton(
-            value: dropdownvalue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: items.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                dropdownvalue = newValue!;
-              });
-            },
-          ),
-          SizedBox(height: 30),
-          Text("Data:"),
-          DropdownButton(
-            value: dropdownvalue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: items.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                dropdownvalue = newValue!;
-              });
-            },
-          ),
-                            ]),
-                        actions: <Widget>[
-                          new ElevatedButton(
-          style: ElevatedButton.styleFrom(primary: Colors.grey[50]),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Cancelar'),
-        ),
-        SizedBox(width: 10),
-        new ElevatedButton(
-          onPressed: () {
-            
-          },
-          child: const Text('Aplicar'),
-        ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              );
+              showPopup();
             },
             style: ElevatedButton.styleFrom(primary: Colors.white),
             child: Icon(
@@ -188,76 +118,80 @@ class _ChartState extends State<Chart> {
     );
   }
 
-  // Initial Selected Value
-  String dropdownvalue = 'Item 1';
+  String _graphMode = 'Média diária';
 
-  // List of items in our dropdown menu
   var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
+    'Média diária',
+    'Coletas individuais',
   ];
 
-  Widget _buildPopupDialog(BuildContext context) {
-    return new AlertDialog(
-      title: const Text('Opções'),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Modo de apresentação:"),
-          DropdownButton(
-            value: dropdownvalue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: items.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                dropdownvalue = newValue!;
-              });
-            },
-          ),
-          SizedBox(height: 30),
-          Text("Data:"),
-          DropdownButton(
-            value: dropdownvalue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            items: items.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                dropdownvalue = newValue!;
-              });
-            },
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        new ElevatedButton(
-          style: ElevatedButton.styleFrom(primary: Colors.grey[50]),
-          onPressed: () {
-            Navigator.of(context).pop();
+  void showPopup() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        String contentText = "Content of Dialog";
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Opções"),
+              content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Modo de apresentação:"),
+                    DropdownButton(
+                      value: _graphMode,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _graphMode = newValue!;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    Text("Data:"),
+                    DropdownButton(
+                      value: _graphMode,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _graphMode = newValue!;
+                        });
+                      },
+                    ),
+                  ]),
+              actions: <Widget>[
+                new ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: Colors.grey[50]),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancelar'),
+                ),
+                SizedBox(width: 10),
+                new ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Aplicar'),
+                ),
+              ],
+            );
           },
-          child: const Text('Cancelar'),
-        ),
-        SizedBox(width: 10),
-        new ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Aplicar'),
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -307,16 +241,17 @@ class _ChartState extends State<Chart> {
     if (index > 0) {
       index = 0;
     }
-    int startRange = _chartData.length + ((index - 1) * 4);
+    int startRange = _averageChartData.length + ((index - 1) * 4);
     if (startRange < 0) {
       startRange = 0;
-      if (_chartData.length + ((index) * 4) <= 0) {
+      if (_averageChartData.length + ((index) * 4) <= 0) {
         index += 1;
       }
     }
     int endRange = startRange + 4;
     setState(() {
-      _presentedData = _chartData.getRange(startRange, endRange).toList();
+      _presentedData =
+          _averageChartData.getRange(startRange, endRange).toList();
     });
   }
 
@@ -413,17 +348,18 @@ class _ChartState extends State<Chart> {
     service.loadData().then((value) {
       setState(() {
         _allData = value;
-        _chartData = handleData();
-        _presentedData = _chartData
-            .getRange(_chartData.length - 4, _chartData.length)
+        _averageChartData = handleAverageData();
+        _individualChartData = handleIndividualData();
+        _presentedData = _averageChartData
+            .getRange(_averageChartData.length - 4, _averageChartData.length)
             .toList();
       });
     });
   }
 
-  List<ChartItem> handleData() {
+  List<ChartItem> handleAverageData() {
     final List<ChartItem> chartData = [];
-    List<Item> dataStateTemp = _allData;
+    List<Item> dataStateTemp = _allData.toList();
 
     while (!dataStateTemp.isEmpty) {
       DateTime currentDate = dataStateTemp.first.timestamp;
@@ -446,7 +382,27 @@ class _ChartState extends State<Chart> {
               service.getAverage(Type.humidityOutside, tempArray),
               service.getAverage(Type.sound, tempArray)));
     }
+    
+    return chartData;
+  }
 
+  List<ChartItem> handleIndividualData() {
+    final List<ChartItem> chartData = [];
+    final List<Item> dataStateTemp = _allData.toList();
+    
+    while (!dataStateTemp.isEmpty) {
+      chartData.insert(
+          0,
+          ChartItem(
+              convertDateToString(dataStateTemp.first.timestamp),
+              double.parse(dataStateTemp.first.temperatureInside),
+              double.parse(dataStateTemp.first.temperatureOutside),
+              double.parse(dataStateTemp.first.humidityInside),
+              double.parse(dataStateTemp.first.humidityOutside),
+              double.parse(dataStateTemp.first.sound)));
+      dataStateTemp.removeAt(0);
+    }
+    
     return chartData;
   }
 

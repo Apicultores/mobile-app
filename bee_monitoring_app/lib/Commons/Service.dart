@@ -33,35 +33,35 @@ class Service {
   }
 
   String getMax(Type type, List<Item> dataArray) {
-    var sum = 0;
+    double sum = 0;
     for (var i = 0; i < dataArray.length; i++) {
       switch (type) {
         case Type.temperatureInside:
-          if (sum < int.parse(dataArray[i].temperatureInside)) {
-            sum = int.parse(dataArray[i].temperatureInside);
+          if (sum < double.parse(dataArray[i].temperatureInside)) {
+            sum = double.parse(dataArray[i].temperatureInside);
           }
           break;
         case Type.temperatureOutside:
-          if (sum < int.parse(dataArray[i].temperatureOutside)) {
-            sum = int.parse(dataArray[i].temperatureOutside);
+          if (sum < double.parse(dataArray[i].temperatureOutside)) {
+            sum = double.parse(dataArray[i].temperatureOutside);
           }
           break;
 
         case Type.humidityInside:
-          if (sum < int.parse(dataArray[i].humidityInside)) {
-            sum = int.parse(dataArray[i].humidityInside);
+          if (sum < double.parse(dataArray[i].humidityInside)) {
+            sum = double.parse(dataArray[i].humidityInside);
           }
           break;
 
         case Type.humidityOutside:
-          if (sum < int.parse(dataArray[i].humidityOutside)) {
-            sum = int.parse(dataArray[i].humidityOutside);
+          if (sum < double.parse(dataArray[i].humidityOutside)) {
+            sum = double.parse(dataArray[i].humidityOutside);
           }
           break;
 
         case Type.sound:
-          if (sum < int.parse(dataArray[i].sound)) {
-            sum = int.parse(dataArray[i].sound);
+          if (sum < double.parse(dataArray[i].sound)) {
+            sum = double.parse(dataArray[i].sound);
           }
           break;
       }
@@ -70,36 +70,36 @@ class Service {
   }
 
   String getMin(Type type, List<Item> dataArray) {
-    var sum = 1000;
+    double sum = 1000;
     for (var i = 0; i < dataArray.length; i++) {
       switch (type) {
         case Type.temperatureInside:
-          if (sum > int.parse(dataArray[i].temperatureInside)) {
-            sum = int.parse(dataArray[i].temperatureInside);
+          if (sum > double.parse(dataArray[i].temperatureInside)) {
+            sum = double.parse(dataArray[i].temperatureInside);
           }
           break;
 
         case Type.temperatureOutside:
-          if (sum > int.parse(dataArray[i].temperatureOutside)) {
-            sum = int.parse(dataArray[i].temperatureOutside);
+          if (sum > double.parse(dataArray[i].temperatureOutside)) {
+            sum = double.parse(dataArray[i].temperatureOutside);
           }
           break;
 
         case Type.humidityInside:
-          if (sum > int.parse(dataArray[i].humidityInside)) {
-            sum = int.parse(dataArray[i].humidityInside);
+          if (sum > double.parse(dataArray[i].humidityInside)) {
+            sum = double.parse(dataArray[i].humidityInside);
           }
           break;
 
         case Type.humidityOutside:
-          if (sum > int.parse(dataArray[i].humidityOutside)) {
-            sum = int.parse(dataArray[i].humidityOutside);
+          if (sum > double.parse(dataArray[i].humidityOutside)) {
+            sum = double.parse(dataArray[i].humidityOutside);
           }
           break;
 
         case Type.sound:
-          if (sum > int.parse(dataArray[i].sound)) {
-            sum = int.parse(dataArray[i].sound);
+          if (sum > double.parse(dataArray[i].sound)) {
+            sum = double.parse(dataArray[i].sound);
           }
           break;
       }
@@ -108,27 +108,27 @@ class Service {
   }
 
   double getAverage(Type type, List<Item> dataArray) {
-    var sum = 0;
+    double sum = 0;
     for (var i = 0; i < dataArray.length; i++) {
       switch (type) {
         case Type.temperatureInside:
-          sum += int.parse(dataArray[i].temperatureInside);
+          sum += double.parse(dataArray[i].temperatureInside);
           break;
 
         case Type.temperatureOutside:
-          sum += int.parse(dataArray[i].temperatureOutside);
+          sum += double.parse(dataArray[i].temperatureOutside);
           break;
 
         case Type.humidityInside:
-          sum += int.parse(dataArray[i].humidityInside);
+          sum += double.parse(dataArray[i].humidityInside);
           break;
 
         case Type.humidityOutside:
-          sum += int.parse(dataArray[i].humidityOutside);
+          sum += double.parse(dataArray[i].humidityOutside);
           break;
 
         case Type.sound:
-          sum += int.parse(dataArray[i].sound);
+          sum += double.parse(dataArray[i].sound);
           break;
       }
     }

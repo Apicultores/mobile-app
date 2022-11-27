@@ -9,4 +9,6 @@ class Item {
 
   const Item(this.id, this.temperatureInside, this.temperatureOutside,
       this.humidityInside, this.humidityOutside, this.sound, this.timestamp);
+
+  Item.clone(Item randomObject): this(randomObject.id, randomObject.temperatureInside, randomObject.temperatureOutside, randomObject.humidityInside, randomObject.humidityOutside, randomObject.sound, randomObject.timestamp);
 }
