@@ -13,8 +13,10 @@ import '/Commons/Enums/ChartWidgetType.dart';
 import 'Widgets/ChartWidget.dart';
 part 'Widgets/ChartCheckboxWidgets.dart';
 part 'Widgets/HeaderWidgets.dart';
-part 'ChartPopup.dart';
 part 'Handlers/DataHandler.dart';
+part 'Handlers/DateTextHandler.dart';
+part 'ChartPopup.dart';
+part 'ChartViewModel.dart';
 
 class ChartViewController extends StatefulWidget {
   final List<Item> data;
@@ -25,6 +27,7 @@ class ChartViewController extends StatefulWidget {
 }
 
 class _ChartViewControllerState extends State<ChartViewController> {
+  // MARK: - Variables
   List<Item> _allData = [];
   late int index = 0;
   late List<ChartItem> _presentedData = [];
@@ -81,70 +84,5 @@ class _ChartViewControllerState extends State<ChartViewController> {
   void initState() {
     super.initState();
     loadData();
-  }
-
-  // MARK: - Widget Builders
-  Widget createWidget(int index) {
-    switch (cellList[index]) {
-      case ChartWidgetType.header:
-        return createHeader();
-      case ChartWidgetType.graphHeader:
-        return createGraphHeader();
-      case ChartWidgetType.graph:
-        return ChartWidget(
-            temperatureInsideIsVisible: _temperatureInsideIsVisible,
-            chartData: _presentedData,
-            temperatureOutsideIsVisible: _temperatureOutsideIsVisible,
-            humidityInsideIsVisible: _humidityInsideIsVisible,
-            humidityOutsideIsVisible: _humidityOutsideIsVisible,
-            soundIsVisible: _soundIsVisible);
-      case ChartWidgetType.temperatureCheckbox:
-        return createTemperatureCheckbox();
-      case ChartWidgetType.humidityCheckbox:
-        return createHumidityCheckbox();
-      case ChartWidgetType.soundCheckbox:
-        return createSoundCheckbox();
-    }
-  }
-
-  void updatePresentedChartData(UpdateChartMode mode) {
-    if (mode == UpdateChartMode.next) {
-      index += 1;
-    } else {
-      index -= 1;
-    }
-    if (index > 0) {
-      index = 0;
-    }
-    if (graphMode == GraphMode.averageData) {
-      int startRange = _averageChartData.length + ((index - 1) * 6);
-      if (startRange < 0) {
-        startRange = 0;
-        if (_averageChartData.length + ((index) * 6) <= 0) {
-          index += 1;
-        }
-      }
-      int endRange = startRange + 6;
-      setState(() {
-        _presentedData =
-            _averageChartData.getRange(startRange, endRange).toList();
-      });
-    } else {
-      int startRange = _individualChartData.length + ((index - 1) * 4);
-      if (startRange < 0) {
-        startRange = 0;
-        if (_individualChartData.length + ((index) * 4) <= 0) {
-          index += 1;
-        }
-      }
-      int endRange = startRange + 4;
-      setState(() {
-        _presentedData =
-            _individualChartData.getRange(startRange, endRange).toList();
-      });
-      _presentedData.forEach((element) {
-        print(element.month);
-      });
-    }
   }
 }

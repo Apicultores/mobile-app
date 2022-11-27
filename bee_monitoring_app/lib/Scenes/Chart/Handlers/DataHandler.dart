@@ -1,7 +1,7 @@
 part of 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 
 extension DataHandler on _ChartViewControllerState {
-      Future loadData() async {
+  Future loadData() async {
     service.loadData().then((value) {
       setState(() {
         _allData = value;
@@ -10,7 +10,8 @@ extension DataHandler on _ChartViewControllerState {
         _presentedData = _averageChartData
             .getRange(_averageChartData.length - 6, _averageChartData.length)
             .toList();
-        graphAverageDates = _averageChartData.map((e) => e.month).toSet().toList();
+        graphAverageDates =
+            _averageChartData.map((e) => e.month).toSet().toList();
         graphAverageDatesText = graphAverageDates.last;
 
         graphIndividualDates =
@@ -66,34 +67,5 @@ extension DataHandler on _ChartViewControllerState {
     }
 
     return chartData;
-  }
-
-  String convertDateToString(DateTime date) {
-    String day =
-        date.day < 10 ? "0${date.day.toString()}" : date.day.toString();
-    String month =
-        date.month < 10 ? "0${date.month.toString()}" : date.month.toString();
-    String year = date.year.toString();
-    String cropedYear = year.substring(year.length - 2, year.length);
-    return "$day/$month/$cropedYear";
-  }
-
-  String convertDateToStringWithHour(DateTime date) {
-    String hour =
-        date.day < 10 ? "0${date.hour.toString()}" : date.hour.toString();
-    hour = hour == "0" ? "00" : hour;
-    String minute =
-        date.day < 10 ? "0${date.minute.toString()}" : date.minute.toString();
-    minute = minute == "0" ? "00" : minute;
-    String second =
-        date.day < 10 ? "0${date.second.toString()}" : date.second.toString();
-    second = second == "0" ? "00" : second;
-    String day =
-        date.day < 10 ? "0${date.day.toString()}" : date.day.toString();
-    String month =
-        date.month < 10 ? "0${date.month.toString()}" : date.month.toString();
-    String year = date.year.toString();
-    String cropedYear = year.substring(year.length - 2, year.length);
-    return "$hour:$minute:$second\n$day/$month/$cropedYear";
   }
 }

@@ -101,7 +101,7 @@ extension ChartPopup on _ChartViewControllerState {
     );
   }
 
-    void changePagination(String? date) {
+  void changePagination(String? date) {
     if (graphMode == GraphMode.averageData) {
       averageChangePagination(date);
     } else {
@@ -110,57 +110,56 @@ extension ChartPopup on _ChartViewControllerState {
   }
 
   void individualChangePagination(String? date) {
-  index = 0;
-  bool dateFinded = false;
-  while (!dateFinded) {
-    int startRange = _individualChartData.length + ((index - 1) * 4);
-    if (startRange < 0) {
-      startRange = 0;
-      if (_individualChartData.length + ((index) * 4) <= 0) {
-        index += 1;
+    index = 0;
+    bool dateFinded = false;
+    while (!dateFinded) {
+      int startRange = _individualChartData.length + ((index - 1) * 4);
+      if (startRange < 0) {
+        startRange = 0;
+        if (_individualChartData.length + ((index) * 4) <= 0) {
+          index += 1;
+        }
       }
-    }
-    int endRange = startRange + 4;
-    setState(() {
-      _presentedData =
-          _individualChartData.getRange(startRange, endRange).toList();
-    });
-    _presentedData.forEach((element) {
-      if (element.month == date) {
-        dateFinded = true;
+      int endRange = startRange + 4;
+      setState(() {
+        _presentedData =
+            _individualChartData.getRange(startRange, endRange).toList();
+      });
+      _presentedData.forEach((element) {
+        if (element.month == date) {
+          dateFinded = true;
+        }
+      });
+      if (!dateFinded) {
+        index -= 1;
       }
-    });
-    if (!dateFinded) {
-      index -= 1;
     }
   }
-}
 
   void averageChangePagination(String? date) {
-  index = 0;
-  bool dateFinded = false;
-  while (!dateFinded) {
-    int startRange = _averageChartData.length + ((index - 1) * 6);
-    if (startRange < 0) {
-      startRange = 0;
-      if (_averageChartData.length + ((index) * 6) <= 0) {
-        index += 1;
+    index = 0;
+    bool dateFinded = false;
+    while (!dateFinded) {
+      int startRange = _averageChartData.length + ((index - 1) * 6);
+      if (startRange < 0) {
+        startRange = 0;
+        if (_averageChartData.length + ((index) * 6) <= 0) {
+          index += 1;
+        }
       }
-    }
-    int endRange = startRange + 6;
-    setState(() {
-      _presentedData =
-          _averageChartData.getRange(startRange, endRange).toList();
-    });
-    _presentedData.forEach((element) {
-      if (element.month == date) {
-        dateFinded = true;
+      int endRange = startRange + 6;
+      setState(() {
+        _presentedData =
+            _averageChartData.getRange(startRange, endRange).toList();
+      });
+      _presentedData.forEach((element) {
+        if (element.month == date) {
+          dateFinded = true;
+        }
+      });
+      if (!dateFinded) {
+        index -= 1;
       }
-    });
-    if (!dateFinded) {
-      index -= 1;
     }
   }
-}
-
 }

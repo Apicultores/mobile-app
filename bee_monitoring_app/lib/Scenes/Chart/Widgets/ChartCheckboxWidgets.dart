@@ -1,7 +1,7 @@
 part of 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 
 extension ChartCheckboxWidgets on _ChartViewControllerState {
-    Widget createTemperatureCheckbox() {
+  Widget createTemperatureCheckbox() {
     return Padding(
         padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
         child: Row(
@@ -34,7 +34,7 @@ extension ChartCheckboxWidgets on _ChartViewControllerState {
         ));
   }
 
-    Padding createSoundCheckbox() {
+  Padding createSoundCheckbox() {
     return Padding(
         padding: EdgeInsets.only(left: 15, bottom: 10, right: 20, top: 20),
         child: Row(
