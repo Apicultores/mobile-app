@@ -50,7 +50,7 @@ class _ChartState extends State<Chart> {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
             Divider(height: 0),
-        itemCount: _chartData.isEmpty ? 0 : 5,
+        itemCount: _chartData.isEmpty ? 0 : cellList.length,
         itemBuilder: (context, index) {
           return createWidget(index);
         });
@@ -80,44 +80,130 @@ class _ChartState extends State<Chart> {
         return createHumidityCheckbox();
       case ChartWidgetType.soundCheckbox:
         return createSoundCheckbox();
-      default:
+      case ChartWidgetType.header:
         return createHeader();
+      // default:
+      //   return createHeader();
     }
   }
 
   Widget createHeader() {
-
-    return
-    Container(
-      color:Colors.white,
-      child: (
-        Row(
-          children: <Widget>[
-            Padding(
-        padding: EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
-        child: Text(
-          "Coleta (ID123123 : 22/11/2020)",
-          style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 18.0,
-              fontWeight: FontWeight.normal),
-        )),
-          Expanded(child:Container()),
+    return Container(
+      color: Colors.white,
+      child: (Row(
+        children: <Widget>[
+          Padding(
+              padding:
+                  EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
+              child: Text(
+                "Coleta (ID123123 : 22/11/2020)",
+                style: TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.normal),
+              )),
+          Expanded(child: Container()),
           ElevatedButton(
-  onPressed: () {},
-  style: ElevatedButton.styleFrom(
-                primary: Colors.white),
-  child: 
-  Icon(
-        Icons.more_vert_sharp,
-        size: 24.0,
-      ),
-),
-SizedBox(width: 10),
+            onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => _buildPopupDialog(context),
+            );
+          },
+            style: ElevatedButton.styleFrom(primary: Colors.white),
+            child: Icon(
+              Icons.more_vert_sharp,
+              size: 24.0,
+            ),
+          ),
+          SizedBox(width: 10),
+        ],
+      )),
+    );
+  }
 
-          ],
-        )
+  // Initial Selected Value
+  String dropdownvalue = 'Item 1';  
+ 
+  // List of items in our dropdown menu
+  var items = [   
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Opções'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Modo de apresentação:"),
+          DropdownButton(
+               
+              // Initial Value
+              value: dropdownvalue,
+               
+              // Down Arrow Icon
+              icon: const Icon(Icons.keyboard_arrow_down),   
+               
+              // Array list of items
+              items: items.map((String items) {
+                return DropdownMenuItem(
+                  value: items,
+                  child: Text(items),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  dropdownvalue = newValue!;
+                });
+              },
+            ),
+            SizedBox(height: 30),
+          Text("Data:"),
+          DropdownButton(
+               
+              // Initial Value
+              value: dropdownvalue,
+               
+              // Down Arrow Icon
+              icon: const Icon(Icons.keyboard_arrow_down),   
+               
+              // Array list of items
+              items: items.map((String items) {
+                return DropdownMenuItem(
+                  value: items,
+                  child: Text(items),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  dropdownvalue = newValue!;
+                });
+              },
+            ),
+        ],
       ),
+      actions: <Widget>[
+        new ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.grey[50]),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancelar'),
+        ),
+        SizedBox(width: 10),
+        new ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Aplicar'),
+        ),
+      ],
     );
   }
 
@@ -311,12 +397,10 @@ SizedBox(width: 10),
   }
 
   String convertDateToString(DateTime date) {
-    String day = date.day < 10
-        ? "0${date.day.toString()}"
-        : date.day.toString();
-    String month = date.month < 10
-        ? "0${date.month.toString()}"
-        : date.month.toString();
+    String day =
+        date.day < 10 ? "0${date.day.toString()}" : date.day.toString();
+    String month =
+        date.month < 10 ? "0${date.month.toString()}" : date.month.toString();
     String year = date.year.toString();
     String cropedYear = year.substring(year.length - 2, year.length);
     return "$day/$month/$cropedYear";
