@@ -121,17 +121,17 @@ class _ChartState extends State<Chart> {
   String _graphModeText = 'Média diária';
   GraphMode graphMode = GraphMode.averageData;
 
-
   var graphModes = [
     'Média diária',
     'Coletas individuais',
   ];
 
-  var graphModes2 = [
+  var graphDates = [
     'Carregando...',
   ];
-  String? graphModesText = null;
-  
+
+  String? graphDatesText;
+
   void showPopup() {
     showDialog(
       context: context,
@@ -164,10 +164,9 @@ class _ChartState extends State<Chart> {
                     SizedBox(height: 30),
                     Text("Data:"),
                     DropdownButton(
-                      hint: new Text("Opcional"),
-                      value: graphModesText == null ? graphModes2.first : graphModesText,
+                      value: graphDatesText,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      items: graphModes2.map((String items) {
+                      items: graphDates.map((String items) {
                         return DropdownMenuItem(
                           value: items,
                           child: Text(items),
@@ -175,16 +174,12 @@ class _ChartState extends State<Chart> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          if (graphModes2.contains(newValue)) {
-                            graphModesText = newValue!;
+                          if (graphDates.contains(newValue)) {
+                            graphDatesText = newValue!;
                           }
-                          print("graphModesText = newValue!;");
-                          print(newValue);
-                          print("-----");
-                          graphModes2.forEach((element) { print(element); });
                         });
                       },
-                    ),
+                    )
                   ]),
               actions: <Widget>[
                 new ElevatedButton(
@@ -202,6 +197,7 @@ class _ChartState extends State<Chart> {
                           ? GraphMode.averageData
                           : GraphMode.individualData;
                       updateData(UpdateChartMode.newMode);
+                      changePagination(graphDatesText);
                     });
                     Navigator.of(context).pop();
                   },
@@ -213,6 +209,60 @@ class _ChartState extends State<Chart> {
         );
       },
     );
+  }
+
+  void changePagination(String? date) {
+    if (graphMode == GraphMode.averageData) {
+      index = 0;
+      bool dateFinded = false;
+      while (!dateFinded) {
+        int startRange = _averageChartData.length + ((index - 1) * 6);
+        if (startRange < 0) {
+          startRange = 0;
+          if (_averageChartData.length + ((index) * 6) <= 0) {
+            index += 1;
+          }
+        }
+        int endRange = startRange + 6;
+        setState(() {
+          _presentedData =
+              _averageChartData.getRange(startRange, endRange).toList();
+        });
+        _presentedData.forEach((element) {
+          if (element.month == date) {
+            dateFinded = true;
+          }
+        });
+        if (!dateFinded) {
+          index -= 1;
+        }
+      }
+    } else {
+      index = 0;
+      bool dateFinded = false;
+      while (!dateFinded) {
+        int startRange = _individualChartData.length + ((index - 1) * 4);
+        if (startRange < 0) {
+          startRange = 0;
+          if (_individualChartData.length + ((index) * 4) <= 0) {
+            index += 1;
+          }
+        }
+        int endRange = startRange + 4;
+        setState(() {
+          _presentedData =
+              _individualChartData.getRange(startRange, endRange).toList();
+        });
+        _presentedData.forEach((element) {
+          if (element.month == date) {
+            dateFinded = true;
+          }
+        });
+        if (!dateFinded) {
+          index -= 1;
+        }
+      }
+    }
   }
 
   Widget createGraphHeader() {
@@ -273,13 +323,9 @@ class _ChartState extends State<Chart> {
       }
       int endRange = startRange + 6;
       setState(() {
-        _presentedData = _averageChartData.getRange(startRange, endRange).toList();
+        _presentedData =
+            _averageChartData.getRange(startRange, endRange).toList();
       });
-      print("------ _presentedData");
-      print("$startRange - $endRange");
-      _presentedData.forEach((element) { print(element.month); });
-      print("------ _averageChartData");
-      _averageChartData.forEach((element) { print(element.month); });
     } else {
       int startRange = _individualChartData.length + ((index - 1) * 4);
       if (startRange < 0) {
@@ -290,9 +336,12 @@ class _ChartState extends State<Chart> {
       }
       int endRange = startRange + 4;
       setState(() {
-        _presentedData = _individualChartData.getRange(startRange, endRange).toList();
+        _presentedData =
+            _individualChartData.getRange(startRange, endRange).toList();
       });
-      _presentedData.forEach((element) { print(element.month); });
+      _presentedData.forEach((element) {
+        print(element.month);
+      });
     }
   }
 
@@ -394,8 +443,8 @@ class _ChartState extends State<Chart> {
         _presentedData = _averageChartData
             .getRange(_averageChartData.length - 6, _averageChartData.length)
             .toList();
-      graphModes2 = _averageChartData.map((e) => e.month).toSet().toList();
-      graphModesText = _averageChartData.first.month;
+        graphDates = _averageChartData.map((e) => e.month).toSet().toList();
+        graphDatesText = graphDates.last;
       });
     });
   }
