@@ -121,11 +121,17 @@ class _ChartState extends State<Chart> {
   String _graphModeText = 'Média diária';
   GraphMode graphMode = GraphMode.averageData;
 
+
   var graphModes = [
     'Média diária',
     'Coletas individuais',
   ];
 
+  var graphModes2 = [
+    'Carregando...',
+  ];
+  String? graphModesText = null;
+  
   void showPopup() {
     showDialog(
       context: context,
@@ -158,9 +164,10 @@ class _ChartState extends State<Chart> {
                     SizedBox(height: 30),
                     Text("Data:"),
                     DropdownButton(
-                      value: _graphModeText,
+                      hint: new Text("Opcional"),
+                      value: graphModesText == null ? graphModes2.first : graphModesText,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      items: graphModes.map((String items) {
+                      items: graphModes2.map((String items) {
                         return DropdownMenuItem(
                           value: items,
                           child: Text(items),
@@ -168,7 +175,13 @@ class _ChartState extends State<Chart> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          _graphModeText = newValue!;
+                          if (graphModes2.contains(newValue)) {
+                            graphModesText = newValue!;
+                          }
+                          print("graphModesText = newValue!;");
+                          print(newValue);
+                          print("-----");
+                          graphModes2.forEach((element) { print(element); });
                         });
                       },
                     ),
@@ -376,11 +389,13 @@ class _ChartState extends State<Chart> {
     service.loadData().then((value) {
       setState(() {
         _allData = value;
-        _averageChartData = handleAverageData();
+        _averageChartData = handleAverageData().toSet().toList();
         _individualChartData = handleIndividualData();
         _presentedData = _averageChartData
             .getRange(_averageChartData.length - 6, _averageChartData.length)
             .toList();
+      graphModes2 = _averageChartData.map((e) => e.month).toSet().toList();
+      graphModesText = _averageChartData.first.month;
       });
     });
   }
@@ -410,9 +425,6 @@ class _ChartState extends State<Chart> {
               service.getAverage(Type.humidityOutside, tempArray),
               service.getAverage(Type.sound, tempArray)));
     }
-    print("------ listando tudo");
-    chartData.forEach((element) { print(element.month); });
-    print("------ listando tudo fim");
     return chartData;
   }
 
