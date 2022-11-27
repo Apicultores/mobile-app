@@ -118,9 +118,10 @@ class _ChartState extends State<Chart> {
     );
   }
 
-  String _graphMode = 'Média diária';
+  String _graphModeText = 'Média diária';
+  GraphMode graphMode = GraphMode.averageData;
 
-  var items = [
+  var graphModes = [
     'Média diária',
     'Coletas individuais',
   ];
@@ -140,9 +141,9 @@ class _ChartState extends State<Chart> {
                   children: <Widget>[
                     Text("Modo de apresentação:"),
                     DropdownButton(
-                      value: _graphMode,
+                      value: _graphModeText,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      items: items.map((String items) {
+                      items: graphModes.map((String items) {
                         return DropdownMenuItem(
                           value: items,
                           child: Text(items),
@@ -150,16 +151,16 @@ class _ChartState extends State<Chart> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          _graphMode = newValue!;
+                          _graphModeText = newValue!;
                         });
                       },
                     ),
                     SizedBox(height: 30),
                     Text("Data:"),
                     DropdownButton(
-                      value: _graphMode,
+                      value: _graphModeText,
                       icon: const Icon(Icons.keyboard_arrow_down),
-                      items: items.map((String items) {
+                      items: graphModes.map((String items) {
                         return DropdownMenuItem(
                           value: items,
                           child: Text(items),
@@ -167,7 +168,7 @@ class _ChartState extends State<Chart> {
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          _graphMode = newValue!;
+                          _graphModeText = newValue!;
                         });
                       },
                     ),
@@ -183,6 +184,12 @@ class _ChartState extends State<Chart> {
                 SizedBox(width: 10),
                 new ElevatedButton(
                   onPressed: () {
+                    setState(() {
+                      graphMode = _graphModeText == graphModes.first
+                          ? GraphMode.averageData
+                          : GraphMode.individualData;
+                      updateData(UpdateChartMode.newMode);
+                    });
                     Navigator.of(context).pop();
                   },
                   child: const Text('Aplicar'),
@@ -233,26 +240,47 @@ class _ChartState extends State<Chart> {
   }
 
   void updateData(UpdateChartMode mode) {
-    if (mode == UpdateChartMode.next) {
-      index += 1;
-    } else {
-      index -= 1;
-    }
-    if (index > 0) {
-      index = 0;
-    }
-    int startRange = _individualChartData.length + ((index - 1) * 4);
-    if (startRange < 0) {
-      startRange = 0;
-      if (_individualChartData.length + ((index) * 4) <= 0) {
+    if (mode != UpdateChartMode.newMode) {
+      if (mode == UpdateChartMode.next) {
         index += 1;
+      } else {
+        index -= 1;
+      }
+      if (index > 0) {
+        index = 0;
       }
     }
-    int endRange = startRange + 4;
-    setState(() {
-      _presentedData =
-          _individualChartData.getRange(startRange, endRange).toList();
-    });
+    if (graphMode == GraphMode.averageData) {
+      int startRange = _averageChartData.length + ((index - 1) * 4);
+      if (startRange < 0) {
+        startRange = 0;
+        if (_averageChartData.length + ((index) * 4) <= 0) {
+          index += 1;
+        }
+      }
+      int endRange = startRange + 4;
+      setState(() {
+        _presentedData = _averageChartData.getRange(startRange, endRange).toList();
+      });
+      print("------ _presentedData");
+      print("$startRange - $endRange");
+      _presentedData.forEach((element) { print(element.month); });
+      print("------ _averageChartData");
+      _averageChartData.forEach((element) { print(element.month); });
+    } else {
+      int startRange = _individualChartData.length + ((index - 1) * 4);
+      if (startRange < 0) {
+        startRange = 0;
+        if (_individualChartData.length + ((index) * 4) <= 0) {
+          index += 1;
+        }
+      }
+      int endRange = startRange + 4;
+      setState(() {
+        _presentedData = _individualChartData.getRange(startRange, endRange).toList();
+      });
+      _presentedData.forEach((element) { print(element.month); });
+    }
   }
 
   // MARK: - Checkbox
@@ -350,8 +378,8 @@ class _ChartState extends State<Chart> {
         _allData = value;
         _averageChartData = handleAverageData();
         _individualChartData = handleIndividualData();
-        _presentedData = _individualChartData
-            .getRange(_individualChartData.length - 4, _individualChartData.length)
+        _presentedData = _averageChartData
+            .getRange(_averageChartData.length - 4, _averageChartData.length)
             .toList();
       });
     });
@@ -361,7 +389,7 @@ class _ChartState extends State<Chart> {
     final List<ChartItem> chartData = [];
     List<Item> dataStateTemp = _allData.toList();
 
-    while (!dataStateTemp.isEmpty) {
+    while (dataStateTemp.isNotEmpty) {
       DateTime currentDate = dataStateTemp.first.timestamp;
       List<Item> tempArray = [];
       while (dataStateTemp.first.timestamp == currentDate) {
@@ -382,19 +410,21 @@ class _ChartState extends State<Chart> {
               service.getAverage(Type.humidityOutside, tempArray),
               service.getAverage(Type.sound, tempArray)));
     }
-    
+    print("------ listando tudo");
+    chartData.forEach((element) { print(element.month); });
+    print("------ listando tudo fim");
     return chartData;
   }
 
   List<ChartItem> handleIndividualData() {
     final List<ChartItem> chartData = [];
     final List<Item> dataStateTemp = _allData.toList();
-    
-    while (!dataStateTemp.isEmpty) {
+
+    while (dataStateTemp.isNotEmpty) {
       chartData.insert(
           0,
           ChartItem(
-              convertDateToString(dataStateTemp.first.timestamp),
+              convertDateToStringWithHour(dataStateTemp.first.timestamp),
               double.parse(dataStateTemp.first.temperatureInside),
               double.parse(dataStateTemp.first.temperatureOutside),
               double.parse(dataStateTemp.first.humidityInside),
@@ -402,7 +432,7 @@ class _ChartState extends State<Chart> {
               double.parse(dataStateTemp.first.sound)));
       dataStateTemp.removeAt(0);
     }
-    
+
     return chartData;
   }
 
@@ -414,5 +444,24 @@ class _ChartState extends State<Chart> {
     String year = date.year.toString();
     String cropedYear = year.substring(year.length - 2, year.length);
     return "$day/$month/$cropedYear";
+  }
+
+  String convertDateToStringWithHour(DateTime date) {
+    String hour =
+        date.day < 10 ? "0${date.hour.toString()}" : date.hour.toString();
+    hour = hour == "0" ? "00" : hour;
+    String minute =
+        date.day < 10 ? "0${date.minute.toString()}" : date.minute.toString();
+    minute = minute == "0" ? "00" : minute;
+    String second =
+        date.day < 10 ? "0${date.second.toString()}" : date.second.toString();
+    second = second == "0" ? "00" : second;
+    String day =
+        date.day < 10 ? "0${date.day.toString()}" : date.day.toString();
+    String month =
+        date.month < 10 ? "0${date.month.toString()}" : date.month.toString();
+    String year = date.year.toString();
+    String cropedYear = year.substring(year.length - 2, year.length);
+    return "$hour:$minute:$second\n$day/$month/$cropedYear";
   }
 }

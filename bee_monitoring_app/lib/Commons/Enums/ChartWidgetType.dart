@@ -6,3 +6,8 @@ enum ChartWidgetType {
   humidityCheckbox,
   soundCheckbox,
 }
+
+enum GraphMode {
+  averageData,
+  individualData,
+}

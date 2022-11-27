@@ -1,1 +1,1 @@
-enum UpdateChartMode { back, next }
+enum UpdateChartMode { back, next, newMode }
