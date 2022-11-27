@@ -241,17 +241,17 @@ class _ChartState extends State<Chart> {
     if (index > 0) {
       index = 0;
     }
-    int startRange = _averageChartData.length + ((index - 1) * 4);
+    int startRange = _individualChartData.length + ((index - 1) * 4);
     if (startRange < 0) {
       startRange = 0;
-      if (_averageChartData.length + ((index) * 4) <= 0) {
+      if (_individualChartData.length + ((index) * 4) <= 0) {
         index += 1;
       }
     }
     int endRange = startRange + 4;
     setState(() {
       _presentedData =
-          _averageChartData.getRange(startRange, endRange).toList();
+          _individualChartData.getRange(startRange, endRange).toList();
     });
   }
 
@@ -350,8 +350,8 @@ class _ChartState extends State<Chart> {
         _allData = value;
         _averageChartData = handleAverageData();
         _individualChartData = handleIndividualData();
-        _presentedData = _averageChartData
-            .getRange(_averageChartData.length - 4, _averageChartData.length)
+        _presentedData = _individualChartData
+            .getRange(_individualChartData.length - 4, _individualChartData.length)
             .toList();
       });
     });
