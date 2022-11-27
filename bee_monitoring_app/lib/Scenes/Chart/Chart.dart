@@ -126,11 +126,20 @@ class _ChartState extends State<Chart> {
     'Coletas individuais',
   ];
 
+  String? graphDatesText;
   var graphDates = [
     'Carregando...',
   ];
 
-  String? graphDatesText;
+  String? graphAverageDatesText;
+  var graphAverageDates = [
+    'Carregando...',
+  ];
+  
+  String? graphIndividualDatesText;
+  var graphIndividualDates = [
+    'Carregando...',
+  ];
 
   void showPopup() {
     showDialog(
@@ -163,23 +172,44 @@ class _ChartState extends State<Chart> {
                     ),
                     SizedBox(height: 30),
                     Text("Data:"),
-                    DropdownButton(
-                      value: graphDatesText,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      items: graphDates.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          if (graphDates.contains(newValue)) {
-                            graphDatesText = newValue!;
-                          }
-                        });
-                      },
-                    )
+                    Visibility(
+                        visible: _graphModeText == graphModes.first,
+                        child: DropdownButton(
+                          value: graphDatesText,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: graphDates.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              if (graphDates.contains(newValue)) {
+                                graphDatesText = newValue!;
+                              }
+                            });
+                          },
+                        )),
+                        Visibility(
+                        visible: _graphModeText != graphModes.first,
+                        child: DropdownButton(
+                          value: graphIndividualDatesText,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: graphIndividualDates.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              if (graphIndividualDates.contains(newValue)) {
+                                graphIndividualDatesText = newValue!;
+                              }
+                            });
+                          },
+                        ))
                   ]),
               actions: <Widget>[
                 new ElevatedButton(
@@ -445,6 +475,11 @@ class _ChartState extends State<Chart> {
             .toList();
         graphDates = _averageChartData.map((e) => e.month).toSet().toList();
         graphDatesText = graphDates.last;
+        
+        graphIndividualDates = _individualChartData.map((e) => e.month).toSet().toList();
+        graphIndividualDatesText = graphIndividualDates.last;
+        // graphIndividualDatesText
+
       });
     });
   }
