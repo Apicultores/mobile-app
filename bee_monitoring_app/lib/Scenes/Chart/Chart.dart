@@ -10,6 +10,7 @@ import 'package:bee_monitoring_app/Commons/Enums/UpdateChartMode.dart';
 import 'package:bee_monitoring_app/Commons/Models/ChartItem.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartWidget.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
+import 'package:bee_monitoring_app/Commons/Enums/ChartWidgetType.dart';
 
 class Chart extends StatefulWidget {
   final List<Item> data;
@@ -34,6 +35,15 @@ class _ChartState extends State<Chart> {
 
   bool _soundIsVisible = false;
 
+  List<ChartWidgetType> cellList = [
+    ChartWidgetType.header,
+    ChartWidgetType.graphHeader,
+    ChartWidgetType.graph,
+    ChartWidgetType.temperatureCheckbox,
+    ChartWidgetType.humidityCheckbox,
+    ChartWidgetType.soundCheckbox,
+  ];
+
   // MARK: - Life Cycle
   @override
   Widget build(BuildContext context) {
@@ -52,11 +62,11 @@ class _ChartState extends State<Chart> {
   }
 
   Widget createWidget(int index) {
-    switch (index) {
-      case 0:
-        return createHeader();
+    switch (cellList[index]) {
+      case ChartWidgetType.graphHeader:
+        return createGraphHeader();
 
-      case 1:
+      case ChartWidgetType.graph:
         return ChartWidget(
             temperatureInsideIsVisible: _temperatureInsideIsVisible,
             chartData: _presentedData,
@@ -64,16 +74,54 @@ class _ChartState extends State<Chart> {
             humidityInsideIsVisible: _humidityInsideIsVisible,
             humidityOutsideIsVisible: _humidityOutsideIsVisible,
             soundIsVisible: _soundIsVisible);
-      case 2:
+      case ChartWidgetType.temperatureCheckbox:
         return createTemperatureCheckbox();
-      case 3:
+      case ChartWidgetType.humidityCheckbox:
         return createHumidityCheckbox();
-      default:
+      case ChartWidgetType.soundCheckbox:
         return createSoundCheckbox();
+      default:
+        return createHeader();
     }
   }
 
   Widget createHeader() {
+
+    return
+    Container(
+      color:Colors.white,
+      child: (
+        Row(
+          children: <Widget>[
+            Padding(
+        padding: EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
+        child: Text(
+          "Coleta (ID123123 : 22/11/2020)",
+          style: TextStyle(
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontSize: 18.0,
+              fontWeight: FontWeight.normal),
+        )),
+          Expanded(child:Container()),
+          ElevatedButton(
+  onPressed: () {},
+  style: ElevatedButton.styleFrom(
+                primary: Colors.white),
+  child: 
+  Icon(
+        Icons.more_vert_sharp,
+        size: 24.0,
+      ),
+),
+SizedBox(width: 10),
+
+          ],
+        )
+      ),
+    );
+  }
+
+  Widget createGraphHeader() {
     return Padding(
         padding: EdgeInsets.only(left: 20, bottom: 5, right: 20, top: 25),
         child: Row(

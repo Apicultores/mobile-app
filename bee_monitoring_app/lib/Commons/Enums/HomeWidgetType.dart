@@ -1,4 +1,4 @@
-enum HomeCardType {
+enum HomeWidgetType {
   header,
   title,
   averageTemperature,

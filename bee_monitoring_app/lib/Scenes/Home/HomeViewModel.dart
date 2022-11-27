@@ -2,29 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
-import 'package:bee_monitoring_app/Commons/Enums/HomeCardType.dart';
+import 'package:bee_monitoring_app/Commons/Enums/HomeWidgetType.dart';
 
 class HomeViewModel {
   Service service = Service();
 
-  List<HomeCardType> cellList = [
-    HomeCardType.title,
-    HomeCardType.averageTemperature,
-    HomeCardType.averageHumidity,
-    HomeCardType.averageSound,
-    HomeCardType.title,
-    HomeCardType.maxTemperature,
-    HomeCardType.maxHumidity,
-    HomeCardType.maxSound,
-    HomeCardType.title,
-    HomeCardType.minTemperature,
-    HomeCardType.minHumidity,
-    HomeCardType.minSound
+  List<HomeWidgetType> cellList = [
+    HomeWidgetType.title,
+    HomeWidgetType.averageTemperature,
+    HomeWidgetType.averageHumidity,
+    HomeWidgetType.averageSound,
+    HomeWidgetType.title,
+    HomeWidgetType.maxTemperature,
+    HomeWidgetType.maxHumidity,
+    HomeWidgetType.maxSound,
+    HomeWidgetType.title,
+    HomeWidgetType.minTemperature,
+    HomeWidgetType.minHumidity,
+    HomeWidgetType.minSound
   ];
 
   Padding createAverageCard(int index, List<Item> data) {
     switch (cellList[index]) {
-      case HomeCardType.averageTemperature:
+      case HomeWidgetType.averageTemperature:
         return HomeViewModel().createCard(
             "Temperatura",
             service
@@ -35,7 +35,7 @@ class HomeViewModel {
                     .getAverage(Type.temperatureOutside, data)
                     .toStringAsFixed(2) +
                 " °C");
-      case HomeCardType.averageHumidity:
+      case HomeWidgetType.averageHumidity:
         return HomeViewModel().createCard(
             "Umidade",
             service.getAverage(Type.humidityInside, data).toStringAsFixed(2) +
@@ -44,31 +44,31 @@ class HomeViewModel {
                     .getAverage(Type.humidityOutside, data)
                     .toStringAsFixed(2) +
                 " g/m³");
-      case HomeCardType.averageSound:
+      case HomeWidgetType.averageSound:
         String value = service.getAverage(Type.sound, data).toStringAsFixed(2);
         return HomeViewModel().createCard("Som", "$value dB");
-      case HomeCardType.maxTemperature:
+      case HomeWidgetType.maxTemperature:
         return HomeViewModel().createCard(
             "Temperatura", service.getMax(Type.temperatureInside, data) + " °C",
             subtitleTail:
                 service.getMax(Type.temperatureOutside, data) + " °C");
-      case HomeCardType.maxHumidity:
+      case HomeWidgetType.maxHumidity:
         return HomeViewModel().createCard(
             "Umidade", service.getMax(Type.humidityInside, data) + " g/m³",
             subtitleTail: service.getMax(Type.humidityOutside, data) + " g/m³");
-      case HomeCardType.maxSound:
+      case HomeWidgetType.maxSound:
         String value = service.getMax(Type.sound, data);
         return HomeViewModel().createCard("Som", "$value dB");
-      case HomeCardType.minTemperature:
+      case HomeWidgetType.minTemperature:
         return HomeViewModel().createCard(
             "Temperatura", service.getMin(Type.temperatureInside, data) + " °C",
             subtitleTail:
                 service.getMin(Type.temperatureOutside, data) + " °C");
-      case HomeCardType.minHumidity:
+      case HomeWidgetType.minHumidity:
         return HomeViewModel().createCard(
             "Umidade", service.getMin(Type.humidityInside, data) + " g/m³",
             subtitleTail: service.getMin(Type.humidityOutside, data) + " g/m³");
-      case HomeCardType.minSound:
+      case HomeWidgetType.minSound:
         String value = service.getMin(Type.sound, data);
         return HomeViewModel().createCard("Som", "$value dB");
       default:
