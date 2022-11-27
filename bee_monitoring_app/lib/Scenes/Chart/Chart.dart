@@ -126,6 +126,21 @@ class _ChartState extends State<Chart> {
     'Coletas individuais',
   ];
 
+  String? graphDatesText;
+  var graphDates = [
+    'Carregando...',
+  ];
+
+  String? graphAverageDatesText;
+  var graphAverageDates = [
+    'Carregando...',
+  ];
+
+  String? graphIndividualDatesText;
+  var graphIndividualDates = [
+    'Carregando...',
+  ];
+
   void showPopup() {
     showDialog(
       context: context,
@@ -156,22 +171,46 @@ class _ChartState extends State<Chart> {
                       },
                     ),
                     SizedBox(height: 30),
-                    Text("Data:"),
-                    DropdownButton(
-                      value: _graphModeText,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      items: graphModes.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _graphModeText = newValue!;
-                        });
-                      },
-                    ),
+                    Text("Data para consulta:"),
+                    Visibility(
+                        visible: _graphModeText == graphModes.first,
+                        child: DropdownButton(
+                          value: graphDatesText,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: graphDates.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items)
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              if (graphDates.contains(newValue)) {
+                                graphDatesText = newValue!;
+                              }
+                            });
+                          },
+                        )),
+                    Visibility(
+                        visible: _graphModeText != graphModes.first,
+                        child: DropdownButton(
+                          isExpanded: true,
+                          value: graphIndividualDatesText,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: graphIndividualDates.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items.replaceAll("\n", " - "))
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              if (graphIndividualDates.contains(newValue)) {
+                                graphIndividualDatesText = newValue!;
+                              }
+                            });
+                          },
+                        ))
                   ]),
               actions: <Widget>[
                 new ElevatedButton(
@@ -188,7 +227,11 @@ class _ChartState extends State<Chart> {
                       graphMode = _graphModeText == graphModes.first
                           ? GraphMode.averageData
                           : GraphMode.individualData;
-                      updateData(UpdateChartMode.newMode);
+                      if (_graphModeText == graphModes.first) {
+                        changePagination(graphDatesText);
+                      } else {
+                        changePagination(graphIndividualDatesText);
+                      }
                     });
                     Navigator.of(context).pop();
                   },
@@ -200,6 +243,60 @@ class _ChartState extends State<Chart> {
         );
       },
     );
+  }
+
+  void changePagination(String? date) {
+    if (graphMode == GraphMode.averageData) {
+      index = 0;
+      bool dateFinded = false;
+      while (!dateFinded) {
+        int startRange = _averageChartData.length + ((index - 1) * 6);
+        if (startRange < 0) {
+          startRange = 0;
+          if (_averageChartData.length + ((index) * 6) <= 0) {
+            index += 1;
+          }
+        }
+        int endRange = startRange + 6;
+        setState(() {
+          _presentedData =
+              _averageChartData.getRange(startRange, endRange).toList();
+        });
+        _presentedData.forEach((element) {
+          if (element.month == date) {
+            dateFinded = true;
+          }
+        });
+        if (!dateFinded) {
+          index -= 1;
+        }
+      }
+    } else {
+      index = 0;
+      bool dateFinded = false;
+      while (!dateFinded) {
+        int startRange = _individualChartData.length + ((index - 1) * 4);
+        if (startRange < 0) {
+          startRange = 0;
+          if (_individualChartData.length + ((index) * 4) <= 0) {
+            index += 1;
+          }
+        }
+        int endRange = startRange + 4;
+        setState(() {
+          _presentedData =
+              _individualChartData.getRange(startRange, endRange).toList();
+        });
+        _presentedData.forEach((element) {
+          if (element.month == date) {
+            dateFinded = true;
+          }
+        });
+        if (!dateFinded) {
+          index -= 1;
+        }
+      }
+    }
   }
 
   Widget createGraphHeader() {
@@ -240,15 +337,13 @@ class _ChartState extends State<Chart> {
   }
 
   void updateData(UpdateChartMode mode) {
-    if (mode != UpdateChartMode.newMode) {
-      if (mode == UpdateChartMode.next) {
-        index += 1;
-      } else {
-        index -= 1;
-      }
-      if (index > 0) {
-        index = 0;
-      }
+    if (mode == UpdateChartMode.next) {
+      index += 1;
+    } else {
+      index -= 1;
+    }
+    if (index > 0) {
+      index = 0;
     }
     if (graphMode == GraphMode.averageData) {
       int startRange = _averageChartData.length + ((index - 1) * 6);
@@ -260,13 +355,9 @@ class _ChartState extends State<Chart> {
       }
       int endRange = startRange + 6;
       setState(() {
-        _presentedData = _averageChartData.getRange(startRange, endRange).toList();
+        _presentedData =
+            _averageChartData.getRange(startRange, endRange).toList();
       });
-      print("------ _presentedData");
-      print("$startRange - $endRange");
-      _presentedData.forEach((element) { print(element.month); });
-      print("------ _averageChartData");
-      _averageChartData.forEach((element) { print(element.month); });
     } else {
       int startRange = _individualChartData.length + ((index - 1) * 4);
       if (startRange < 0) {
@@ -277,9 +368,12 @@ class _ChartState extends State<Chart> {
       }
       int endRange = startRange + 4;
       setState(() {
-        _presentedData = _individualChartData.getRange(startRange, endRange).toList();
+        _presentedData =
+            _individualChartData.getRange(startRange, endRange).toList();
       });
-      _presentedData.forEach((element) { print(element.month); });
+      _presentedData.forEach((element) {
+        print(element.month);
+      });
     }
   }
 
@@ -376,11 +470,18 @@ class _ChartState extends State<Chart> {
     service.loadData().then((value) {
       setState(() {
         _allData = value;
-        _averageChartData = handleAverageData();
+        _averageChartData = handleAverageData().toSet().toList();
         _individualChartData = handleIndividualData();
         _presentedData = _averageChartData
             .getRange(_averageChartData.length - 6, _averageChartData.length)
             .toList();
+        graphDates = _averageChartData.map((e) => e.month).toSet().toList();
+        graphDatesText = graphDates.last;
+
+        graphIndividualDates =
+            _individualChartData.map((e) => e.month).toSet().toList();
+        graphIndividualDatesText = graphIndividualDates.last;
+        // graphIndividualDatesText
       });
     });
   }
@@ -410,9 +511,6 @@ class _ChartState extends State<Chart> {
               service.getAverage(Type.humidityOutside, tempArray),
               service.getAverage(Type.sound, tempArray)));
     }
-    print("------ listando tudo");
-    chartData.forEach((element) { print(element.month); });
-    print("------ listando tudo fim");
     return chartData;
   }
 
