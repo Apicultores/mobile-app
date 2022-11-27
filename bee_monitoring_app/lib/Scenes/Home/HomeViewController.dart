@@ -7,7 +7,6 @@ import 'package:bee_monitoring_app/Commons/Service.dart';
 class HomeViewController extends StatelessWidget {
   final List<Item> data;
   HomeViewController(this.data);
-
   HomeViewModel homeViewModel = HomeViewModel();
 
   // MARK: - Life Cycle

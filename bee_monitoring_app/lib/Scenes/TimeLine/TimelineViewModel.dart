@@ -41,4 +41,34 @@ class TimelineViewModel {
         return "";
     }
   }
+
+    Widget createHeader() {
+    return Container(
+      color: Colors.white,
+      child: (Row(
+        children: <Widget>[
+          Padding(
+              padding:
+                  EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
+              child: Text(
+                "Coleta (ID123123 : 22/11/2020)",
+                style: TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.normal),
+              )),
+          Expanded(child: Container()),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(primary: Colors.white),
+            child: Icon(
+              Icons.more_vert_sharp,
+              size: 24.0,
+            ),
+          ),
+          SizedBox(width: 10),
+        ],
+      )),
+    );
+  }
 }
