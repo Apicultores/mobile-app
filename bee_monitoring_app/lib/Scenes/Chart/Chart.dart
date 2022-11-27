@@ -82,8 +82,6 @@ class _ChartState extends State<Chart> {
         return createSoundCheckbox();
       case ChartWidgetType.header:
         return createHeader();
-      // default:
-      //   return createHeader();
     }
   }
 
@@ -105,11 +103,79 @@ class _ChartState extends State<Chart> {
           Expanded(child: Container()),
           ElevatedButton(
             onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => _buildPopupDialog(context),
-            );
+              // showDialog(
+              //   context: context,
+              //   builder: (BuildContext context) => _buildPopupDialog(context),
+              // );
+              showDialog(
+                context: context,
+                builder: (context) {
+                  String contentText = "Content of Dialog";
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      // return _buildPopupDialog(context);
+                      return AlertDialog(
+                        title: Text("Opções"),
+                        content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("Modo de apresentação:"),
+          DropdownButton(
+            value: dropdownvalue,
+            icon: const Icon(Icons.keyboard_arrow_down),
+            items: items.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownvalue = newValue!;
+              });
+            },
+          ),
+          SizedBox(height: 30),
+          Text("Data:"),
+          DropdownButton(
+            value: dropdownvalue,
+            icon: const Icon(Icons.keyboard_arrow_down),
+            items: items.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownvalue = newValue!;
+              });
+            },
+          ),
+                            ]),
+                        actions: <Widget>[
+                          new ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.grey[50]),
+          onPressed: () {
+            Navigator.of(context).pop();
           },
+          child: const Text('Cancelar'),
+        ),
+        SizedBox(width: 10),
+        new ElevatedButton(
+          onPressed: () {
+            
+          },
+          child: const Text('Aplicar'),
+        ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              );
+            },
             style: ElevatedButton.styleFrom(primary: Colors.white),
             child: Icon(
               Icons.more_vert_sharp,
@@ -123,10 +189,10 @@ class _ChartState extends State<Chart> {
   }
 
   // Initial Selected Value
-  String dropdownvalue = 'Item 1';  
- 
+  String dropdownvalue = 'Item 1';
+
   // List of items in our dropdown menu
-  var items = [   
+  var items = [
     'Item 1',
     'Item 2',
     'Item 3',
@@ -143,49 +209,37 @@ class _ChartState extends State<Chart> {
         children: <Widget>[
           Text("Modo de apresentação:"),
           DropdownButton(
-               
-              // Initial Value
-              value: dropdownvalue,
-               
-              // Down Arrow Icon
-              icon: const Icon(Icons.keyboard_arrow_down),   
-               
-              // Array list of items
-              items: items.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownvalue = newValue!;
-                });
-              },
-            ),
-            SizedBox(height: 30),
+            value: dropdownvalue,
+            icon: const Icon(Icons.keyboard_arrow_down),
+            items: items.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownvalue = newValue!;
+              });
+            },
+          ),
+          SizedBox(height: 30),
           Text("Data:"),
           DropdownButton(
-               
-              // Initial Value
-              value: dropdownvalue,
-               
-              // Down Arrow Icon
-              icon: const Icon(Icons.keyboard_arrow_down),   
-               
-              // Array list of items
-              items: items.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownvalue = newValue!;
-                });
-              },
-            ),
+            value: dropdownvalue,
+            icon: const Icon(Icons.keyboard_arrow_down),
+            items: items.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownvalue = newValue!;
+              });
+            },
+          ),
         ],
       ),
       actions: <Widget>[
