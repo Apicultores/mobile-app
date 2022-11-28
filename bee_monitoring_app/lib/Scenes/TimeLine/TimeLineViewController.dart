@@ -5,15 +5,15 @@ import 'package:bee_monitoring_app/Scenes/TimeLine/TimelineViewModel.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 
-class TimeLine extends StatefulWidget {
+class TimeLineViewController extends StatefulWidget {
   final List<Item> data;
-  TimeLine(this.data);
+  TimeLineViewController(this.data);
 
   @override
-  _TimeLineState createState() => _TimeLineState();
+  _TimeLineViewControllerState createState() => _TimeLineViewControllerState();
 }
 
-class _TimeLineState extends State<TimeLine> {
+class _TimeLineViewControllerState extends State<TimeLineViewController> {
   List<Item> _data = [];
   Type _type = Type.temperatureInside;
   TimelineViewModel timelineViewModel = TimelineViewModel();
@@ -31,10 +31,19 @@ class _TimeLineState extends State<TimeLine> {
     return 
     ListView.separated(
         separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: _data.length,
+        itemCount: _data.length + 1,
         itemBuilder: (context, index) {
-          return index == 0
-              ? Container(
+          return createWidget(index);
+        });
+  }
+
+  Widget createWidget(int index) {
+    switch (index) {
+      case 0:
+        return timelineViewModel.createHeader();
+      case 1:
+        return 
+        Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(left: 10, bottom: 5, right: 10, top: 25),
                   child: CupertinoSlidingSegmentedControl<int>(
@@ -60,9 +69,10 @@ class _TimeLineState extends State<TimeLine> {
                       });
                     },
                   ),
-                )
-              : timelineViewModel.buildCard(_type, _data[index]);
-        });
+                );
+      default:
+      return timelineViewModel.buildCard(_type, _data[index]);
+    }
   }
 
   // MARK: - Load Data

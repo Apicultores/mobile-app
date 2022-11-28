@@ -8,6 +8,7 @@ class HomeViewModel {
   Service service = Service();
 
   List<HomeWidgetType> cellList = [
+    HomeWidgetType.header,
     HomeWidgetType.title,
     HomeWidgetType.averageTemperature,
     HomeWidgetType.averageHumidity,
@@ -22,10 +23,12 @@ class HomeViewModel {
     HomeWidgetType.minSound
   ];
 
-  Padding createAverageCard(int index, List<Item> data) {
+  Widget createWidget(int index, List<Item> data) {
     switch (cellList[index]) {
+      case HomeWidgetType.header:
+        return createHeader();
       case HomeWidgetType.averageTemperature:
-        return HomeViewModel().createCard(
+        return createCard(
             "Temperatura",
             service
                     .getAverage(Type.temperatureInside, data)
@@ -36,7 +39,7 @@ class HomeViewModel {
                     .toStringAsFixed(2) +
                 " °C");
       case HomeWidgetType.averageHumidity:
-        return HomeViewModel().createCard(
+        return createCard(
             "Umidade",
             service.getAverage(Type.humidityInside, data).toStringAsFixed(2) +
                 " g/m³",
@@ -46,33 +49,33 @@ class HomeViewModel {
                 " g/m³");
       case HomeWidgetType.averageSound:
         String value = service.getAverage(Type.sound, data).toStringAsFixed(2);
-        return HomeViewModel().createCard("Som", "$value dB");
+        return createCard("Som", "$value dB");
       case HomeWidgetType.maxTemperature:
-        return HomeViewModel().createCard(
+        return createCard(
             "Temperatura", service.getMax(Type.temperatureInside, data) + " °C",
             subtitleTail:
                 service.getMax(Type.temperatureOutside, data) + " °C");
       case HomeWidgetType.maxHumidity:
-        return HomeViewModel().createCard(
+        return createCard(
             "Umidade", service.getMax(Type.humidityInside, data) + " g/m³",
             subtitleTail: service.getMax(Type.humidityOutside, data) + " g/m³");
       case HomeWidgetType.maxSound:
         String value = service.getMax(Type.sound, data);
-        return HomeViewModel().createCard("Som", "$value dB");
+        return createCard("Som", "$value dB");
       case HomeWidgetType.minTemperature:
-        return HomeViewModel().createCard(
+        return createCard(
             "Temperatura", service.getMin(Type.temperatureInside, data) + " °C",
             subtitleTail:
                 service.getMin(Type.temperatureOutside, data) + " °C");
       case HomeWidgetType.minHumidity:
-        return HomeViewModel().createCard(
+        return createCard(
             "Umidade", service.getMin(Type.humidityInside, data) + " g/m³",
             subtitleTail: service.getMin(Type.humidityOutside, data) + " g/m³");
       case HomeWidgetType.minSound:
         String value = service.getMin(Type.sound, data);
-        return HomeViewModel().createCard("Som", "$value dB");
+        return createCard("Som", "$value dB");
       default:
-        return HomeViewModel().createTitle(index);
+        return createTitle(index);
     }
   }
 
@@ -152,11 +155,31 @@ class HomeViewModel {
         ));
   }
 
+  Widget createHeader() {
+    return Container(
+      color: Colors.white,
+      child: (Row(
+        children: <Widget>[
+          Padding(
+              padding:
+                  EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
+              child: Text(
+                "Coleta (ID123123 : 22/11/2020)",
+                style: TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.normal),
+              ))
+        ],
+      )),
+    );
+  }
+
   String handleTitle(int index) {
     switch (index) {
-      case 0:
+      case 1:
         return "Médias";
-      case 4:
+      case 5:
         return "Máximas";
       default:
         return "Mínimas";

@@ -3,11 +3,11 @@ import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:bee_monitoring_app/Scenes/TimeLine/Timeline.dart';
+import 'package:bee_monitoring_app/Scenes/TimeLine/TimeLineViewController.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
-import 'package:bee_monitoring_app/Scenes/Home/Home.dart';
-import 'package:bee_monitoring_app/Scenes/Chart/Chart.dart';
+import 'package:bee_monitoring_app/Scenes/Home/HomeViewController.dart';
+import 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 import 'package:intl/intl.dart';
 
 class Service {
