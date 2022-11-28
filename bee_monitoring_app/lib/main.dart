@@ -1,4 +1,4 @@
-import 'package:bee_monitoring_app/Navigation/NagivationManager.dart';
+import 'package:bee_monitoring_app/Navigation/NagivationController.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: NagivationManager(),
+      home: NagivationController(),
     );
   }
 }

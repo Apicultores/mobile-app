@@ -8,13 +8,14 @@ import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Scenes/Home/HomeViewController.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 import 'package:intl/intl.dart';
+part 'AppBarActions.dart';
 
-class NagivationManager extends StatefulWidget {
+class NagivationController extends StatefulWidget {
   @override
-  _NagivationManagerState createState() => _NagivationManagerState();
+  _NagivationControllerState createState() => _NagivationControllerState();
 }
 
-class _NagivationManagerState extends State<NagivationManager> {
+class _NagivationControllerState extends State<NagivationController> {
   int _currentIndex = 0;
   List<Item> _data = [];
 
@@ -34,6 +35,7 @@ class _NagivationManagerState extends State<NagivationManager> {
           style: TextStyle(
               color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.bold),
         ),
+        actions: createAppBarActions(),
       ),
       body: Stack(
         children: [
@@ -60,10 +62,9 @@ class _NagivationManagerState extends State<NagivationManager> {
         selectedItemColor: Colors.amberAccent,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ("Resumo")),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Resumo"),
           BottomNavigationBarItem(icon: Icon(Icons.info), label: "Graficos"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.history), label: ("Histórico"))
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: "Histórico")
         ],
       ),
     );
