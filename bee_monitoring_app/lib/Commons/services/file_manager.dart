@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:bee_monitoring_app/Commons/Models/Item.dart';
+import 'package:bee_monitoring_app/Commons/services/file_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
@@ -23,7 +25,7 @@ class FileManager {
     return File('$path/data.json');
   }
 
-  Future<List<Map<String, dynamic>>?> readJsonFile() async {
+  readJsonFile() async {
     String fileContent = 'Cheetah Coding';
 
     File file = await _jsonFile;
@@ -31,7 +33,8 @@ class FileManager {
     if (await file.exists()) {
       try {
         fileContent = await file.readAsString();
-        return json.decode(fileContent);
+        final fileParser = FilesParser(fileContent);
+        return await fileParser.parseInBackground();
       } catch (e) {
         print(e);
       }
