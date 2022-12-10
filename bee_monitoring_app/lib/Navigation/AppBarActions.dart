@@ -13,12 +13,8 @@ extension AppBarActions on _NagivationControllerState {
               value: menuTitle,
               icon: const Icon(Icons.menu),
               iconEnabledColor: Colors.white,
-              items: [
-                menuTitle,
-                "Nova Coleta",
-                "Minhas coletas",
-                "Exportar dados"
-              ].map((String items) {
+              items: [menuTitle, "Nova Coleta", "Exportar dados"]
+                  .map((String items) {
                 return DropdownMenuItem(
                     value: items, child: createAppBarActionsWidget(items));
               }).toList(),
@@ -34,9 +30,6 @@ extension AppBarActions on _NagivationControllerState {
                           status: status ?? BleStatus.unknown);
                     }
                   }));
-                }
-                if (newValue == 'Minhas coletas') {
-                  // await fm.readJsonFile();
                 }
               })),
     ];
