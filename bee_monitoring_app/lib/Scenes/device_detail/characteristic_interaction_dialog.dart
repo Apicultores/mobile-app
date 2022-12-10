@@ -73,16 +73,19 @@ class _CharacteristicInteractionDialogState
 
   @override
   void dispose() {
-    subscribeStream?.cancel();
+    // subscribeStream?.cancel();
     super.dispose();
   }
 
   Future<void> subscribeCharacteristic() async {
     subscribeStream =
         widget.subscribeToCharacteristic(widget.characteristic).listen((event) {
-      setState(() {
-        subscribeOutput = event.toString();
-      });
+      print(String.fromCharCodes(event));
+      if (mounted) {
+        setState(() {
+          subscribeOutput += String.fromCharCodes(event);
+        });
+      }
     });
     setState(() {
       subscribeOutput = 'Notification set';
@@ -92,16 +95,12 @@ class _CharacteristicInteractionDialogState
   Future<void> readCharacteristic() async {
     final result = await widget.readCharacteristic(widget.characteristic);
     setState(() {
-      readOutput = result.toString();
+      readOutput = String.fromCharCodes(result);
     });
   }
 
-  List<int> _parseInput() => textEditingController.text
-      .split(',')
-      .map(
-        int.parse,
-      )
-      .toList();
+  List<int> _parseInput() =>
+      textEditingController.text.split(',').map(int.parse).toList();
 
   Future<void> writeCharacteristicWithResponse() async {
     await widget.writeWithResponse(widget.characteristic, _parseInput());
