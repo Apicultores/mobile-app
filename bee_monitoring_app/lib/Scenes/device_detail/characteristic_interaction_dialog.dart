@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bee_monitoring_app/Commons/services/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +54,7 @@ class _CharacteristicInteractionDialogState
   late String subscribeOutput;
   late TextEditingController textEditingController;
   late StreamSubscription<List<int>>? subscribeStream;
+  final FileManager fm = FileManager();
 
   @override
   void initState() {
@@ -74,13 +76,14 @@ class _CharacteristicInteractionDialogState
   }
 
   Future<void> subscribeCharacteristic() async {
-    subscribeStream =
-        widget.subscribeToCharacteristic(widget.isReadNotify).listen((event) {
+    subscribeStream = widget
+        .subscribeToCharacteristic(widget.isReadNotify)
+        .listen((event) async {
       if (String.fromCharCodes(event) == '!@##@!') {
         print('subscribeOutput: $subscribeOutput');
-
         Navigator.pop(context);
       }
+      await fm.writeJsonFile(event);
       setState(() {
         subscribeOutput += String.fromCharCodes(event);
       });

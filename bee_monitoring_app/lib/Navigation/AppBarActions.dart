@@ -2,6 +2,7 @@ part of 'NagivationController.dart';
 
 extension AppBarActions on _NagivationControllerState {
   static const String menuTitle = "Menu";
+  static FileManager fm = FileManager();
   List<Widget> createAppBarActions(status) {
     return [
       Padding(
@@ -12,16 +13,12 @@ extension AppBarActions on _NagivationControllerState {
               value: menuTitle,
               icon: const Icon(Icons.menu),
               iconEnabledColor: Colors.white,
-              items: [
-                menuTitle,
-                "Nova Coleta",
-                "Minhas coletas",
-                "Exportar dados"
-              ].map((String items) {
+              items: [menuTitle, "Nova Coleta", "Exportar dados"]
+                  .map((String items) {
                 return DropdownMenuItem(
                     value: items, child: createAppBarActionsWidget(items));
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (String? newValue) async {
                 // TODO: implementar Funções
                 if (newValue == 'Nova Coleta') {
                   Navigator.of(context)

@@ -1,9 +1,6 @@
-import 'dart:convert';
+import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:bee_monitoring_app/Commons/Models/Item.dart';
-import 'package:bee_monitoring_app/Commons/services/file_parser.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileManager {
@@ -26,15 +23,16 @@ class FileManager {
   }
 
   readJsonFile() async {
-    String fileContent = 'Cheetah Coding';
+    String fileContent = '';
 
     File file = await _jsonFile;
 
     if (await file.exists()) {
       try {
         fileContent = await file.readAsString();
-        final fileParser = FilesParser(fileContent);
-        return await fileParser.parseInBackground();
+        print(fileContent);
+        // final fileParser = FilesParser(fileContent.trim());
+        // return await fileParser.parseInBackground();
       } catch (e) {
         print(e);
       }
@@ -43,11 +41,14 @@ class FileManager {
     return null;
   }
 
-  // Future<User> writeJsonFile() async {
-  //   final User user = User('Julian', 36, ['Jewels', 'Juice', 'J']);
+  Future<void> writeJsonFile(List<int> subscribeStreamValue) async {
+    try {
+      File file = await _jsonFile;
 
-  //   File file = await _jsonFile;
-  //   await file.writeAsString(json.encode(user));
-  //   return user;
-  // }
+      String _data = String.fromCharCodes(subscribeStreamValue);
+      await file.writeAsString(_data, mode: FileMode.append);
+    } catch (e) {
+      print(e);
+    }
+  }
 }
