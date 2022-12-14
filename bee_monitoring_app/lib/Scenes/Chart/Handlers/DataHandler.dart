@@ -11,11 +11,11 @@ extension DataHandler on _ChartViewControllerState {
             .getRange(_averageChartData.length - 6, _averageChartData.length)
             .toList();
         graphAverageDates =
-            _averageChartData.map((e) => e.month).toSet().toList();
+            _averageChartData.map((e) => e.date).toSet().toList();
         graphAverageDatesText = graphAverageDates.last;
 
         graphIndividualDates =
-            _individualChartData.map((e) => e.month).toSet().toList();
+            _individualChartData.map((e) => e.date).toSet().toList();
         graphIndividualDatesText = graphIndividualDates.last;
       });
     });

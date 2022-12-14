@@ -53,7 +53,7 @@ class ChartWidget extends StatelessWidget {
               enableTooltip: true,
               name: 'Temperatura interna',
               dataSource: _chartData,
-              xValueMapper: (ChartItem sales, _) => sales.month,
+              xValueMapper: (ChartItem sales, _) => sales.date,
               yValueMapper: (ChartItem sales, _) => sales.temperatureInside,
               dataLabelSettings: DataLabelSettings(
                 isVisible: true,
@@ -65,7 +65,7 @@ class ChartWidget extends StatelessWidget {
               enableTooltip: true,
               name: 'Temperatura externa',
               dataSource: _chartData,
-              xValueMapper: (ChartItem sales, _) => sales.month,
+              xValueMapper: (ChartItem sales, _) => sales.date,
               yValueMapper: (ChartItem sales, _) => sales.temperatureOutside,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
@@ -77,7 +77,7 @@ class ChartWidget extends StatelessWidget {
               enableTooltip: true,
               name: 'Humidade interna',
               dataSource: _chartData,
-              xValueMapper: (ChartItem sales, _) => sales.month,
+              xValueMapper: (ChartItem sales, _) => sales.date,
               yValueMapper: (ChartItem sales, _) => sales.humidityInside,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
@@ -89,7 +89,7 @@ class ChartWidget extends StatelessWidget {
               enableTooltip: true,
               name: 'Humidade externa',
               dataSource: _chartData,
-              xValueMapper: (ChartItem sales, _) => sales.month,
+              xValueMapper: (ChartItem sales, _) => sales.date,
               yValueMapper: (ChartItem sales, _) => sales.humidityOutside,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
@@ -101,7 +101,7 @@ class ChartWidget extends StatelessWidget {
               enableTooltip: true,
               name: 'Som',
               dataSource: _chartData,
-              xValueMapper: (ChartItem sales, _) => sales.month,
+              xValueMapper: (ChartItem sales, _) => sales.date,
               yValueMapper: (ChartItem sales, _) => sales.sound,
               dataLabelSettings: const DataLabelSettings(
                 isVisible: true,

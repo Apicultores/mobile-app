@@ -1,5 +1,5 @@
 class ChartItem {
-  final String month;
+  final String date;
 
   final double temperatureInside;
   final double temperatureOutside;
@@ -9,6 +9,6 @@ class ChartItem {
 
   final double sound;
 
-  ChartItem(this.month, this.temperatureInside, this.temperatureOutside,
+  ChartItem(this.date, this.temperatureInside, this.temperatureOutside,
       this.humidityInside, this.humidityOutside, this.sound);
 }

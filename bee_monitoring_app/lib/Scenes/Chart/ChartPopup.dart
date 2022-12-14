@@ -126,7 +126,7 @@ extension ChartPopup on _ChartViewControllerState {
             _individualChartData.getRange(startRange, endRange).toList();
       });
       _presentedData.forEach((element) {
-        if (element.month == date) {
+        if (element.date == date) {
           dateFinded = true;
         }
       });
@@ -153,7 +153,7 @@ extension ChartPopup on _ChartViewControllerState {
             _averageChartData.getRange(startRange, endRange).toList();
       });
       _presentedData.forEach((element) {
-        if (element.month == date) {
+        if (element.date == date) {
           dateFinded = true;
         }
       });
