@@ -2,19 +2,17 @@ part of 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 
 extension DataHandler on _ChartViewControllerState {
   Future loadData() async {
-    print('LOADDATA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     setState(() {
       _averageChartData = handleAverageData().toSet().toList();
       _individualChartData = handleIndividualData();
       _presentedData = _averageChartData
           .getRange(_averageChartData.length - 6, _averageChartData.length)
           .toList();
-      graphAverageDates =
-          _averageChartData.map((e) => e.month).toSet().toList();
+      graphAverageDates = _averageChartData.map((e) => e.date).toSet().toList();
       graphAverageDatesText = graphAverageDates.last;
 
       graphIndividualDates =
-          _individualChartData.map((e) => e.month).toSet().toList();
+          _individualChartData.map((e) => e.date).toSet().toList();
       graphIndividualDatesText = graphIndividualDates.last;
     });
   }

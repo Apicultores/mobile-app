@@ -66,7 +66,7 @@ extension ChartViewModel on _ChartViewControllerState {
             _individualChartData.getRange(startRange, endRange).toList();
       });
       for (var element in _presentedData) {
-        print(element.month);
+        print(element.date);
       }
     }
   }
