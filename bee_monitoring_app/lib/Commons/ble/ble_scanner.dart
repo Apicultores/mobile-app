@@ -39,6 +39,10 @@ class BleScanner implements ReactiveState<BleScannerState> {
     _pushState();
   }
 
+  Future<void> mtuSize(DiscoveredDevice device) async {
+    await _ble.requestMtu(deviceId: device.id, mtu: 250);
+  }
+
   void _pushState() {
     _stateStreamController.add(
       BleScannerState(

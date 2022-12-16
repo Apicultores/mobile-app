@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '/Commons/Models/Item.dart';
+import 'package:bee_monitoring_app/Commons/repository/json_data_repository.dart';
 import '/Commons/Enums/Type.dart';
 import '/Commons/Enums/UpdateChartMode.dart';
 import '/Commons/Models/ChartItem.dart';
 import '/Commons/Service.dart';
 import '/Commons/Enums/ChartWidgetType.dart';
 import 'Widgets/ChartWidget.dart';
+import 'package:intl/intl.dart';
 part 'Widgets/ChartCheckboxWidgets.dart';
 part 'Widgets/HeaderWidgets.dart';
 part 'Handlers/DataHandler.dart';
@@ -19,8 +17,9 @@ part 'ChartPopup.dart';
 part 'ChartViewModel.dart';
 
 class ChartViewController extends StatefulWidget {
+  DateFormat dateFormat = DateFormat("HH:mm:ss - dd/MM/yyyy");
   final List<Item> data;
-  ChartViewController(this.data);
+  ChartViewController(this.data, {super.key});
 
   @override
   _ChartViewControllerState createState() => _ChartViewControllerState();
@@ -28,7 +27,6 @@ class ChartViewController extends StatefulWidget {
 
 class _ChartViewControllerState extends State<ChartViewController> {
   // MARK: - Variables
-  List<Item> _allData = [];
   late int index = 0;
   late List<ChartItem> _presentedData = [];
   late List<ChartItem> _averageChartData = [];
@@ -74,15 +72,17 @@ class _ChartViewControllerState extends State<ChartViewController> {
   Widget build(BuildContext context) {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) =>
-            Divider(height: 0),
+            const Divider(height: 0),
         itemCount: _averageChartData.isEmpty ? 0 : cellList.length,
         itemBuilder: (context, index) {
-          return createWidget(index);
+          return createWidget(index, widget.data.isEmpty ? null : widget.data);
         });
   }
 
+  @override
   void initState() {
-    super.initState();
+    print('ChartViewController');
     loadData();
+    super.initState();
   }
 }

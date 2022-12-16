@@ -53,7 +53,7 @@ void main() {
         StreamProvider<ConnectionStateUpdate>(
           create: (_) => _connector.state,
           initialData: const ConnectionStateUpdate(
-            deviceId: 'Unknown device',
+            deviceId: 'Dispositivo desconhecido',
             connectionState: DeviceConnectionState.disconnected,
             failure: null,
           ),
@@ -69,8 +69,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<JsonRepository>().readData();
-
     return MaterialApp(
       title: 'Apicultores',
       theme: ThemeData(

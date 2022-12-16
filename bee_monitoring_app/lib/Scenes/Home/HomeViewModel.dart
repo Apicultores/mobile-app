@@ -3,8 +3,10 @@ import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Commons/Enums/HomeWidgetType.dart';
+import 'package:intl/intl.dart';
 
 class HomeViewModel {
+  DateFormat dateFormat = DateFormat("HH:mm:ss - dd/MM/yyyy");
   Service service = Service();
 
   List<HomeWidgetType> cellList = [
@@ -26,7 +28,7 @@ class HomeViewModel {
   Widget createWidget(int index, List<Item> data) {
     switch (cellList[index]) {
       case HomeWidgetType.header:
-        return createHeader();
+        return createHeader(data.isNotEmpty ? data[index] : null);
       case HomeWidgetType.averageTemperature:
         return createCard("Temperatura",
             "${service.getAverage(Type.temperatureInside, data).toStringAsFixed(2)} °C",
@@ -72,97 +74,99 @@ class HomeViewModel {
   Padding createCard(String title, String subtitle,
       {String subtitleTail = ""}) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, bottom: 0, right: 20, top: 0),
+      padding: const EdgeInsets.only(left: 15, right: 20),
       child: Card(
         elevation: 2,
         child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 10.0, top: 8.0),
-                          child: Text(
-                            title,
-                            style: const TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0, top: 8.0),
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Padding(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          'Interna:  $subtitle',
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: subtitleTail != "",
+                        child: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
-                            'Interna:  $subtitle',
+                            'Externa:  $subtitleTail',
                             style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
-                        Visibility(
-                          visible: subtitleTail != "",
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Text(
-                              'Externa:  $subtitleTail',
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            )),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Padding createTitle(int index) {
     return Padding(
-        padding:
-            const EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 30),
-        child: Text(
-          handleTitle(index),
-          style: const TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        ));
+      padding: const EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 30),
+      child: Text(
+        handleTitle(index),
+        style: const TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0),
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
-  Widget createHeader() {
+  Widget createHeader(Item? item) {
+    if (item == null) return Container();
     return Container(
       color: Colors.white,
-      child: (Row(
-        children: const <Widget>[
+      child: Row(
+        children: <Widget>[
           Padding(
-              padding:
-                  EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
-              child: Text(
-                "Coleta (ID123123 : 22/11/2020)",
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.normal),
-              ))
+            padding:
+                const EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
+            child: Text(
+              "Coleta (${dateFormat.format(item.timestamp)})",
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
         ],
-      )),
+      ),
     );
   }
 

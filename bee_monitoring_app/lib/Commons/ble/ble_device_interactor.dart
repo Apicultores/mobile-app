@@ -43,12 +43,11 @@ class BleDeviceInteractor {
 
   Future<List<DiscoveredService>> discoverServices(String deviceId) async {
     try {
-      _logMessage('Start discovering services for: $deviceId');
+      _logMessage('Descobrindo serviços do dispositivo: $deviceId');
       final result = await _bleDiscoverServices(deviceId);
-      _logMessage('Discovering services finished');
       return result;
     } on Exception catch (e) {
-      _logMessage('Error occured when discovering services: $e');
+      _logMessage('Erro ao descobrirr serviços: $e');
       rethrow;
     }
   }
@@ -58,11 +57,11 @@ class BleDeviceInteractor {
     try {
       final result = await _readCharacteristic(characteristic);
 
-      _logMessage('Read ${characteristic.characteristicId}: value = $result');
+      _logMessage('Lendo ${characteristic.characteristicId}: valor = $result');
       return result;
     } on Exception catch (e, s) {
       _logMessage(
-        'Error occured when reading ${characteristic.characteristicId} : $e',
+        'Erro ao ler ${characteristic.characteristicId} : $e',
       );
       // ignore: avoid_print
       print(s);
@@ -74,11 +73,11 @@ class BleDeviceInteractor {
       QualifiedCharacteristic characteristic, List<int> value) async {
     try {
       _logMessage(
-          'Write with response value : $value to ${characteristic.characteristicId}');
+          'Escrita com resposta: $value para ${characteristic.characteristicId}');
       await _writeWithResponse(characteristic, value: value);
     } on Exception catch (e, s) {
       _logMessage(
-        'Error occured when writing ${characteristic.characteristicId} : $e',
+        'Erro ao escrever ${characteristic.characteristicId} : $e',
       );
       // ignore: avoid_print
       print(s);
@@ -91,10 +90,10 @@ class BleDeviceInteractor {
     try {
       await _writeWithoutResponse(characteristic, value: value);
       _logMessage(
-          'Write without response value: $value to ${characteristic.characteristicId}');
+          'Escrita sem resposta: $value para ${characteristic.characteristicId}');
     } on Exception catch (e, s) {
       _logMessage(
-        'Error occured when writing ${characteristic.characteristicId} : $e',
+        'Erro ao escrever ${characteristic.characteristicId} : $e',
       );
       // ignore: avoid_print
       print(s);
@@ -104,7 +103,7 @@ class BleDeviceInteractor {
 
   Stream<List<int>> subScribeToCharacteristic(
       QualifiedCharacteristic characteristic) {
-    _logMessage('Subscribing to: ${characteristic.characteristicId} ');
+    _logMessage('Se inscrevendo em: ${characteristic.characteristicId} ');
     return _subScribeToCharacteristic(characteristic);
   }
 }

@@ -1,16 +1,13 @@
 import 'package:bee_monitoring_app/Commons/services/file_manager.dart';
 import 'package:bee_monitoring_app/Scenes/device_list.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:bee_monitoring_app/Scenes/TimeLine/TimeLineViewController.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
-import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
+import 'package:bee_monitoring_app/Commons/repository/json_data_repository.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Scenes/Home/HomeViewController.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../Scenes/ble_status_screen.dart';
@@ -29,7 +26,23 @@ class _NagivationControllerState extends State<NagivationController> {
   @override
   void initState() {
     super.initState();
-    loadData();
+  }
+
+  Widget handleChart() {
+    if (_data.isNotEmpty) {
+      return ChartViewController(_data);
+    }
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        CircularProgressIndicator(),
+        Padding(
+          padding: EdgeInsets.only(top: 15.0),
+          child: Text('Aguardando dados'),
+        )
+      ],
+    ));
   }
 
   @override
@@ -40,40 +53,52 @@ class _NagivationControllerState extends State<NagivationController> {
             title: const Text(
               "Apicultores",
               style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 25.0,
                   fontWeight: FontWeight.bold),
             ),
             actions: createAppBarActions(status),
           ),
-          body: Stack(
-            children: [
-              Offstage(
-                offstage: _currentIndex != 0,
-                child: HomeViewController(_data),
-              ),
-              Offstage(
-                offstage: _currentIndex != 1,
-                child: ChartViewController(_data),
-              ),
-              Offstage(
-                offstage: _currentIndex != 2,
-                child: TimeLineViewController(_data),
-              ),
-            ],
-          ),
+          body: FutureBuilder(
+              future: loadData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Stack(
+                    children: [
+                      Offstage(
+                        offstage: _currentIndex != 0,
+                        child: HomeViewController(_data),
+                      ),
+                      Offstage(
+                        offstage: _currentIndex != 1,
+                        child: handleChart(),
+                      ),
+                      Offstage(
+                        offstage: _currentIndex != 2,
+                        child: TimeLineViewController(_data),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
             type: BottomNavigationBarType.fixed,
             onTap: onTabTapped,
+            backgroundColor: Colors.amber,
             selectedIconTheme:
-                const IconThemeData(color: Colors.amberAccent, size: 30),
-            selectedItemColor: Colors.amberAccent,
+                const IconThemeData(color: Colors.black, size: 30),
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.black54,
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Resumo"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.info), label: "Graficos"),
+                  icon: Icon(Icons.auto_graph), label: "Gráficos"),
               BottomNavigationBarItem(
                   icon: Icon(Icons.history), label: "Histórico")
             ],
@@ -89,11 +114,10 @@ class _NagivationControllerState extends State<NagivationController> {
 
   // MARK: - Load Data
   Future loadData() async {
-    Service service = Service();
-    service.loadData().then((value) {
-      setState(() {
-        _data = value;
-      });
+    await context.read<JsonRepository>().readData();
+    setState(() {
+      _data = context.read<JsonRepository>().items;
     });
+    return _data;
   }
 }

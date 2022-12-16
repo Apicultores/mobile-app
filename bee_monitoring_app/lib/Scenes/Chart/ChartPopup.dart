@@ -69,15 +69,16 @@ extension ChartPopup on _ChartViewControllerState {
                         ))
                   ]),
               actions: <Widget>[
-                new ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.grey[50]),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[50]),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: const Text('Cancelar'),
                 ),
                 const SizedBox(width: 10),
-                new ElevatedButton(
+                ElevatedButton(
                   onPressed: () {
                     setState(() {
                       graphMode = _graphModeText == graphModes.first
@@ -125,11 +126,11 @@ extension ChartPopup on _ChartViewControllerState {
         _presentedData =
             _individualChartData.getRange(startRange, endRange).toList();
       });
-      _presentedData.forEach((element) {
+      for (var element in _presentedData) {
         if (element.month == date) {
           dateFinded = true;
         }
-      });
+      }
       if (!dateFinded) {
         index -= 1;
       }
@@ -152,11 +153,11 @@ extension ChartPopup on _ChartViewControllerState {
         _presentedData =
             _averageChartData.getRange(startRange, endRange).toList();
       });
-      _presentedData.forEach((element) {
+      for (var element in _presentedData) {
         if (element.month == date) {
           dateFinded = true;
         }
-      });
+      }
       if (!dateFinded) {
         index -= 1;
       }

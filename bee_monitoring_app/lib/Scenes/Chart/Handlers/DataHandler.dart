@@ -2,28 +2,26 @@ part of 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 
 extension DataHandler on _ChartViewControllerState {
   Future loadData() async {
-    service.loadData().then((value) {
-      setState(() {
-        _allData = value;
-        _averageChartData = handleAverageData().toSet().toList();
-        _individualChartData = handleIndividualData();
-        _presentedData = _averageChartData
-            .getRange(_averageChartData.length - 6, _averageChartData.length)
-            .toList();
-        graphAverageDates =
-            _averageChartData.map((e) => e.month).toSet().toList();
-        graphAverageDatesText = graphAverageDates.last;
+    print('LOADDATA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    setState(() {
+      _averageChartData = handleAverageData().toSet().toList();
+      _individualChartData = handleIndividualData();
+      _presentedData = _averageChartData
+          .getRange(_averageChartData.length - 6, _averageChartData.length)
+          .toList();
+      graphAverageDates =
+          _averageChartData.map((e) => e.month).toSet().toList();
+      graphAverageDatesText = graphAverageDates.last;
 
-        graphIndividualDates =
-            _individualChartData.map((e) => e.month).toSet().toList();
-        graphIndividualDatesText = graphIndividualDates.last;
-      });
+      graphIndividualDates =
+          _individualChartData.map((e) => e.month).toSet().toList();
+      graphIndividualDatesText = graphIndividualDates.last;
     });
   }
 
   List<ChartItem> handleAverageData() {
     final List<ChartItem> chartData = [];
-    List<Item> dataStateTemp = _allData.toList();
+    List<Item> dataStateTemp = widget.data;
 
     while (dataStateTemp.isNotEmpty) {
       DateTime currentDate = dataStateTemp.first.timestamp;
@@ -51,7 +49,7 @@ extension DataHandler on _ChartViewControllerState {
 
   List<ChartItem> handleIndividualData() {
     final List<ChartItem> chartData = [];
-    final List<Item> dataStateTemp = _allData.toList();
+    final List<Item> dataStateTemp = widget.data;
 
     while (dataStateTemp.isNotEmpty) {
       chartData.insert(

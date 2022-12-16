@@ -11,9 +11,8 @@ class JsonRepository extends ChangeNotifier {
     final result = await FileManager().readJsonFile();
 
     if (result != null) {
-      _items = List<Item>.from(result.map((model) => Item.fromJson(model)));
+      _items = result;
     }
-
     notifyListeners();
   }
 }

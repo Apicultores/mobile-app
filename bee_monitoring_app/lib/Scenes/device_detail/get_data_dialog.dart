@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:bee_monitoring_app/Commons/services/file_manager.dart';
+import 'package:bee_monitoring_app/Commons/repository/json_data_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
 
 import '../../Commons/ble/ble_device_interactor.dart';
 
-class CharacteristicInteractionDialog extends StatelessWidget {
-  const CharacteristicInteractionDialog({
+class GetDataDialog extends StatelessWidget {
+  const GetDataDialog({
     required this.isWritableWithResponse,
     required this.isReadNotify,
     Key? key,
@@ -18,7 +19,7 @@ class CharacteristicInteractionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Consumer<BleDeviceInteractor>(
-      builder: (context, interactor, _) => _CharacteristicInteractionDialog(
+      builder: (context, interactor, _) => _GetDataDialog(
             isWritableWithResponse: isWritableWithResponse,
             isReadNotify: isReadNotify,
             writeWithResponse: interactor.writeCharacterisiticWithResponse,
@@ -26,8 +27,8 @@ class CharacteristicInteractionDialog extends StatelessWidget {
           ));
 }
 
-class _CharacteristicInteractionDialog extends StatefulWidget {
-  const _CharacteristicInteractionDialog({
+class _GetDataDialog extends StatefulWidget {
+  const _GetDataDialog({
     required this.isWritableWithResponse,
     required this.isReadNotify,
     required this.writeWithResponse,
@@ -45,20 +46,16 @@ class _CharacteristicInteractionDialog extends StatefulWidget {
       subscribeToCharacteristic;
 
   @override
-  _CharacteristicInteractionDialogState createState() =>
-      _CharacteristicInteractionDialogState();
+  _GetDataDialogState createState() => _GetDataDialogState();
 }
 
-class _CharacteristicInteractionDialogState
-    extends State<_CharacteristicInteractionDialog> {
-  late String subscribeOutput;
+class _GetDataDialogState extends State<_GetDataDialog> {
   late TextEditingController textEditingController;
   late StreamSubscription<List<int>>? subscribeStream;
   final FileManager fm = FileManager();
 
   @override
   void initState() {
-    subscribeOutput = '';
     textEditingController = TextEditingController();
     super.initState();
     handleDataCollection();
@@ -76,18 +73,33 @@ class _CharacteristicInteractionDialogState
   }
 
   Future<void> subscribeCharacteristic() async {
-    subscribeStream = widget
-        .subscribeToCharacteristic(widget.isReadNotify)
-        .listen((event) async {
-      if (String.fromCharCodes(event) == '!@##@!') {
-        print('subscribeOutput: $subscribeOutput');
-        Navigator.pop(context);
-      }
-      await fm.writeJsonFile(event);
-      setState(() {
-        subscribeOutput += String.fromCharCodes(event);
+    List<int> output = [];
+    try {
+      subscribeStream = widget
+          .subscribeToCharacteristic(widget.isReadNotify)
+          .listen((event) async {
+        if (String.fromCharCodes(event) == '@') {
+          await fm.writeJsonFile(output);
+          await context.read<JsonRepository>().readData();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.green.shade600,
+              content: const Text("Dados coletados com sucesso"),
+            ),
+          );
+          Navigator.pop(context);
+        }
+        output += event;
       });
-    });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Erro ao coletar dados, por favor tente novamente"),
+        ),
+      );
+      Navigator.pop(context);
+    }
   }
 
   Future<void> writeCharacteristicWithResponse() async {

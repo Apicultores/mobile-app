@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../Commons/ble/ble_device_connector.dart';
 import '../../Commons/ble/ble_device_interactor.dart';
-import 'characteristic_interaction_dialog.dart';
+import 'get_data_dialog.dart';
 
 part 'device_interaction_tab.g.dart';
 //ignore_for_file: annotate_overrides
@@ -99,7 +99,8 @@ class _DeviceInteractionTabState extends State<_DeviceInteractionTab> {
 
     showDialog<void>(
       context: context,
-      builder: (context) => CharacteristicInteractionDialog(
+      barrierDismissible: false,
+      builder: (context) => GetDataDialog(
         isWritableWithResponse: QualifiedCharacteristic(
             characteristicId: isWritableWithResponse?.characteristicId,
             serviceId: isWritableWithResponse?.serviceId,
@@ -142,13 +143,13 @@ class _DeviceInteractionTabState extends State<_DeviceInteractionTab> {
                         onPressed: !widget.viewModel.deviceConnected
                             ? widget.viewModel.connect
                             : null,
-                        child: const Text("Connect"),
+                        child: const Text("Conectar"),
                       ),
                       ElevatedButton(
                         onPressed: widget.viewModel.deviceConnected
                             ? widget.viewModel.disconnect
                             : null,
-                        child: const Text("Disconnect"),
+                        child: const Text("Desconectar"),
                       ),
                     ],
                   ),
