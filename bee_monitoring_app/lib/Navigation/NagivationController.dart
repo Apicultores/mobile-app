@@ -2,7 +2,6 @@ import 'package:bee_monitoring_app/Commons/services/file_manager.dart';
 import 'package:bee_monitoring_app/Scenes/device_list.dart';
 import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Scenes/TimeLine/TimeLineViewController.dart';
-import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/repository/json_data_repository.dart';
 import 'package:bee_monitoring_app/Scenes/Home/HomeViewController.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
@@ -19,31 +18,11 @@ class NagivationController extends StatefulWidget {
 
 class _NagivationControllerState extends State<NagivationController> {
   int _currentIndex = 0;
-  List<Item> _data = [];
 
   // MARK: - Life Cycle
   @override
   void initState() {
     super.initState();
-  }
-
-  Widget handleOffstage(index, data) {
-    if (data.isNotEmpty) {
-      if (index == 0) return HomeViewController(data);
-      if (index == 1) return ChartViewController(data);
-      if (index == 2) return TimeLineViewController(data);
-    }
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        CircularProgressIndicator(),
-        Padding(
-          padding: EdgeInsets.only(top: 15.0),
-          child: Text('Aguardando dados'),
-        )
-      ],
-    ));
   }
 
   @override
@@ -63,26 +42,35 @@ class _NagivationControllerState extends State<NagivationController> {
           body: FutureBuilder(
               future: loadData(),
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.hasData && snapshot.data != null) {
                   return Stack(
                     children: [
                       Offstage(
                         offstage: _currentIndex != 0,
-                        child: handleOffstage(0, snapshot.data),
+                        child: HomeViewController(snapshot.data),
                       ),
                       Offstage(
                         offstage: _currentIndex != 1,
-                        child: handleOffstage(1, snapshot.data),
+                        child: ChartViewController(snapshot.data),
                       ),
                       Offstage(
                         offstage: _currentIndex != 2,
-                        child: handleOffstage(2, snapshot.data),
+                        child: TimeLineViewController(snapshot.data),
                       ),
                     ],
                   );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        CircularProgressIndicator(),
+                        Padding(
+                          padding: EdgeInsets.only(top: 15.0),
+                          child: Text('Aguardando dados'),
+                        )
+                      ],
+                    ),
                   );
                 }
               }),
@@ -115,13 +103,11 @@ class _NagivationControllerState extends State<NagivationController> {
 
   // MARK: - Load Data
   Future loadData() async {
-    if (context.read<JsonRepository>().items.isNotEmpty) {
-      return context.read<JsonRepository>().items;
-    }
     await context.read<JsonRepository>().readData();
-    setState(() {
-      _data = context.read<JsonRepository>().items;
-    });
-    return _data;
+    if (context.read<JsonRepository>().items.isEmpty) {
+      setState(() {});
+      return null;
+    }
+    return context.read<JsonRepository>().items;
   }
 }

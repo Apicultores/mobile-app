@@ -77,7 +77,15 @@ class _GetDataDialogState extends State<_GetDataDialog> {
     try {
       subscribeStream = widget
           .subscribeToCharacteristic(widget.isReadNotify)
-          .listen((event) async {
+          .timeout(const Duration(seconds: 20), onTimeout: (sink) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("Erro ao coletar dados, por favor tente novamente"),
+          ),
+        );
+        Navigator.pop(context);
+      }).listen((event) async {
         if (String.fromCharCodes(event) == '@') {
           await fm.writeJsonFile(output);
           await context.read<JsonRepository>().readData();
