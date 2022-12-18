@@ -34,6 +34,9 @@ extension AppBarActions on _NagivationControllerState {
                   }),
                 );
               }
+              if (newValue == 'Exportar dados') {
+                await FileManager().exportJson(context);
+              }
             }),
       ),
     ];

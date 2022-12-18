@@ -38,8 +38,9 @@ class _TimeLineViewControllerState extends State<TimeLineViewController> {
   Widget createWidget(int index) {
     switch (index) {
       case 0:
-        return timelineViewModel
-            .createHeader(widget.data.isNotEmpty ? widget.data[index] : null);
+        return timelineViewModel.createHeader(widget.data.isNotEmpty
+            ? widget.data[widget.data.length - 1]
+            : null);
       case 1:
         return Container(
           alignment: Alignment.center,

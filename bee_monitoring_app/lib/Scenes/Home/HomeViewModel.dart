@@ -28,7 +28,7 @@ class HomeViewModel {
   Widget createWidget(int index, List<Item> data) {
     switch (cellList[index]) {
       case HomeWidgetType.header:
-        return createHeader(data.isNotEmpty ? data[index] : null);
+        return createHeader(data.isNotEmpty ? data[data.length - 1] : null);
       case HomeWidgetType.averageTemperature:
         return createCard("Temperatura",
             "${service.getAverage(Type.temperatureInside, data).toStringAsFixed(2)} °C",

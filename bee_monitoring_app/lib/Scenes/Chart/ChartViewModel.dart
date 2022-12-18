@@ -9,7 +9,9 @@ extension ChartViewModel on _ChartViewControllerState {
   Widget createWidget(int index, data) {
     switch (cellList[index]) {
       case ChartWidgetType.header:
-        return createHeader(widget.data.isNotEmpty ? widget.data[index] : null);
+        return createHeader(widget.data.isNotEmpty
+            ? widget.data[widget.data.length - 1]
+            : null);
       case ChartWidgetType.graphHeader:
         return createGraphHeader();
       case ChartWidgetType.graph:
