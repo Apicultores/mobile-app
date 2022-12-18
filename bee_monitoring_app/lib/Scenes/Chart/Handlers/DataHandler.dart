@@ -13,7 +13,8 @@ extension DataHandler on _ChartViewControllerState {
 
       graphIndividualDates =
           _individualChartData.map((e) => e.date).toSet().toList();
-      graphIndividualDatesText = graphIndividualDates.last;
+      graphIndividualDatesText =
+          graphIndividualDates.isNotEmpty ? graphIndividualDates.last : '';
     });
   }
 
@@ -42,6 +43,8 @@ extension DataHandler on _ChartViewControllerState {
               service.getAverage(Type.humidityOutside, tempArray),
               service.getAverage(Type.sound, tempArray)));
     }
+    print(chartData.length);
+
     return chartData;
   }
 

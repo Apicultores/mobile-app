@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Scenes/TimeLine/TimeLineViewController.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/repository/json_data_repository.dart';
-import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Scenes/Home/HomeViewController.dart';
 import 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -28,9 +27,11 @@ class _NagivationControllerState extends State<NagivationController> {
     super.initState();
   }
 
-  Widget handleChart() {
-    if (_data.isNotEmpty) {
-      return ChartViewController(_data);
+  Widget handleOffstage(index, data) {
+    if (data.isNotEmpty) {
+      if (index == 0) return HomeViewController(data);
+      if (index == 1) return ChartViewController(data);
+      if (index == 2) return TimeLineViewController(data);
     }
     return Center(
         child: Column(
@@ -67,15 +68,15 @@ class _NagivationControllerState extends State<NagivationController> {
                     children: [
                       Offstage(
                         offstage: _currentIndex != 0,
-                        child: HomeViewController(_data),
+                        child: handleOffstage(0, snapshot.data),
                       ),
                       Offstage(
                         offstage: _currentIndex != 1,
-                        child: handleChart(),
+                        child: handleOffstage(1, snapshot.data),
                       ),
                       Offstage(
                         offstage: _currentIndex != 2,
-                        child: TimeLineViewController(_data),
+                        child: handleOffstage(2, snapshot.data),
                       ),
                     ],
                   );
@@ -114,6 +115,9 @@ class _NagivationControllerState extends State<NagivationController> {
 
   // MARK: - Load Data
   Future loadData() async {
+    if (context.read<JsonRepository>().items.isNotEmpty) {
+      return context.read<JsonRepository>().items;
+    }
     await context.read<JsonRepository>().readData();
     setState(() {
       _data = context.read<JsonRepository>().items;

@@ -15,6 +15,7 @@ class HomeViewController extends StatelessWidget {
             const Divider(height: 0),
         itemCount: HomeViewModel().cellList.length,
         itemBuilder: (context, index) {
+          // print(index);
           return createCell(index);
         });
   }

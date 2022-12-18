@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '/Commons/Models/Item.dart';
-import 'package:bee_monitoring_app/Commons/repository/json_data_repository.dart';
 import '/Commons/Enums/Type.dart';
 import '/Commons/Enums/UpdateChartMode.dart';
 import '/Commons/Models/ChartItem.dart';
@@ -81,7 +79,6 @@ class _ChartViewControllerState extends State<ChartViewController> {
 
   @override
   void initState() {
-    print('ChartViewController');
     loadData();
     super.initState();
   }

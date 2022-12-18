@@ -149,6 +149,7 @@ class HomeViewModel {
   }
 
   Widget createHeader(Item? item) {
+    // print(item);
     if (item == null) return Container();
     return Container(
       color: Colors.white,

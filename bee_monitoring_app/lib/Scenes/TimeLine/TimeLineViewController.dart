@@ -29,7 +29,7 @@ class _TimeLineViewControllerState extends State<TimeLineViewController> {
   Widget build(BuildContext context) {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: widget.data.length + 1,
+        itemCount: widget.data.length,
         itemBuilder: (context, index) {
           return createWidget(index);
         });
