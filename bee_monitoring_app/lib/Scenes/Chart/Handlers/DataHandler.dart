@@ -27,7 +27,6 @@ extension DataHandler on _ChartViewControllerState {
 
     var firstDate = dataStateTemp.first.timestamp.day;
 
-    List<Item> tempArray = [];
     var initIndex = 0;
     var finalIndex = 0;
 
@@ -39,8 +38,6 @@ extension DataHandler on _ChartViewControllerState {
           break;
         }
       }
-      print(initIndex);
-      print(finalIndex);
 
       chartData.insert(
           0,
