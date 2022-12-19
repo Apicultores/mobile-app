@@ -23,12 +23,77 @@ extension DataHandler on _ChartViewControllerState {
 
   List<ChartItem> handleAverageData() {
     final List<ChartItem> chartData = [];
+    final List<Item> dataStateTemp = _allData.toList();
+
+    var firstDate = dataStateTemp.first.timestamp.day;
+
+    List<Item> tempArray = [];
+    var initIndex = 0;
+    var finalIndex = 0;
+
+    while (finalIndex+1 < dataStateTemp.length) {
+      while (firstDate == dataStateTemp[finalIndex+1].timestamp.day) {
+        finalIndex++;
+        if (finalIndex+1 >= dataStateTemp.length) {
+          finalIndex--;
+          break;
+        }
+      }
+        print(initIndex);
+        print(finalIndex);
+
+        chartData.insert(
+            0,
+            ChartItem(
+                convertDateToString(dataStateTemp[initIndex].timestamp),
+                service.getAverage(Type.temperatureInside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(Type.temperatureOutside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(Type.humidityInside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(Type.humidityOutside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(
+                    Type.sound, dataStateTemp.sublist(initIndex, finalIndex))));
+
+        chartData.insert(
+            0,
+            ChartItem(
+                convertDateToString(dataStateTemp[initIndex].timestamp),
+                service.getAverage(Type.temperatureInside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(Type.temperatureOutside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(Type.humidityInside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(Type.humidityOutside,
+                    dataStateTemp.sublist(initIndex, finalIndex)),
+                service.getAverage(
+                    Type.sound, dataStateTemp.sublist(initIndex, finalIndex))));
+
+          // break;
+          if (finalIndex+1 < dataStateTemp.length) {
+              finalIndex += 1; 
+              initIndex = finalIndex;
+              firstDate = dataStateTemp[initIndex].timestamp.day;
+          } else {
+            break;
+          }
+    }
+
+    return chartData;
+  }
+
+  List<ChartItem> handleAverageData2() {
+    final List<ChartItem> chartData = [];
     List<Item> dataStateTemp = _allData.toList();
 
     while (dataStateTemp.isNotEmpty) {
       DateTime currentDate = dataStateTemp.first.timestamp;
       List<Item> tempArray = [];
-      while (dataStateTemp.first.timestamp == currentDate) {
+
+      while (dataStateTemp.first.timestamp.day == currentDate.day) {
         tempArray.add(dataStateTemp.first);
         dataStateTemp.removeAt(0);
         if (dataStateTemp.isEmpty) {

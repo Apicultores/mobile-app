@@ -20,13 +20,13 @@ class Service {
 
     for (var item in data) {
       list.add(Item(
-          item['id'].toString(),
-          item['temperatura_dentro'].toString(),
-          item['temperatura_fora'].toString(),
-          item['umidade_dentro'].toString(),
-          item['umidade_fora'].toString(),
-          item['som'].toString(),
-          DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['timestamp'])));
+          "",
+          item['ti'].toString(),
+          item['te'].toString(),
+          item['ui'].toString(),
+          item['ue'].toString(),
+          item['s'].toString(),
+          DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['ts'])));
     }
 
     return list;
