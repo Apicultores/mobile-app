@@ -1,32 +1,39 @@
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:bee_monitoring_app/Scenes/TimeLine/TimeLineViewController.dart';
-import 'package:bee_monitoring_app/Commons/Models/Item.dart';
-import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
-import 'package:bee_monitoring_app/Scenes/Home/HomeViewController.dart';
-import 'package:bee_monitoring_app/Scenes/Chart/ChartViewController.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
 class Service {
-  Future<List<Item>> loadData() async {
-    var path = await rootBundle.loadString("assets/mockData.json");
+  Future<String> get _directoryPath async {
+    Directory? directory = await getExternalStorageDirectory();
+    return directory!.path;
+  }
 
-    var response = json.decode(path);
+  Future<File> get _jsonFile async {
+    final path = await _directoryPath;
+    return File('$path/data.json');
+  }
+
+  Future<List<Item>> loadData() async {
+    File file = await _jsonFile;
+
+    var response = json.decode(await file.readAsString());
     List data = response['data'];
     List<Item> list = [];
-
     for (var item in data) {
-      list.add(Item(
-          "",
-          item['ti'].toString(),
-          item['te'].toString(),
-          item['ui'].toString(),
-          item['ue'].toString(),
-          item['s'].toString(),
-          DateFormat("yyyy-MM-dd hh:mm:ss").parse(item['ts'])));
+      list.add(
+        Item(
+          item!['ti'].toString(),
+          item!['te'].toString(),
+          item!['ui'].toString(),
+          item!['ue'].toString(),
+          item!['s'].toString(),
+          DateFormat("yyyy-MM-dd hh:mm:ss").parse(item!['ts']),
+        ),
+      );
     }
 
     return list;

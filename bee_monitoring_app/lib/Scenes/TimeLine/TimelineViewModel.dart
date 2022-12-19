@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bee_monitoring_app/Commons/Models/Item.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:intl/intl.dart';
 
@@ -10,10 +8,14 @@ class TimelineViewModel {
 
   Widget buildSegment(String text) {
     return Container(
-      padding: EdgeInsets.all(7),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 18, color: Colors.black),
+      height: 50,
+      padding: const EdgeInsets.all(7),
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 16, color: Colors.black),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
@@ -42,23 +44,25 @@ class TimelineViewModel {
     }
   }
 
-    Widget createHeader() {
+  Widget createHeader(Item? item) {
+    if (item == null) return Container();
     return Container(
       color: Colors.white,
-      child: (Row(
-        children: <Widget>[
+      child: Row(
+        children: [
           Padding(
-              padding:
-                  EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
-              child: Text(
-                "Coleta (ID123123 : 22/11/2020)",
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.normal),
-              )),
+            padding:
+                const EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
+            child: Text(
+              'Coleta (${dateFormat.format(item.timestamp)})',
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
         ],
-      )),
+      ),
     );
   }
 }

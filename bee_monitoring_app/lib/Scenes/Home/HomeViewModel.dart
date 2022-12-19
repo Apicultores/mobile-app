@@ -3,8 +3,10 @@ import 'package:bee_monitoring_app/Commons/Models/Item.dart';
 import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Commons/Service.dart';
 import 'package:bee_monitoring_app/Commons/Enums/HomeWidgetType.dart';
+import 'package:intl/intl.dart';
 
 class HomeViewModel {
+  DateFormat dateFormat = DateFormat("HH:mm:ss - dd/MM/yyyy");
   Service service = Service();
 
   List<HomeWidgetType> cellList = [
@@ -26,51 +28,41 @@ class HomeViewModel {
   Widget createWidget(int index, List<Item> data) {
     switch (cellList[index]) {
       case HomeWidgetType.header:
-        return createHeader();
+        return createHeader(data.isNotEmpty ? data[data.length - 1] : null);
       case HomeWidgetType.averageTemperature:
-        return createCard(
-            "Temperatura",
-            service
-                    .getAverage(Type.temperatureInside, data)
-                    .toStringAsFixed(2) +
-                " °C",
-            subtitleTail: service
-                    .getAverage(Type.temperatureOutside, data)
-                    .toStringAsFixed(2) +
-                " °C");
+        return createCard("Temperatura",
+            "${service.getAverage(Type.temperatureInside, data).toStringAsFixed(2)} °C",
+            subtitleTail:
+                "${service.getAverage(Type.temperatureOutside, data).toStringAsFixed(2)} °C");
       case HomeWidgetType.averageHumidity:
-        return createCard(
-            "Umidade",
-            service.getAverage(Type.humidityInside, data).toStringAsFixed(2) +
-                " g/m³",
-            subtitleTail: service
-                    .getAverage(Type.humidityOutside, data)
-                    .toStringAsFixed(2) +
-                " g/m³");
+        return createCard("Umidade",
+            "${service.getAverage(Type.humidityInside, data).toStringAsFixed(2)} g/m³",
+            subtitleTail:
+                "${service.getAverage(Type.humidityOutside, data).toStringAsFixed(2)} g/m³");
       case HomeWidgetType.averageSound:
         String value = service.getAverage(Type.sound, data).toStringAsFixed(2);
         return createCard("Som", "$value dB");
       case HomeWidgetType.maxTemperature:
         return createCard(
-            "Temperatura", service.getMax(Type.temperatureInside, data) + " °C",
+            "Temperatura", "${service.getMax(Type.temperatureInside, data)} °C",
             subtitleTail:
-                service.getMax(Type.temperatureOutside, data) + " °C");
+                "${service.getMax(Type.temperatureOutside, data)} °C");
       case HomeWidgetType.maxHumidity:
         return createCard(
-            "Umidade", service.getMax(Type.humidityInside, data) + " g/m³",
-            subtitleTail: service.getMax(Type.humidityOutside, data) + " g/m³");
+            "Umidade", "${service.getMax(Type.humidityInside, data)} g/m³",
+            subtitleTail: "${service.getMax(Type.humidityOutside, data)} g/m³");
       case HomeWidgetType.maxSound:
         String value = service.getMax(Type.sound, data);
         return createCard("Som", "$value dB");
       case HomeWidgetType.minTemperature:
         return createCard(
-            "Temperatura", service.getMin(Type.temperatureInside, data) + " °C",
+            "Temperatura", "${service.getMin(Type.temperatureInside, data)} °C",
             subtitleTail:
-                service.getMin(Type.temperatureOutside, data) + " °C");
+                "${service.getMin(Type.temperatureOutside, data)} °C");
       case HomeWidgetType.minHumidity:
         return createCard(
-            "Umidade", service.getMin(Type.humidityInside, data) + " g/m³",
-            subtitleTail: service.getMin(Type.humidityOutside, data) + " g/m³");
+            "Umidade", "${service.getMin(Type.humidityInside, data)} g/m³",
+            subtitleTail: "${service.getMin(Type.humidityOutside, data)} g/m³");
       case HomeWidgetType.minSound:
         String value = service.getMin(Type.sound, data);
         return createCard("Som", "$value dB");
@@ -82,96 +74,100 @@ class HomeViewModel {
   Padding createCard(String title, String subtitle,
       {String subtitleTail = ""}) {
     return Padding(
-      padding: EdgeInsets.only(left: 15, bottom: 0, right: 20, top: 0),
+      padding: const EdgeInsets.only(left: 15, right: 20),
       child: Card(
         elevation: 2,
         child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 10.0, top: 8.0),
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0, top: 8.0),
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Padding(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          'Interna:  $subtitle',
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: subtitleTail != "",
+                        child: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Text(
-                            'Interna:  $subtitle',
-                            style: TextStyle(
+                            'Externa:  $subtitleTail',
+                            style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
-                        Visibility(
-                          visible: subtitleTail != "",
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Text(
-                              'Externa:  $subtitleTail',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              ],
-            )),
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Padding createTitle(int index) {
     return Padding(
-        padding: EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 30),
-        child: Text(
-          handleTitle(index),
-          style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        ));
+      padding: const EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 30),
+      child: Text(
+        handleTitle(index),
+        style: const TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0),
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
-  Widget createHeader() {
+  Widget createHeader(Item? item) {
+    // print(item);
+    if (item == null) return Container();
     return Container(
       color: Colors.white,
-      child: (Row(
+      child: Row(
         children: <Widget>[
           Padding(
-              padding:
-                  EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
-              child: Text(
-                "Coleta (ID123123 : 22/11/2020)",
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.normal),
-              ))
+            padding:
+                const EdgeInsets.only(left: 15, bottom: 15, right: 20, top: 20),
+            child: Text(
+              "Coleta (${dateFormat.format(item.timestamp)})",
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
         ],
-      )),
+      ),
     );
   }
 

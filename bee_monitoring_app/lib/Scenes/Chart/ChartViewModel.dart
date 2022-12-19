@@ -1,11 +1,17 @@
 part of 'ChartViewController.dart';
 
 extension ChartViewModel on _ChartViewControllerState {
-    // MARK: - Widget Builders
-  Widget createWidget(int index) {
+  void initState() {
+    initState();
+  }
+
+  // MARK: - Widget Builders
+  Widget createWidget(int index, data) {
     switch (cellList[index]) {
       case ChartWidgetType.header:
-        return createHeader();
+        return createHeader(widget.data.isNotEmpty
+            ? widget.data[widget.data.length - 1]
+            : null);
       case ChartWidgetType.graphHeader:
         return createGraphHeader();
       case ChartWidgetType.graph:
@@ -61,9 +67,9 @@ extension ChartViewModel on _ChartViewControllerState {
         _presentedData =
             _individualChartData.getRange(startRange, endRange).toList();
       });
-      _presentedData.forEach((element) {
+      for (var element in _presentedData) {
         print(element.date);
-      });
+      }
     }
   }
 }

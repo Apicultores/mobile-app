@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:bee_monitoring_app/Commons/Models/Item.dart';
-import 'package:bee_monitoring_app/Commons/Enums/Type.dart';
 import 'package:bee_monitoring_app/Commons/Models/ChartItem.dart';
 
 class ChartWidget extends StatelessWidget {
@@ -32,18 +26,23 @@ class ChartWidget extends StatelessWidget {
   final bool _humidityOutsideIsVisible;
   final bool _soundIsVisible;
 
+  void initState() {
+    initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 400,
-        child: SfCartesianChart(
+      height: 400,
+      child: SfCartesianChart(
           enableAxisAnimation: false,
           primaryXAxis: CategoryAxis(),
           primaryYAxis: NumericAxis(),
           legend: Legend(
+              alignment: ChartAlignment.center,
               isVisible: true,
               position: LegendPosition.bottom,
-              width: '80%',
+              width: '100%',
               overflowMode: LegendItemOverflowMode.wrap,
               isResponsive: true),
           tooltipBehavior: TooltipBehavior(enable: false),
@@ -55,7 +54,7 @@ class ChartWidget extends StatelessWidget {
               dataSource: _chartData,
               xValueMapper: (ChartItem sales, _) => sales.date,
               yValueMapper: (ChartItem sales, _) => sales.temperatureInside,
-              dataLabelSettings: DataLabelSettings(
+              dataLabelSettings: const DataLabelSettings(
                 isVisible: true,
                 color: Colors.blue,
               ),
@@ -108,7 +107,7 @@ class ChartWidget extends StatelessWidget {
                 color: Color.fromARGB(255, 0, 120, 150),
               ),
             ),
-          ],
-        ));
+          ]),
+    );
   }
 }
