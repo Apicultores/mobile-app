@@ -57,21 +57,6 @@ extension DataHandler on _ChartViewControllerState {
                 service.getAverage(
                     Type.sound, dataStateTemp.sublist(initIndex, finalIndex))));
 
-        chartData.insert(
-            0,
-            ChartItem(
-                convertDateToString(dataStateTemp[initIndex].timestamp),
-                service.getAverage(Type.temperatureInside,
-                    dataStateTemp.sublist(initIndex, finalIndex)),
-                service.getAverage(Type.temperatureOutside,
-                    dataStateTemp.sublist(initIndex, finalIndex)),
-                service.getAverage(Type.humidityInside,
-                    dataStateTemp.sublist(initIndex, finalIndex)),
-                service.getAverage(Type.humidityOutside,
-                    dataStateTemp.sublist(initIndex, finalIndex)),
-                service.getAverage(
-                    Type.sound, dataStateTemp.sublist(initIndex, finalIndex))));
-
           // break;
           if (finalIndex+1 < dataStateTemp.length) {
               finalIndex += 1; 
@@ -82,6 +67,9 @@ extension DataHandler on _ChartViewControllerState {
           }
     }
 
+    while (chartData.length < 6) {
+      chartData.insert(0,ChartItem("",0,0,0,0,0));
+    }
     return chartData;
   }
 
