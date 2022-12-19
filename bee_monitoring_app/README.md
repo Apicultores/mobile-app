@@ -1,16 +1,78 @@
-# bee_monitoring_app
+# Bee Monitoring App
 
-A new Flutter project.
+Este é um projeto criado para o PFG (Projeto final de graduação) Unicamp 2022. O projeto é um aplicativo feito em flutter para análise de uma colméia. O aplicativo  se comunica com um microcontrolador via bluetooth low energy para pegar os dados coletados e renderizalos em gráficos para análise do usuário final. A plataforma desenvolvida é o android.
 
-## Getting Started
+## Começando
 
-This project is a starting point for a Flutter application.
+Para execução do aplicativo é necessário ter configurado um ambiente de desenvolvimento flutter, para isso pode seguir o tutorial no página principal do flutter no link abaixo:
+```
+https://docs.flutter.dev/get-started/install
+```
+O projeto contém toda implementação necessária para execução em dispositivos android. Basta apenas conceder a permissão de comunicação bluetooth para o app nas configurações do aparelho.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Como utilizar
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Step 1: Clone**
+
+Faça o download ou clone este repositório utilizando o link abaixo:
+
+```
+https://github.com/Apicultores/mobile-app.git
+```
+
+**Step 2: Install**
+
+Vá para a pasta bee_monitoring_app e execute o seguinte comando para instalar todas as dependências:
+
+```
+flutter pub get 
+```
+
+**Step 3: run**
+
+Para rodar o aplicativo, execute o comando abaixo, ou inicie a partir da IDE a ser utilizda:
+
+```
+flutter run
+```
+
+**Step 4: Build**
+
+Para gerar um novo apk de release da aplicação rode o comando abaixo:
+```
+flutter build apk --release 
+```
+O build gerado se encontrará no diretório:
+```
+mobile-app/bee_monitoring_app/build/app/outputs/apk/release/app-release.apk
+```
+
+### Bibliotecas utilizadas
+
+
+* [Provider](https://github.com/rrousselGit/provider) (State Management)
+* [syncfusion_flutter_charts](https://pub.dev/packages/syncfusion_flutter_charts)
+* [flutter_screenutil](https://pub.dev/packages/flutter_screenutil)
+* [syncfusion_flutter_gauges](https://pub.dev/packages/syncfusion_flutter_gauges)
+* [path_provider](https://pub.dev/packages/path_provider)
+* [flutter_reactive_ble](https://pub.dev/packages/flutter_reactive_ble)
+* [share_plus](https://pub.dev/packages/share_plus)
+
+### Estrutura de pastas
+
+Essa é a estrutura de pasta utilizada nesse projeto:
+
+```
+lib/
+|- Commons/
+	|- ble
+	|- Enums
+	|- Models
+	|- repository
+	|- services
+	|- services.dart
+|- Navigation/
+|- Scenes/
+|- main.dart
+```
