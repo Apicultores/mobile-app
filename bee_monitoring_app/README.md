@@ -1,10 +1,10 @@
 # Bee Monitoring App
 
-Este é um projeto criado para o PFG (Projeto final de graduação) Unicamp 2022. O projeto é um aplicativo feito em flutter para análise de uma colméia. O aplicativo  se comunica com um microcontrolador via bluetooth low energy para pegar os dados coletados e renderizalos em gráficos para análise do usuário final. A plataforma desenvolvida é o android.
+Este é um projeto criado para o PFG (Projeto final de graduação) Unicamp 2022. O projeto é um aplicativo feito em flutter com o intuito de monitorar uma colméia. O aplicativo  se comunica com um microcontrolador via bluetooth low energy para pegar os dados coletados e renderiza-los em gráficos para análise do usuário final. O desenvolvimento do aplicativo foi focado na plataforma android.
 
 ## Começando
 
-Para execução do aplicativo é necessário ter configurado um ambiente de desenvolvimento flutter, para isso pode seguir o tutorial no página principal do flutter no link abaixo:
+Para execução do aplicativo é necessário ter configurado um ambiente de desenvolvimento flutter, para isso pode-se seguir o tutorial no página principal do flutter no link abaixo:
 ```
 https://docs.flutter.dev/get-started/install
 ```
