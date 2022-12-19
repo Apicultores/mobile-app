@@ -1,130 +1,116 @@
 {
     "data": [
         {
-            "id": 737,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-27 13:28:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-27 13:28:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 10,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-27 13:27:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 10,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-27 13:27:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-22 13:26:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-22 13:26:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 13,
-            "umidade_fora": 10,
-            "som": 70,
-            "timestamp": "2022-04-22 13:25:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 13,
+            "ue": 10,
+            "s": 70,
+            "ts": "2022-04-22 13:25:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-21 13:24:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-21 13:24:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-21 13:23:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-21 13:23:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-20 13:22:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-20 13:22:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-20 13:21:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-20 13:21:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-19 13:20:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-19 13:20:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-19 13:19:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-19 13:19:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-18 13:18:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-18 13:18:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 70,
-            "timestamp": "2022-04-18 13:15:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 70,
+            "ts": "2022-04-18 13:15:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 10,
-            "umidade_dentro": 20,
-            "umidade_fora": 20,
-            "som": 7,
-            "timestamp": "2022-04-16 12:27:00"
+            "ti": 10,
+            "te": 10,
+            "ui": 20,
+            "ue": 20,
+            "s": 7,
+            "ts": "2022-04-16 12:27:00"
         },
         {
-            "id": 111,
-            "temperatura_dentro": 10,
-            "temperatura_fora": 20,
-            "umidade_dentro": 30,
-            "umidade_fora": 40,
-            "som": 7,
-            "timestamp": "2022-04-15 13:27:00"
+            "ti": 10,
+            "te": 20,
+            "ui": 30,
+            "ue": 40,
+            "s": 7,
+            "ts": "2022-04-15 13:27:00"
         }
     ]
 }
