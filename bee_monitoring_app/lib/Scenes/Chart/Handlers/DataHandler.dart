@@ -64,7 +64,7 @@ extension DataHandler on _ChartViewControllerState {
       chartData.insert(0, ChartItem("", 0, 0, 0, 0, 0));
     }
 
-    return chartData;
+    return chartData.reversed.toList();
   }
 
   List<ChartItem> handleIndividualData() {
@@ -84,6 +84,6 @@ extension DataHandler on _ChartViewControllerState {
       dataStateTemp.removeAt(0);
     }
 
-    return chartData;
+    return chartData.reversed.toList();
   }
 }
